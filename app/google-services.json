@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "466969218062",
+    "project_id": "imunisasiku-e3356",
+    "storage_bucket": "imunisasiku-e3356.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:466969218062:android:032110b700012e03b6005f",
+        "android_client_info": {
+          "package_name": "com.afaryn.imunisasiku"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaE4WOqCLzHbNHUn0ZdzECp4LfzuXdV4k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
