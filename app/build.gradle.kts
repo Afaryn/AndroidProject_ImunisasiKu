@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.afaryn.imunisasiku"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.afaryn.imunisasiku"
@@ -34,6 +34,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures{
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -49,4 +52,7 @@ dependencies {
     //Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-analytics")
+
+    //Chart
+    implementation ("com.diogobernardino:williamchart:3.10.1")
 }
