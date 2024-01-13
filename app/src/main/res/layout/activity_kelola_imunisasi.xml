@@ -27,13 +27,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="15dp"
+        android:foregroundGravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView"
-        android:layout_marginTop="15dp"
-        android:layout_marginHorizontal="20dp"
-        tools:listitem="@layout/item_jenis_imunisasi"
-        android:foregroundGravity="center"/>
+        tools:listitem="@layout/item_jenis_imunisasi" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_tambahImunisasi"
