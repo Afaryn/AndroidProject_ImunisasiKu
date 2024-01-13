@@ -62,6 +62,7 @@ dependencies {
     //Chart
     implementation ("com.diogobernardino:williamchart:3.10.1")
 
+
     // Dagger Hilt
     implementation("com.google.dagger:hilt-android:2.48")
     ksp("com.google.dagger:hilt-compiler:2.48")
@@ -85,4 +86,5 @@ dependencies {
     //preference
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+
 }
