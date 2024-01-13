@@ -13,10 +13,16 @@ class HomeAdminActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.CvImunisasi.setOnClickListener{moveToImunization()}
+        binding.CvAkun.setOnClickListener{moveToKelAkun()}
     }
 
     private fun moveToImunization(){
         val intent = Intent(this,KelolaImunisasi::class.java)
+        startActivity(intent)
+    }
+
+    private fun moveToKelAkun(){
+        val intent = Intent(this, KelolaAkun::class.java)
         startActivity(intent)
     }
 }
