@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package com.afaryn.imunisasiku.admin.ui
+package com.afaryn.imunisasiku.admin.ui.kelolaAkun
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

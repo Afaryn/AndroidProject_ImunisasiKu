@@ -1,9 +1,8 @@
-package com.afaryn.imunisasiku.admin.ui
+package com.afaryn.imunisasiku.admin.ui.kelolaImunisasi
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.afaryn.imunisasiku.R
 import com.afaryn.imunisasiku.databinding.ActivityKelolaImunisasiBinding
 
 @Suppress("DEPRECATION")
@@ -21,7 +20,7 @@ class KelolaImunisasi : AppCompatActivity() {
     }
 
     private fun moveToTambahImunisasi(){
-        val intent = Intent(this,TambahImunisasi::class.java)
+        val intent = Intent(this, TambahImunisasi::class.java)
         startActivity(intent)
     }
 
