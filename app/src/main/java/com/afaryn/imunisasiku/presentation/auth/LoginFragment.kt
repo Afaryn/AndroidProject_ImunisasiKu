@@ -72,8 +72,10 @@ class LoginFragment : Fragment() {
                     else binding.progressBar.hide()
                 }
                 is UiState.Success -> {
-                    startActivity(Intent(requireContext(), MainActivity::class.java))
-                    requireActivity().finish()
+                    startActivity(Intent(requireContext(), MainActivity::class.java).also { intent ->
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        requireActivity().finish()
+                    })
                 }
                 is UiState.Error -> {
                     toast(it.error.toString())

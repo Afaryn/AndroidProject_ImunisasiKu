@@ -28,8 +28,10 @@ class AuthActivity : AppCompatActivity() {
         super.onStart()
 
         if (viewModel.isUserLoggedIn()) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            startActivity(Intent(this, MainActivity::class.java).also {
+                it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                finish()
+            })
         }
     }
 
