@@ -28,8 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".admin.ui.KelolaAkun"
-
+            android:name=".admin.ui.kelolaAkun.KelolaAkun"
             android:exported="false" />
         <activity
             android:name=".admin.ui.kelolaImunisasi.TambahImunisasi"
@@ -39,10 +38,9 @@
             android:exported="false" />
         <activity
 
-            android:name=".admin.ui.HomeAdminActivity"
+            android:name=".admin.ui.home.HomeAdminActivity"
             android:exported="false" />
 
-        </activity>
 
         <activity
             android:name=".MainActivity"

@@ -38,7 +38,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tv_namaImunisasi"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/pregular"
                 android:textSize="14sp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -72,7 +72,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tv_usiaImunisasi"
                 android:layout_width="match_parent"
-                android:layout_height="45dp" />
+                android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
@@ -124,7 +124,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="time" />
+                android:inputType="time"
+                android:textAlignment="center" />
 
             <TextView
                 android:id="@+id/textView24"
@@ -142,7 +143,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="time" />
+                android:inputType="time"
+                android:textAlignment="center" />
         </LinearLayout>
     </LinearLayout>
 
@@ -209,6 +211,18 @@
             android:text="Sabtu" />
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/button2"
+        app:layout_constraintEnd_toEndOf="@+id/button2"
+        app:layout_constraintStart_toStartOf="@+id/button2"
+        app:layout_constraintTop_toTopOf="@+id/button2" />
 
     <Button
         android:id="@+id/button2"
