@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".ImunisasiApplication"
         android:allowBackup="true"
@@ -27,16 +29,21 @@
         </activity>
         <activity
             android:name=".admin.ui.KelolaAkun"
+
             android:exported="false" />
         <activity
-            android:name=".admin.ui.TambahImunisasi"
+            android:name=".admin.ui.kelolaImunisasi.TambahImunisasi"
             android:exported="false" />
         <activity
-            android:name=".admin.ui.KelolaImunisasi"
+            android:name=".admin.ui.kelolaImunisasi.KelolaImunisasi"
             android:exported="false" />
         <activity
+
             android:name=".admin.ui.HomeAdminActivity"
             android:exported="false" />
+
+        </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="true" />

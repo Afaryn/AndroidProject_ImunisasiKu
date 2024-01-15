@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".admin.ui.TambahImunisasi">
+    tools:context=".admin.ui.kelolaImunisasi.TambahImunisasi">
 
     <include
         android:id="@+id/include"
@@ -36,6 +36,7 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tv_namaImunisasi"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:fontFamily="@font/pregular"
@@ -69,6 +70,7 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tv_usiaImunisasi"
                 android:layout_width="match_parent"
                 android:layout_height="45dp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -117,7 +119,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editTextTime"
+                android:id="@+id/edt_jamMulai"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -135,7 +137,7 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editTextTime2"
+                android:id="@+id/edt_jamSelesai"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -165,42 +167,42 @@
             android:textStyle="bold" />
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/cb_senin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:text="Senin" />
 
         <CheckBox
-            android:id="@+id/checkBox2"
+            android:id="@+id/cb_selasa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:text="Selasa" />
 
         <CheckBox
-            android:id="@+id/checkBox3"
+            android:id="@+id/cb_rabu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:text="Rabu" />
 
         <CheckBox
-            android:id="@+id/checkBox4"
+            android:id="@+id/cb_kamis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:text="Kamis" />
 
         <CheckBox
-            android:id="@+id/checkBox5"
+            android:id="@+id/cb_jumat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:text="Jum'at" />
 
         <CheckBox
-            android:id="@+id/checkBox6"
+            android:id="@+id/cb_sabtu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
