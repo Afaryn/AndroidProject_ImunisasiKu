@@ -2,7 +2,19 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.ImunisasiKu" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/pink</item>
+        <item name="android:statusBarColor">@color/black30</item>
+    </style>
+
+    <style name="Widget.MaterialComponents.Button.IconOnly">
+        <item name="iconPadding">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:minWidth">12dp</item>
+        <item name="android:minHeight">12dp</item>
+        <item name="iconGravity">textStart</item>
     </style>
 
     <style name="Theme.ImunisasiKu" parent="Base.Theme.ImunisasiKu" />
