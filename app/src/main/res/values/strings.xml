@@ -19,5 +19,31 @@
     <string name="daftar">Daftar</string>
     <string name="register_akun">Register Akun</string>
     <string name="masuk_akun_admin">Masuk Akun Admin</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="daftar_imunisasi">Daftar Imunisasi</string>
+    <string name="saat_ini_belum_ada_n_pendaftaran_imunisasi">Saat ini belum ada \n pendaftaran imunisasi</string>
+    <string name="yuk_daftar_sekarang">Yuk, daftar sekarang</string>
+    <string name="imunisasi_terdekat">Imunisasi Terdekat</string>
+    <string name="nama_pasien">Nama Pasien</string>
+    <string name="tanggal_imunisasi">Tanggal Imunisasi</string>
+    <string name="jenis_imunisasi">Jenis Imunisasi</string>
+    <string name="hari_lagi">Hari lagi</string>
+    <string name="fitur">Fitur</string>
+    <string name="jadwalku">Jadwalku</string>
+    <string name="pasien">Pasien</string>
+    <string name="informasi">Informasi</string>
+    <string name="imunisasi">Imunisasi</string>
+    <string name="jadwal_imunisasi">Jadwal Imunisasi</string>
+    <string name="bidan_kami">Bidan Kami</string>
+    <string name="ada_kendala_pertanyaan">Ada kendala? Pertanyaan?</string>
+    <string name="silahkan_hubungi_kami">Silahkan hubungi kami</string>
+    <string name="hubungi_admin">Hubungi Admin</string>
+    <string name="daftar_pasien">Daftar Pasien</string>
+    <string name="tambah_pasien">Tambah Pasien</string>
+    <string name="tanggal_lahir">Tanggal Lahir*</string>
+    <string name="nik">NIK*</string>
+    <string name="catatan">Catatan</string>
+    <string name="simpan">Simpan</string>
 
 </resources>

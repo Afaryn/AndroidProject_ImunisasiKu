@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/mainFragment"
+        android:enabled="true"
+        android:icon="@drawable/home_selector"
+        android:title="@string/home"
+        app:showAsAction="ifRoom" />
+    <item
+        android:enabled="false"
+        android:title="@string/daftar_imunisasi"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/userProfileFragment"
+        android:enabled="true"
+        android:icon="@drawable/profile_selector"
+        android:title="@string/profile"
+        app:showAsAction="ifRoom" />
+</menu>
