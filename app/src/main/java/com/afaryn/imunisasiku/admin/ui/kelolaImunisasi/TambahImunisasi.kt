@@ -45,24 +45,24 @@ class TambahImunisasi : AppCompatActivity() {
                 }
                 val nama = tvNamaImunisasi.text.toString().trim()
                 val usia = (tvUsiaImunisasi.text.toString().trim()).toInt()
-                val jadwalHari = arrayListOf<String>()
+                val jadwalHari = arrayListOf<String>()?:null
                 if (cbSenin.isChecked){
-                    jadwalHari.add("Senin")
+                    jadwalHari!!.add("Senin")
                 }
                 if(cbSelasa.isChecked){
-                    jadwalHari.add("Selasa")
+                    jadwalHari!!.add("Selasa")
                 }
                 if(cbRabu.isChecked){
-                    jadwalHari.add("Rabu")
+                    jadwalHari!!.add("Rabu")
                 }
                 if(cbKamis.isChecked){
-                    jadwalHari.add("Kamis")
+                    jadwalHari!!.add("Kamis")
                 }
                 if(cbJumat.isChecked){
-                    jadwalHari.add("Jum'at")
+                    jadwalHari!!.add("Jum'at")
                 }
                 if (cbSabtu.isChecked){
-                    jadwalHari.add("Sabtu")
+                    jadwalHari!!.add("Sabtu")
                 }
 
                 val jamMulai = edtJamMulai.text.toString()
@@ -116,5 +116,6 @@ class TambahImunisasi : AppCompatActivity() {
         super.onDestroy()
         _binding = null
     }
+
 
 }

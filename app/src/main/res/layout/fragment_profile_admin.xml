@@ -3,12 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".admin.ui.profile.ProfileFragmentAdmin">
+    tools:context=".admin.ui.profile.ProfileFragmentAdmin"
+    android:background="@drawable/bg_profile">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <ImageView
+        android:id="@+id/img_item_photo"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/circle_shape"
+        android:clipToOutline="true"
+        android:scaleType="centerCrop"
+        tools:src="@tools:sample/avatars" />
+
 
 </FrameLayout>
