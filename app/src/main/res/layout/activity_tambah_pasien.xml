@@ -31,8 +31,8 @@
                     android:layout_marginStart="20dp"
                     android:background="@android:color/transparent"
                     app:icon="@drawable/ic_back"
-                    app:iconSize="24dp"
                     app:iconPadding="5dp"
+                    app:iconSize="24dp"
                     app:iconTint="@color/black" />
 
                 <TextView
@@ -40,9 +40,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@string/tambah_pasien"
-                    android:layout_marginStart="5dp"
                     android:textColor="@color/black"
                     android:textSize="22sp" />
             </LinearLayout>
@@ -141,12 +141,13 @@
                     android:id="@+id/tv_pickupDate"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/pregular"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/poppins_medium"
                     android:gravity="center_vertical"
                     android:hint=""
                     android:paddingStart="8dp"
                     android:paddingEnd="20dp"
-                    android:textSize="12sp" />
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -191,8 +192,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:autofillHints=""
-                android:gravity="start"
                 android:fontFamily="@font/poppins_medium"
+                android:gravity="start"
                 android:hint="@string/catatan"
                 android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>

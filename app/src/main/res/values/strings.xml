@@ -45,5 +45,7 @@
     <string name="nik">NIK*</string>
     <string name="catatan">Catatan</string>
     <string name="simpan">Simpan</string>
+    <string name="usia">Usia</string>
+    <string name="edit_data_pasien">Edit Data Pasien</string>
 
 </resources>

@@ -31,6 +31,8 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -58,6 +60,9 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
+    // Desugaring for API level < 26
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+
     // Lifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
 
@@ -66,8 +71,6 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation ("com.google.firebase:firebase-firestore:23.0.4")
     implementation ("com.google.firebase:firebase-core:19.0.1")
-
-
 
     //Chart
     implementation ("com.diogobernardino:williamchart:3.10.1")

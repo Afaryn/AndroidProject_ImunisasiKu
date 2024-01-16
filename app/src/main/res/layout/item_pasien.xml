@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="220dp"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        app:cardCornerRadius="15dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_nama_pasien"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="18sp"
+                tools:text="Audy Fitri Ariani" />
+
+            <TextView
+                android:id="@+id/tv_holder_usia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_nama_pasien"
+                android:layout_alignStart="@id/tv_nama_pasien"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/usia"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_holder_catatan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_holder_usia"
+                android:layout_alignStart="@id/tv_nama_pasien"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/catatan"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_jenis_kelamin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="25dp"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="18sp"
+                tools:text="(P)" />
+
+            <TextView
+                android:id="@+id/tv_usia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/tv_holder_usia"
+                android:layout_alignEnd="@id/tv_jenis_kelamin"
+                android:layout_alignBottom="@id/tv_holder_usia"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp"
+                tools:text="0 Tahun 10 Bulan 23 Hari" />
+
+            <TextView
+                android:id="@+id/tv_catatan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/tv_holder_catatan"
+                android:layout_alignEnd="@id/tv_jenis_kelamin"
+                android:layout_alignBottom="@id/tv_holder_catatan"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins_medium"
+                android:maxLength="20"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp"
+                tools:text="-" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginHorizontal="25dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="5dp"
+                android:paddingBottom="10dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_edit_pasien"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/edit_data_pasien"
+                    android:textColor="@color/dark_blue"
+                    app:backgroundTint="@android:color/transparent"
+                    app:cornerRadius="15dp"
+                    app:strokeColor="@color/dark_blue"
+                    app:strokeWidth="2dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_hapus"
+                    style="@style/Widget.MaterialComponents.Button.IconOnly"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:stateListAnimator="@null"
+                    app:backgroundTint="@android:color/transparent"
+                    app:cornerRadius="15dp"
+                    app:icon="@drawable/vector_trash"
+                    app:iconTint="@color/orange"
+                    app:strokeColor="@color/orange"
+                    app:strokeWidth="2dp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
