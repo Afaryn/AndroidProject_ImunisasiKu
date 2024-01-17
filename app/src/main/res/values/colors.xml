@@ -4,5 +4,8 @@
     <color name="black30">#4D000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="pink">#E4007F</color>
+    <color name="pale_pink">#FFC1E4</color>
     <color name="blue">#3D50DF</color>
+    <color name="dark_blue">#1D2089</color>
+    <color name="orange">#E43E2B</color>
 </resources>
