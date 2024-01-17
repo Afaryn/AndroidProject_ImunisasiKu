@@ -1,60 +1,116 @@
 package com.afaryn.imunisasiku.presentation.auth
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.afaryn.imunisasiku.MainActivity
 import com.afaryn.imunisasiku.R
+import com.afaryn.imunisasiku.admin.ui.home.HomeAdminActivity
+import com.afaryn.imunisasiku.databinding.FragmentAdminLoginBinding
+import com.afaryn.imunisasiku.presentation.auth.viewmodel.AuthViewModel
+import com.afaryn.imunisasiku.utils.UiState
+import com.afaryn.imunisasiku.utils.Validation
+import com.afaryn.imunisasiku.utils.hide
+import com.afaryn.imunisasiku.utils.show
+import com.afaryn.imunisasiku.utils.toast
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AdminLoginFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class AdminLoginFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private var _binding: FragmentAdminLoginBinding?=null
+    private val binding get()=_binding!!
+    private val viewModel by viewModels<AuthViewModel>()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentAdminLoginBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setActions()
+        observer()
+    }
+
+    private fun setActions(){
+        with(binding){
+            btnBack.setOnClickListener {
+                findNavController().navigateUp()
+            }
+            btnLogin.setOnClickListener{
+                val email = etEmail.text.toString().trim()
+                val password = etPassword.text.toString().trim()
+
+                viewModel.login(email,password)
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_admin_login, container, false)
-    }
+    private fun observer(){
+        viewModel.loginState.observe(viewLifecycleOwner){
+            when(it){
+                is UiState.Loading -> {
+                    if (it.isLoading == true) binding.progressBar.show()
+                    else binding.progressBar.hide()
+                }
+                is UiState.Success -> {
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AdminLoginFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AdminLoginFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    startActivity(Intent(requireContext(), HomeAdminActivity::class.java).also { intent ->
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        requireActivity().finish()
+                    })
+                }
+                is UiState.Error -> {
+                    toast(it.error.toString())
                 }
             }
+        }
+
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.validation.collect { validation ->
+                    if (validation.email is Validation.Failed) {
+                        withContext(Dispatchers.Main) {
+                            binding.etEmail.apply {
+                                requestFocus()
+                                toast(validation.email.message)
+                            }
+                        }
+                    }
+
+                    if (validation.password is Validation.Failed) {
+                        withContext(Dispatchers.Main) {
+                            binding.etPassword.apply {
+                                requestFocus()
+                                toast(validation.password.message)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }

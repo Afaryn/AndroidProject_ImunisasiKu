@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".admin.ui.kelolaImunisasi.TambahImunisasi">
+    tools:context=".admin.ui.kelolaImunisasi.EditImunisasi">
 
     <include
         android:id="@+id/include"
@@ -237,4 +237,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

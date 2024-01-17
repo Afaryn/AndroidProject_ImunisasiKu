@@ -6,19 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.afaryn.imunisasiku.R
 import com.afaryn.imunisasiku.admin.ui.kelolaAkun.KelolaAkun
 import com.afaryn.imunisasiku.admin.ui.kelolaImunisasi.KelolaImunisasi
-import com.afaryn.imunisasiku.databinding.FragmentHomeBinding
-import com.afaryn.imunisasiku.databinding.HomeAdminBinding
+import com.afaryn.imunisasiku.databinding.FragmentHomeAdminBinding
 
-class HomeFragment : Fragment() {
-    private lateinit var binding: FragmentHomeBinding
+class HomeFragmentAdmin : Fragment() {
+    private lateinit var binding: FragmentHomeAdminBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentHomeAdminBinding.inflate(inflater, container, false)
         val view = binding.root
 
 
