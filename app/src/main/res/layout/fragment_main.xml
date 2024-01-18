@@ -348,7 +348,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="@string/jadwalku"
+                    android:text="@string/imunisasiku"
                     android:textAlignment="center"
                     android:textColor="@android:color/darker_gray" />
 

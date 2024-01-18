@@ -26,8 +26,15 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.cvPasien.setOnClickListener {
-            startActivity(Intent(requireContext(), PasienActivity::class.java))
+
+        setActions()
+    }
+
+    private fun setActions() {
+        binding.apply {
+            cvPasien.setOnClickListener {
+                startActivity(Intent(requireContext(), PasienActivity::class.java))
+            }
         }
     }
 

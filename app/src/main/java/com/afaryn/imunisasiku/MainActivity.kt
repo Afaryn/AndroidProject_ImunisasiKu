@@ -1,5 +1,6 @@
 package com.afaryn.imunisasiku
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +8,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.afaryn.imunisasiku.databinding.ActivityMainBinding
+import com.afaryn.imunisasiku.presentation.imunisasi.DaftarImunisasiActivity
+import com.afaryn.imunisasiku.presentation.pasien.PasienActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setupWithNavController(navController)
 
         binding.btnJadwalImunisasi.setOnClickListener {
-            Toast.makeText(this, "IMUNISASI", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, DaftarImunisasiActivity::class.java))
         }
     }
 

@@ -47,5 +47,13 @@
     <string name="simpan">Simpan</string>
     <string name="usia">Usia</string>
     <string name="edit_data_pasien">Edit Data Pasien</string>
+    <string name="daftar_pasien_input">Daftar Pasien*</string>
+    <string name="data_pasien_info">Data Pasien adalah data anak yang akan melakukan imunisasi</string>
+    <string name="pilih_pasien">Pilih Pasien</string>
+    <string name="pilih_jenis_imunisasi">Pilih Jenis Imunisasi*</string>
+    <string name="pilih_jenis_imunisasi_info">Daftar jenis Imunisasi yang bisa didapatkan berdasarkan umur pasien</string>
+    <string name="pilih_tanggal_imunisasi">Pilih Tanggal Imunisasi*</string>
+    <string name="jam_imunisasi">Jam Imunisasi</string>
+    <string name="imunisasiku">ImunisasiKu</string>
 
 </resources>
