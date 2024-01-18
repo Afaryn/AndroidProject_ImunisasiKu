@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFFFFF" /> <!-- Warna latar belakang lingkaran (putih dalam contoh ini) -->
+    <corners android:radius="100dp" /> <!-- Radius sudut setengah dari lebar ImageView untuk membuat lingkaran -->
+</shape>

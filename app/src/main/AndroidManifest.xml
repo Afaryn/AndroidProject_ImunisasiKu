@@ -16,9 +16,6 @@
         android:theme="@style/Theme.ImunisasiKu"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.imunisasi.DaftarImunisasiActivity"
-            android:exported="false" />
-        <activity
             android:name=".presentation.pasien.PasienActivity"
             android:exported="false" />
         <activity

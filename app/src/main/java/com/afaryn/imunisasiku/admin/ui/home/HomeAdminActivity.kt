@@ -5,10 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import com.afaryn.imunisasiku.R
-import com.afaryn.imunisasiku.admin.ui.profile.ProfileFragment
+import com.afaryn.imunisasiku.admin.ui.profile.ProfileFragmentAdmin
 import com.afaryn.imunisasiku.databinding.HomeAdminBinding
 
 class HomeAdminActivity : AppCompatActivity() {
@@ -19,12 +17,12 @@ class HomeAdminActivity : AppCompatActivity() {
         binding= HomeAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        replaceFragment(HomeFragment())
+        replaceFragment(HomeFragmentAdmin())
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId){
-                R.id.menu_home -> replaceFragment(HomeFragment())
-                R.id.menu_profile -> replaceFragment(ProfileFragment())
+                R.id.menu_home -> replaceFragment(HomeFragmentAdmin())
+                R.id.menu_profile -> replaceFragment(ProfileFragmentAdmin())
             }
             true
 

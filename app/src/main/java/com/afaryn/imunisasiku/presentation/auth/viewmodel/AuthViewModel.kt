@@ -98,4 +98,6 @@ class AuthViewModel @Inject constructor(
     }
 
     fun isUserLoggedIn(): Boolean = auth.currentUser != null
+
+
 }
