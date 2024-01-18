@@ -25,6 +25,9 @@
             android:name=".presentation.onboarding.OnboardingActivity"
             android:exported="false" />
         <activity
+            android:name=".presentation.imunisasi.DaftarImunisasiActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.auth.AuthActivity"
             android:exported="true">
             <intent-filter>

@@ -1,31 +1,13 @@
 package com.afaryn.imunisasiku.admin.ui.kelolaImunisasi.viewModel
 
 
-import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
-
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.afaryn.imunisasiku.model.JenisImunisasi
-
 import androidx.lifecycle.asLiveData
-import com.afaryn.imunisasiku.admin.ui.kelolaImunisasi.TambahImunisasi
-import com.afaryn.imunisasiku.model.Imunisasi
 import com.afaryn.imunisasiku.model.JenisImunisasi
 import com.afaryn.imunisasiku.utils.Constants.JENIS_IMUNISASI
-import com.afaryn.imunisasiku.utils.Constants.USER_COLLECTION
 import com.afaryn.imunisasiku.utils.UiState
-import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.EventListener
-
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
