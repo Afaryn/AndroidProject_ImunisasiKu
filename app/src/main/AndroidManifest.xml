@@ -16,19 +16,22 @@
         android:theme="@style/Theme.ImunisasiKu"
         tools:targetApi="31">
         <activity
-
+            android:name=".admin.ui.jadwal.TambahJadwal"
+            android:exported="false" />
+        <activity
+            android:name=".admin.ui.profile.EditProfile"
+            android:exported="false" />
+        <activity
             android:name=".presentation.pasien.PasienActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.pasien.TambahPasienActivity"
             android:exported="false" />
-
-       <activity
+        <activity
             android:name=".admin.ui.kelolaImunisasi.EditImunisasi"
             android:exported="false" />
         <activity
             android:name=".admin.ui.kelolaAkun.EditAkunPengguna"
-
             android:exported="false" />
         <activity
             android:name=".presentation.onboarding.OnboardingActivity"

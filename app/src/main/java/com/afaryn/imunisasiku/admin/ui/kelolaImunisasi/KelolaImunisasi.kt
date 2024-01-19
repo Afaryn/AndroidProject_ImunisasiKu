@@ -3,23 +3,16 @@ package com.afaryn.imunisasiku.admin.ui.kelolaImunisasi
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.afaryn.imunisasiku.admin.ui.kelolaImunisasi.data.ImunisasiAdapter
+import com.afaryn.imunisasiku.admin.ui.kelolaImunisasi.adapter.ImunisasiAdapter
 import com.afaryn.imunisasiku.admin.ui.kelolaImunisasi.viewModel.TambahImnViewModel
 import com.afaryn.imunisasiku.databinding.ActivityKelolaImunisasiBinding
 import com.afaryn.imunisasiku.model.JenisImunisasi
-import com.afaryn.imunisasiku.utils.Constants
 import com.afaryn.imunisasiku.utils.UiState
 import com.afaryn.imunisasiku.utils.hide
 import com.afaryn.imunisasiku.utils.show
-import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.EventListener
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.QuerySnapshot
-import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
 
 

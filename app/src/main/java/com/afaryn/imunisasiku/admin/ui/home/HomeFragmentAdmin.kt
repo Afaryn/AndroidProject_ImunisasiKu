@@ -19,20 +19,20 @@ class HomeFragmentAdmin : Fragment() {
         binding = FragmentHomeAdminBinding.inflate(inflater, container, false)
         val view = binding.root
 
-
-        binding.CvImunisasi.setOnClickListener{moveToImunization()}
-        binding.CvAkun.setOnClickListener{moveToKelAkun()}
+        setAction()
 
         return view
     }
 
-    private fun moveToImunization(){
-        val intent = Intent(requireActivity(), KelolaImunisasi::class.java)
-        requireActivity().startActivity(intent)
-    }
-
-    private fun moveToKelAkun(){
-        val intent = Intent(requireActivity(), KelolaAkun::class.java)
-        requireActivity().startActivity(intent)
+    private fun setAction(){
+        binding.apply {
+            CvImunisasi.setOnClickListener{
+                val intent = Intent(requireActivity(), KelolaImunisasi::class.java)
+                requireActivity().startActivity(intent)
+            }
+            CvAkun.setOnClickListener{val intent = Intent(requireActivity(), KelolaAkun::class.java)
+                requireActivity().startActivity(intent)
+            }
+        }
     }
 }
