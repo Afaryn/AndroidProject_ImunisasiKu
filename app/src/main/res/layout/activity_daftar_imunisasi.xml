@@ -53,8 +53,8 @@
             android:id="@+id/tv_daftar_pasien"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
             android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/daftar_pasien_input"
             android:textColor="@color/black"
@@ -68,9 +68,9 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp"
             android:fontFamily="@font/poppins_medium"
+            android:justificationMode="inter_word"
             android:text="@string/data_pasien_info"
             android:textColor="@android:color/darker_gray"
-            android:justificationMode="inter_word"
             app:layout_constraintTop_toBottomOf="@id/tv_daftar_pasien" />
 
         <com.google.android.material.card.MaterialCardView
@@ -82,34 +82,127 @@
             app:layout_constraintTop_toBottomOf="@id/tv_daftar_pasien_info">
 
             <LinearLayout
+                android:id="@+id/layout_pick_pasien"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingHorizontal="20dp"
-                android:paddingVertical="10dp"
-                android:gravity="center_vertical">
+                android:paddingVertical="10dp">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_smiley"/>
+                    android:src="@drawable/ic_smiley" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/black"
                     android:layout_weight="1"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="@string/pilih_pasien"/>
+                    android:text="@string/pilih_pasien"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_right"/>
+                    android:src="@drawable/ic_arrow_right" />
 
             </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_pasien"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp">
+
+                <TextView
+                    android:id="@+id/tv_nama_pasien"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Audy Fitri Ariani" />
+
+                <ImageView
+                    android:id="@+id/ic_delete_pasien"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/vector_trash"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_jenis_kelamin"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="15sp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="@id/ic_delete_pasien"
+                    app:layout_constraintEnd_toStartOf="@id/ic_delete_pasien"
+                    app:layout_constraintTop_toTopOf="@id/ic_delete_pasien"
+                    tools:text="(P)" />
+
+                <TextView
+                    android:id="@+id/tv_holder_usia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/usia"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="@id/tv_nama_pasien"
+                    app:layout_constraintTop_toBottomOf="@id/tv_nama_pasien" />
+
+                <TextView
+                    android:id="@+id/tv_holder_catatan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/tv_holder_usia"
+                    app:layout_constraintStart_toStartOf="@id/tv_nama_pasien"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/catatan"
+                    android:textColor="@android:color/darker_gray" />
+
+                <TextView
+                    android:id="@+id/tv_usia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_holder_usia"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_holder_usia"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@android:color/darker_gray"
+                    tools:text="0 Tahun 10 Bulan 23 Hari" />
+
+                <TextView
+                    android:id="@+id/tv_catatan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_holder_catatan"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_holder_catatan"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/poppins_medium"
+                    android:maxLength="20"
+                    android:textColor="@android:color/darker_gray"
+                    tools:text="-" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -117,8 +210,8 @@
             android:id="@+id/tv_pilih_jenis_imunisasi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
             android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/pilih_jenis_imunisasi"
             android:textColor="@color/black"
@@ -132,9 +225,9 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp"
             android:fontFamily="@font/poppins_medium"
+            android:justificationMode="inter_word"
             android:text="@string/pilih_jenis_imunisasi_info"
             android:textColor="@android:color/darker_gray"
-            android:justificationMode="inter_word"
             app:layout_constraintTop_toBottomOf="@id/tv_pilih_jenis_imunisasi" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -165,8 +258,8 @@
             android:id="@+id/tv_pilih_tanggal_imunisasi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
             android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/pilih_tanggal_imunisasi"
             android:textColor="@color/black"
@@ -177,7 +270,6 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/spinner_tanggal_imunisasi"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            app:endIconDrawable="@drawable/ic_calendar_grey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp"
@@ -186,6 +278,7 @@
             app:boxCornerRadiusBottomStart="10dp"
             app:boxCornerRadiusTopEnd="10dp"
             app:boxCornerRadiusTopStart="10dp"
+            app:endIconDrawable="@drawable/ic_calendar_grey"
             app:layout_constraintTop_toBottomOf="@id/tv_pilih_tanggal_imunisasi">
 
             <AutoCompleteTextView
@@ -193,9 +286,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:labelFor="@id/spinner_tanggal_imunisasi"
                 android:fontFamily="@font/poppins_medium"
                 android:inputType="none"
+                android:labelFor="@id/spinner_tanggal_imunisasi"
                 android:text="@string/tanggal_imunisasi" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -204,8 +297,8 @@
             android:id="@+id/tv_pilih_jam_imunisasi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
             android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="Pilih Jam Imunisasi*"
             android:textColor="@color/black"

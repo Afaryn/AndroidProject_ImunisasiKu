@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.afaryn.imunisasiku.model.Pasien
 import com.afaryn.imunisasiku.utils.Constants.PASIEN_COLLECTION
+import com.afaryn.imunisasiku.utils.Constants.USER_COLLECTION
 import com.afaryn.imunisasiku.utils.UiState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -14,8 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PasienViewModel @Inject constructor(
-    private val auth: FirebaseAuth,
-    private val firestore: FirebaseFirestore
+    private val auth: FirebaseAuth, private val firestore: FirebaseFirestore
 ) : ViewModel() {
     private val _addPatientState = MutableStateFlow<UiState<String>>(UiState.Loading(false))
     val addPatientState = _addPatientState.asStateFlow().asLiveData()
@@ -24,15 +24,14 @@ class PasienViewModel @Inject constructor(
 
     fun addPatient(pasien: Pasien) {
         _addPatientState.value = UiState.Loading(true)
-        firestore.collection(PASIEN_COLLECTION).document(auth.uid!!).collection(PASIEN_COLLECTION)
-            .document(
-                pasien.id
-            ).set(pasien)
-            .addOnSuccessListener {
+        firestore.runBatch {
+            firestore.collection(USER_COLLECTION).document(auth.uid!!).collection(PASIEN_COLLECTION)
+                .document(pasien.id).set(pasien)
+            firestore.collection(PASIEN_COLLECTION).document(pasien.id).set(pasien)
+        }.addOnSuccessListener {
                 _addPatientState.value = UiState.Loading(false)
                 _addPatientState.value = UiState.Success("Berhasil menambah pasien")
-            }
-            .addOnFailureListener {
+            }.addOnFailureListener {
                 _addPatientState.value = UiState.Loading(false)
                 _addPatientState.value = UiState.Error(it.message ?: "Terjadi kesalahan")
             }
@@ -40,7 +39,7 @@ class PasienViewModel @Inject constructor(
 
     fun getAllPasien() {
         _patientState.value = UiState.Loading(true)
-        firestore.collection(PASIEN_COLLECTION).document(auth.uid!!).collection(PASIEN_COLLECTION)
+        firestore.collection(USER_COLLECTION).document(auth.uid!!).collection(PASIEN_COLLECTION)
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     _patientState.value = UiState.Loading(false)

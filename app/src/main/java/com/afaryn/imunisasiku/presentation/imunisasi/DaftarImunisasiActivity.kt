@@ -1,16 +1,38 @@
 package com.afaryn.imunisasiku.presentation.imunisasi
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.afaryn.imunisasiku.R
 import com.afaryn.imunisasiku.databinding.ActivityDaftarImunisasiBinding
 import com.afaryn.imunisasiku.model.JenisImunisasi
+import com.afaryn.imunisasiku.model.Pasien
+import com.afaryn.imunisasiku.notification.NotificationWorker
+import com.afaryn.imunisasiku.presentation.pasien.PasienActivity
+import com.afaryn.imunisasiku.presentation.pasien.PasienActivity.Companion.PASIEN_PICKED
+import com.afaryn.imunisasiku.utils.Constants.CYCLE_MONTHLY
+import com.afaryn.imunisasiku.utils.Constants.PICK_PASIEN
+import com.afaryn.imunisasiku.utils.Constants.REQUEST_PICK_PASIEN
 import com.afaryn.imunisasiku.utils.UiState
+import com.afaryn.imunisasiku.utils.getDayOfWeek
+import com.afaryn.imunisasiku.utils.hide
+import com.afaryn.imunisasiku.utils.parseStringToDate
+import com.afaryn.imunisasiku.utils.show
+import com.afaryn.imunisasiku.utils.toToday
 import com.afaryn.imunisasiku.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.concurrent.TimeUnit
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class DaftarImunisasiActivity : AppCompatActivity() {
 
@@ -21,6 +43,7 @@ class DaftarImunisasiActivity : AppCompatActivity() {
     private var selectedImunisasi: JenisImunisasi = JenisImunisasi()
     private var selectedJadwal: String? = null
     private var selectedJam: String? = null
+    private var pasien: Pasien? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +60,14 @@ class DaftarImunisasiActivity : AppCompatActivity() {
                 finish()
             }
 
+            layoutPickPasien.setOnClickListener {
+                startActivityForResult(
+                    Intent(this@DaftarImunisasiActivity, PasienActivity::class.java).also {
+                        it.putExtra(PICK_PASIEN, true)
+                    }, REQUEST_PICK_PASIEN
+                )
+            }
+
             btnSimpan.setOnClickListener {
                 if (selectedJadwal.isNullOrEmpty()) {
                     toast("Pilih jadwal imunisasi yang sesuai")
@@ -48,7 +79,12 @@ class DaftarImunisasiActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                toast(selectedJadwal!!)
+                if (pasien == null) {
+                    toast("Harap pilih pasien untuk imunisasi")
+                    return@setOnClickListener
+                }
+
+                setNotifikasi()
             }
         }
     }
@@ -63,6 +99,7 @@ class DaftarImunisasiActivity : AppCompatActivity() {
                         setupSpinner(jenisImunisasi)
                     }
                 }
+
                 is UiState.Error -> {
                     toast(it.error ?: "Terjadi Kesalahan")
                 }
@@ -80,26 +117,38 @@ class DaftarImunisasiActivity : AppCompatActivity() {
         }
         val jenisImunisasiAdapter = ArrayAdapter(this, R.layout.item_spinner, namaJenisImunisasi)
         val waktuImunisasiAdapter = ArrayAdapter(this, R.layout.item_spinner, jadwalImunisasi)
-//        val jamImunisasiAdapter = ArrayAdapter(this, R.layout.item_spinner, jamImunisasi)
+        val jamImunisasiAdapter = ArrayAdapter(this, R.layout.item_spinner, jamImunisasi)
 
         binding.apply {
             acJenisImunisasi.setAdapter(jenisImunisasiAdapter)
             acTanggalImunisasi.setAdapter(waktuImunisasiAdapter)
+            acJamImunisasi.setAdapter(jamImunisasiAdapter)
 
             acJenisImunisasi.setOnItemClickListener { _, _, position, _ ->
                 selectedJadwal = ""
                 selectedImunisasi = jenisImunisasi[position]
 
                 jadwalImunisasi.clear()
+                jamImunisasi.clear()
                 if (selectedImunisasi.jadwalImunisasi.isNullOrEmpty()) {
                     jadwalImunisasi.add("Tidak ada jadwal untuk imunisasi ${selectedImunisasi.namaImunisasi} saat ini")
                 } else {
                     selectedImunisasi.jadwalImunisasi?.forEach {
-                        jadwalImunisasi.add(it)
+                        val jadwal = if (selectedImunisasi.siklus == CYCLE_MONTHLY) {
+                            parseStringToDate(it)
+                        } else it
+
+                        jadwalImunisasi.add(jadwal)
                     }
                 }
 
-                acJamImunisasi.setText(selectedImunisasi.jamImunisasi)
+                if (selectedImunisasi.jamImunisasi.isNullOrEmpty()) {
+                    jamImunisasi.add("Tidak ada jam untuk imunisasi ${selectedImunisasi.namaImunisasi} saat ini")
+                } else {
+                    selectedImunisasi.jamImunisasi?.forEach {
+                        jamImunisasi.add(it)
+                    }
+                }
             }
 
             acTanggalImunisasi.setOnItemClickListener { parent, _, position, _ ->
@@ -108,7 +157,87 @@ class DaftarImunisasiActivity : AppCompatActivity() {
 
             acJamImunisasi.setOnItemClickListener { parent, _, position, _ ->
                 selectedJam = parent.getItemAtPosition(position).toString()
-                toast(selectedJam ?: "Null")
+            }
+        }
+    }
+
+    private fun setNotifikasi() {
+        if (selectedImunisasi.siklus == CYCLE_MONTHLY) {
+            val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+            try {
+                val date = dateFormat.parse(selectedJadwal!!)
+                if (date != null) {
+                    scheduleOneTimeWorker(date.time)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return
+        }
+
+        val selectedDayOfWeek = getDayOfWeek(selectedJadwal!!)
+        if (selectedDayOfWeek != -1) {
+            val currentDate = Calendar.getInstance()
+            val todayOfWeek = currentDate.get(Calendar.DAY_OF_WEEK)
+
+            val daysUntilNextOccurrence = (selectedDayOfWeek - todayOfWeek + 8) % 7
+
+            val nextOccurrence = Calendar.getInstance()
+            nextOccurrence.add(Calendar.DAY_OF_MONTH, daysUntilNextOccurrence)
+            scheduleOneTimeWorker(nextOccurrence.timeInMillis)
+        }
+    }
+
+    private fun scheduleOneTimeWorker(timeInMillis: Long) {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = timeInMillis
+        calendar.set(Calendar.HOUR_OF_DAY, 8)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+
+        val selectedTimeInMillis = calendar.timeInMillis - System.currentTimeMillis()
+        val notificationMessage =
+            if (selectedImunisasi.siklus == CYCLE_MONTHLY) "Hari Ini Pada Pukul $selectedJam"
+            else "Besok Pada Pukul $selectedJam"
+
+        val inputData = workDataOf(
+            NotificationWorker.NOTIFICATION_TITLE to selectedImunisasi.namaImunisasi,
+            NotificationWorker.WAKTU_IMUNISASI to notificationMessage
+        )
+
+        val notificationManager =
+            OneTimeWorkRequestBuilder<NotificationWorker>().setInputData(inputData)
+                .setInitialDelay(selectedTimeInMillis, TimeUnit.MILLISECONDS).build()
+
+        WorkManager.getInstance(this).enqueue(notificationManager)
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_PICK_PASIEN) {
+            val dataPasien = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                data?.getParcelableExtra(PASIEN_PICKED, Pasien::class.java)
+            } else {
+                data?.getParcelableExtra(PASIEN_PICKED)
+            }
+
+            dataPasien?.let {
+                pasien = it
+                binding.apply {
+                    layoutPickPasien.hide()
+                    tvNamaPasien.text = it.name
+                    tvUsia.text = it.tanggalLahir?.toToday() ?: "-"
+                    tvCatatan.text = it.catatan
+                    tvJenisKelamin.text = if (it.jenisKelamin == "Laki - laki") "(L)" else ("(P)")
+                    layoutPasien.show()
+
+                    icDeletePasien.setOnClickListener {
+                        pasien = null
+                        layoutPasien.hide()
+                        layoutPickPasien.show()
+                    }
+                }
             }
         }
     }

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".ImunisasiApplication"
@@ -35,6 +36,9 @@
             android:exported="false" />
         <activity
             android:name=".presentation.onboarding.OnboardingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.imunisasi.DaftarImunisasiActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.auth.AuthActivity"
