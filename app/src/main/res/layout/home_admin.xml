@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".admin.ui.home.HomeAdminActivity">
 
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_layout"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -47,17 +48,103 @@
 
     </FrameLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_add"
+    <View
+        android:id="@+id/transparentBg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#C8000000"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fabConstraint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.FloatingActionButton"
-        android:backgroundTint="#E4007F"
-        android:elevation="10dp"
+        android:minHeight="32dp"
+        android:layout_marginBottom="35dp"
         app:layout_anchor="@id/menuBottom"
-        app:maxImageSize="40dp"
-        android:foreground="@drawable/vector_add"
-        app:tint="@color/white"
-        android:contentDescription="@null" />
+        app:layout_anchorGravity="center"
+        >
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_add"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#E4007F"
+            android:contentDescription="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:elevation="10dp"
+            android:foreground="@drawable/vector_add"
+            app:maxImageSize="40dp"
+            app:tint="@color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_hari"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:backgroundTint="@color/pink"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/btn_add"
+            app:layout_constraintEnd_toEndOf="@id/btn_add"
+            app:srcCompat="@drawable/vector_calendar"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/tv_hari"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fab_text_bg"
+            android:elevation="8dp"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="8dp"
+            android:text="Hari"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/btn_hari"
+            app:layout_constraintEnd_toStartOf="@id/btn_hari"
+            app:layout_constraintTop_toTopOf="@id/btn_hari" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_jam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/pink" app:backgroundTint="@color/pink"    android:tint="@color/white"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/btn_hari"
+            app:layout_constraintEnd_toEndOf="@id/btn_hari"
+            app:srcCompat="@drawable/vector_time"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/shareTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fab_text_bg"
+            android:elevation="8dp"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="8dp"
+            android:text="Jam"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/btn_jam"
+            app:layout_constraintEnd_toStartOf="@id/btn_jam"
+            app:layout_constraintTop_toTopOf="@id/btn_jam" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

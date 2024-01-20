@@ -2,10 +2,15 @@ package com.afaryn.imunisasiku.admin.ui.kelolaImunisasi.viewModel
 
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import com.afaryn.imunisasiku.model.JenisImunisasi
+
+import androidx.lifecycle.asLiveData
+
 import com.afaryn.imunisasiku.utils.Constants.JENIS_IMUNISASI
+
 import com.afaryn.imunisasiku.utils.UiState
+
+
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,6 +41,24 @@ class TambahImnViewModel @Inject constructor(
                 _sendingState.value = UiState.Error(it.message ?: "Terjadi kesalahan")
             }
     }
+
+//    fun updateImn(oldData:JenisImunisasi,newData:JenisImunisasi){
+//        _sendingState.value=UiState.Loading(true)
+//        val cekData = firestore.collection(JENIS_IMUNISASI)
+//            .whereEqualTo("namaImunisasi",oldData.namaImunisasi)
+//            .whereEqualTo("batasUmur",oldData.batasUmur)
+//            .
+//        firestore.collection(JENIS_IMUNISASI)
+//
+//            .addOnSuccessListener {
+//                _sendingState.value=UiState.Loading(false)
+//                _sendingState.value=UiState.Success("Berhasil Mengirim")
+//            }
+//            .addOnFailureListener{
+//                _sendingState.value = UiState.Loading(false)
+//                _sendingState.value = UiState.Error(it.message ?: "Terjadi kesalahan")
+//            }
+//    }
 
     fun getAllData(){
         _getDataState.value = UiState.Loading(true)

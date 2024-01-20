@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".admin.ui.kelolaAkun.EditAkunPengguna">
+    tools:context=".admin.ui.profile.EditProfile">
 
     <include layout="@layout/toolbar"
         android:id="@+id/toolbar"/>
@@ -26,48 +26,47 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:autofillHints=""
-            android:editable="false"
             android:fontFamily="@font/poppins_medium"
             android:hint="@string/nama_lengkap"
-            android:inputType="none" />
+            android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/tv_role_pengguna"
+        android:id="@+id/tv_jenis_kelamin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Role"
+        android:text="@string/jenis_kelamin"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@id/tl_nama"
         app:layout_constraintTop_toBottomOf="@id/tl_nama" />
 
     <RadioGroup
-        android:id="@+id/rg_role_pengguna"
+        android:id="@+id/rg_jenis_kelamin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="@id/tv_role_pengguna"
-        app:layout_constraintTop_toBottomOf="@id/tv_role_pengguna">
+        app:layout_constraintStart_toStartOf="@id/tv_jenis_kelamin"
+        app:layout_constraintTop_toBottomOf="@id/tv_jenis_kelamin">
 
         <RadioButton
-            android:id="@+id/radio_NonAdmin"
+            android:id="@+id/radio_laki_laki"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="Non-Admin"
+            android:text="@string/laki_laki"
             android:textSize="18sp" />
 
         <RadioButton
-            android:id="@+id/radio_Admin"
+            android:id="@+id/radio_perempuan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="Admin"
+            android:text="@string/perempuan"
             android:textSize="18sp" />
     </RadioGroup>
 
@@ -76,16 +75,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginTop="10dp"
         app:boxCornerRadiusBottomEnd="15dp"
         app:boxCornerRadiusBottomStart="15dp"
         app:boxCornerRadiusTopEnd="15dp"
         app:boxCornerRadiusTopStart="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rg_role_pengguna">
+        app:layout_constraintTop_toBottomOf="@id/rg_jenis_kelamin">
 
         <EditText
             android:id="@+id/et_phone"
@@ -94,7 +89,7 @@
             android:autofillHints=""
             android:fontFamily="@font/poppins_medium"
             android:hint="@string/no_handphone"
-            android:inputType="none" />
+            android:inputType="phone" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -102,15 +97,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginTop="10dp"
         app:boxCornerRadiusBottomEnd="15dp"
         app:boxCornerRadiusBottomStart="15dp"
         app:boxCornerRadiusTopEnd="15dp"
         app:boxCornerRadiusTopStart="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tl_phone">
 
         <EditText
@@ -120,53 +111,44 @@
             android:autofillHints=""
             android:fontFamily="@font/poppins_medium"
             android:hint="@string/email"
-            android:inputType="none" />
+            android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tl_jk"
+        android:id="@+id/tl_nik"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="25dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginTop="10dp"
         app:boxCornerRadiusBottomEnd="15dp"
         app:boxCornerRadiusBottomStart="15dp"
         app:boxCornerRadiusTopEnd="15dp"
         app:boxCornerRadiusTopStart="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tl_email"
-        >
+        app:layout_constraintTop_toBottomOf="@id/tl_email">
 
         <EditText
-            android:id="@+id/et_jk"
+            android:id="@+id/et_nik"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:autofillHints=""
             android:fontFamily="@font/poppins_medium"
-            android:hint="Jenis Kelamin"
-            android:inputType="none"
-            />
+            android:hint="NIK"
+            android:inputType="phone" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
+
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_edit_akun"
+        android:id="@+id/btn_simpan"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginHorizontal="25dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@color/pink"
         android:fontFamily="@font/poppins_medium"
         android:text="Simpan"
         app:cornerRadius="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tl_nik" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -175,22 +157,9 @@
         android:indeterminate="true"
         android:indeterminateTint="@color/black"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/btn_edit_akun"
-        app:layout_constraintEnd_toEndOf="@id/btn_edit_akun"
-        app:layout_constraintStart_toStartOf="@id/btn_edit_akun"
-        app:layout_constraintTop_toTopOf="@id/btn_edit_akun" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Note: Hanya dapat merubah 'Role' Akun"
-        android:textColor="@color/pink"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/tl_jk"
-        app:layout_constraintTop_toBottomOf="@+id/tl_jk" />
-
+        app:layout_constraintBottom_toBottomOf="@id/btn_simpan"
+        app:layout_constraintEnd_toEndOf="@id/btn_simpan"
+        app:layout_constraintStart_toStartOf="@id/btn_simpan"
+        app:layout_constraintTop_toTopOf="@id/btn_simpan" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,31 +1,26 @@
-<androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_jenis_imunisasi"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginStart="25dp"
-    android:layout_marginTop="15dp"
-    android:layout_marginEnd="25dp"
-    android:layout_marginBottom="15dp"
-    card_view:cardCornerRadius="20dp">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
+        android:id="@+id/item_jenis_imunisasi"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="15dp">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        card_view:cardCornerRadius="20dp">
 
-        <LinearLayout
-            android:id="@+id/linearLayout5"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical"
-            card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toTopOf="parent">
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="20dp">
 
             <TextView
                 android:id="@+id/textView2"
@@ -41,25 +36,17 @@
                 android:id="@+id/tv_namaImunisasi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/textView2"
                 android:fontFamily="@font/poppins_medium"
                 android:text="BCG 1"
                 android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:orientation="vertical"
-            card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/linearLayout5">
 
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_namaImunisasi"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/pregular"
                 android:text="Untuk Usia"
                 android:textColor="#787885"
@@ -70,40 +57,40 @@
                 android:id="@+id/tv_usiaImunisasi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/textView4"
                 android:fontFamily="@font/poppins_medium"
                 android:text="5 Bulan"
                 android:textStyle="bold" />
-        </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/btn_del"
-            android:layout_width="46dp"
-            android:layout_height="52dp"
-            android:layout_marginEnd="5dp"
-            android:backgroundTint="#03FAF9F9"
-            android:outlineProvider="bounds"
-            android:scaleType="fitCenter"
-            android:src="@drawable/vector_trash"
-            card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+            <Button
+                android:id="@+id/btn_edit"
+                android:layout_width="88dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_usiaImunisasi"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="56dp"
+                android:backgroundTint="#00FFFFFF"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Edit"
+                android:textColor="#1D2089"
+                card_view:strokeColor="#1D2089"
+                card_view:strokeWidth="2dp" />
 
-        <Button
-            android:id="@+id/btn_edit"
-            android:layout_width="88dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="200dp"
-            android:backgroundTint="#00FFFFFF"
-            android:fontFamily="@font/poppins_medium"
-            android:text="Edit"
-            android:textColor="#1D2089"
-            card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toStartOf="@+id/btn_del"
-            card_view:layout_constraintHorizontal_bias="0.942"
-            card_view:layout_constraintStart_toStartOf="parent"
-            card_view:strokeColor="#1D2089"
-            card_view:strokeWidth="2dp" />
+            <ImageButton
+                android:id="@+id/btn_del"
+                android:layout_width="46dp"
+                android:layout_height="52dp"
+                android:layout_below="@+id/tv_usiaImunisasi"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="-141dp"
+                android:layout_toStartOf="@+id/btn_edit"
+                android:backgroundTint="#03FAF9F9"
+                android:outlineProvider="bounds"
+                android:scaleType="fitCenter"
+                android:src="@drawable/vector_trash" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.cardview.widget.CardView>
+</RelativeLayout>
