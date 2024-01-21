@@ -55,5 +55,7 @@
     <string name="pilih_tanggal_imunisasi">Pilih Tanggal Imunisasi*</string>
     <string name="jam_imunisasi">Jam Imunisasi</string>
     <string name="imunisasiku">ImunisasiKu</string>
+    <string name="hapus">Hapus</string>
+    <string name="batal">Batal</string>
 
 </resources>

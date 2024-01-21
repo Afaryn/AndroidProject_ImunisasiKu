@@ -11,9 +11,11 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.afaryn.imunisasiku.R
 import com.afaryn.imunisasiku.databinding.ActivityDaftarImunisasiBinding
+import com.afaryn.imunisasiku.model.Imunisasi
 import com.afaryn.imunisasiku.model.JenisImunisasi
 import com.afaryn.imunisasiku.model.Pasien
 import com.afaryn.imunisasiku.notification.NotificationWorker
+import com.afaryn.imunisasiku.presentation.imunisasi.viewmodel.ImunisasiViewModel
 import com.afaryn.imunisasiku.presentation.pasien.PasienActivity
 import com.afaryn.imunisasiku.presentation.pasien.PasienActivity.Companion.PASIEN_PICKED
 import com.afaryn.imunisasiku.utils.Constants.CYCLE_MONTHLY
@@ -69,22 +71,33 @@ class DaftarImunisasiActivity : AppCompatActivity() {
             }
 
             btnSimpan.setOnClickListener {
-                if (selectedJadwal.isNullOrEmpty()) {
-                    toast("Pilih jadwal imunisasi yang sesuai")
-                    return@setOnClickListener
+                when {
+                    selectedJadwal.isNullOrEmpty() -> {
+                        toast("Pilih jadwal imunisasi yang sesuai")
+                        return@setOnClickListener
+                    }
+                    selectedJadwal!!.contains("Tidak ada jadwal") -> {
+                        toast("Jadwal untuk imunisasi yang dipilih tidak tersedia")
+                        return@setOnClickListener
+                    }
+                    pasien == null -> {
+                        toast("Harap pilih pasien untuk imunisasi")
+                        return@setOnClickListener
+                    }
+                    selectedJam.isNullOrEmpty() -> {
+                        toast("Harap pilih jam imunisasi")
+                        return@setOnClickListener
+                    }
+                    else -> {
+                        val imunisasi = Imunisasi(
+                            pasien = pasien,
+                            namaImunisasi = selectedImunisasi.namaImunisasi,
+                            jadwalImunisasi = selectedJadwal,
+                            jamImunisasi = selectedJam
+                        )
+                        viewModel.daftarImunisasi(imunisasi)
+                    }
                 }
-
-                if (selectedJadwal!!.contains("Tidak ada jadwal")) {
-                    toast("Jadwal untuk imunisasi yang dipilih tidak tersedia")
-                    return@setOnClickListener
-                }
-
-                if (pasien == null) {
-                    toast("Harap pilih pasien untuk imunisasi")
-                    return@setOnClickListener
-                }
-
-                setNotifikasi()
             }
         }
     }
@@ -92,7 +105,8 @@ class DaftarImunisasiActivity : AppCompatActivity() {
     private fun observer() {
         viewModel.imunisasiListState.observe(this) {
             when (it) {
-                is UiState.Loading -> {}
+                is UiState.Loading -> {
+                }
                 is UiState.Success -> {
                     it.data?.let { jenisImunisasi ->
                         listJenisImunisasi = jenisImunisasi
@@ -100,6 +114,26 @@ class DaftarImunisasiActivity : AppCompatActivity() {
                     }
                 }
 
+                is UiState.Error -> {
+                    toast(it.error ?: "Terjadi Kesalahan")
+                }
+            }
+        }
+
+        viewModel.daftarImunisasiState.observe(this) {
+            when (it) {
+                is UiState.Loading -> {
+                    if (it.isLoading == true) {
+                        binding.progressBar.show()
+                    } else {
+                        binding.progressBar.hide()
+                    }
+                }
+                is UiState.Success -> {
+                    setNotifikasi()
+                    toast(it.data!!)
+                    finish()
+                }
                 is UiState.Error -> {
                     toast(it.error ?: "Terjadi Kesalahan")
                 }

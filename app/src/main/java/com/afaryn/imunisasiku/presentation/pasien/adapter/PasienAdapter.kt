@@ -58,7 +58,15 @@ class PasienAdapter(private var pickPasien: Boolean = false): RecyclerView.Adapt
         holder.binding.btnPilihPasien.setOnClickListener {
             onPickPasienClick?.invoke(item)
         }
+        holder.binding.btnEditPasien.setOnClickListener {
+            onEditPasienClick?.invoke(item)
+        }
+        holder.binding.btnHapus.setOnClickListener {
+            onDeletePasienClick?.invoke(item)
+        }
     }
 
     var onPickPasienClick: ((Pasien) -> Unit)? = null
+    var onEditPasienClick: ((Pasien) -> Unit)? = null
+    var onDeletePasienClick:  ((Pasien) -> Unit)? = null
 }

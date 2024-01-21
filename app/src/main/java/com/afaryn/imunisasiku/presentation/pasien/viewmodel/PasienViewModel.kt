@@ -21,6 +21,8 @@ class PasienViewModel @Inject constructor(
     val addPatientState = _addPatientState.asStateFlow().asLiveData()
     private val _patientState = MutableStateFlow<UiState<List<Pasien>>>(UiState.Loading(false))
     val patientState = _patientState.asStateFlow().asLiveData()
+    private val _deletePatientState = MutableStateFlow<UiState<String>>(UiState.Loading(false))
+    val deletePatientState = _deletePatientState.asStateFlow().asLiveData()
 
     fun addPatient(pasien: Pasien) {
         _addPatientState.value = UiState.Loading(true)
@@ -31,10 +33,10 @@ class PasienViewModel @Inject constructor(
         }.addOnSuccessListener {
                 _addPatientState.value = UiState.Loading(false)
                 _addPatientState.value = UiState.Success("Berhasil menambah pasien")
-            }.addOnFailureListener {
-                _addPatientState.value = UiState.Loading(false)
-                _addPatientState.value = UiState.Error(it.message ?: "Terjadi kesalahan")
-            }
+        }.addOnFailureListener {
+            _addPatientState.value = UiState.Loading(false)
+            _addPatientState.value = UiState.Error(it.message ?: "Terjadi kesalahan")
+        }
     }
 
     fun getAllPasien() {
@@ -53,5 +55,20 @@ class PasienViewModel @Inject constructor(
                     _patientState.value = UiState.Success(pasien)
                 }
             }
+    }
+
+    fun deletePasien(pasienId: String) {
+        _deletePatientState.value = UiState.Loading(true)
+        firestore.runBatch {
+            firestore.collection(USER_COLLECTION).document(auth.uid!!).collection(PASIEN_COLLECTION)
+                .document(pasienId).delete()
+            firestore.collection(PASIEN_COLLECTION).document(pasienId).delete()
+        }.addOnSuccessListener {
+            _deletePatientState.value = UiState.Loading(false)
+            _deletePatientState.value = UiState.Success("Data pasien dihapus")
+        }.addOnFailureListener {
+            _deletePatientState.value = UiState.Loading(false)
+            _deletePatientState.value = UiState.Error(it.message ?: "Terjadi kesalahan")
+        }
     }
 }

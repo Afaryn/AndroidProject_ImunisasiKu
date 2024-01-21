@@ -36,7 +36,7 @@
                     app:iconTint="@color/black" />
 
                 <TextView
-                    android:id="@+id/tv_register_akun"
+                    android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -138,7 +138,7 @@
                 android:background="@drawable/style_spinner_input">
 
                 <TextView
-                    android:id="@+id/tv_pickupDate"
+                    android:id="@+id/tv_birthDate"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"

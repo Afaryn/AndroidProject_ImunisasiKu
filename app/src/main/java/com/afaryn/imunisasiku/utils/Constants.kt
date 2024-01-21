@@ -7,5 +7,5 @@ object Constants {
     const val PICK_PASIEN = "pick_pasien"
     const val REQUEST_PICK_PASIEN = 101
     const val CYCLE_MONTHLY = "bulan"
-    const val CYCLE_WEEKLY = "minggu"
+    const val IMUNISASI_COLLECTION = "imunisasi"
 }

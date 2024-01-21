@@ -14,6 +14,7 @@ import com.afaryn.imunisasiku.utils.Constants.PICK_PASIEN
 import com.afaryn.imunisasiku.utils.Constants.REQUEST_PICK_PASIEN
 import com.afaryn.imunisasiku.utils.UiState
 import com.afaryn.imunisasiku.utils.hide
+import com.afaryn.imunisasiku.utils.setupDeleteDialog
 import com.afaryn.imunisasiku.utils.show
 import com.afaryn.imunisasiku.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,6 +63,22 @@ class PasienActivity : AppCompatActivity() {
             setResult(REQUEST_PICK_PASIEN, intent)
             finish()
         }
+
+        pasienAdapter.onEditPasienClick = {
+            val intent = Intent(this, TambahPasienActivity::class.java).apply {
+                putExtra(TambahPasienActivity.PASIEN_INTENT, it)
+            }
+            startActivity(intent)
+        }
+
+        pasienAdapter.onDeletePasienClick = {
+            setupDeleteDialog(
+                title = "Hapus Data Pasien ${it.name}?",
+                message = "Data pasien akan dihapus secara permanen"
+            ) {
+                viewModel.deletePasien(it.id)
+            }
+        }
     }
 
     private fun setActions() {
@@ -81,6 +98,20 @@ class PasienActivity : AppCompatActivity() {
                     it.data?.let { pasien ->
                         pasienAdapter.differ.submitList(pasien)
                     }
+                }
+                is UiState.Error -> {
+                    toast(it.error ?: "Terjadi kesalahan")
+                }
+            }
+        }
+        viewModel.deletePatientState.observe(this) {
+            when (it) {
+                is UiState.Loading -> {
+                    if (it.isLoading == true) binding.progressBar.show()
+                    else binding.progressBar.hide()
+                }
+                is UiState.Success -> {
+                    toast(it.data!!)
                 }
                 is UiState.Error -> {
                     toast(it.error ?: "Terjadi kesalahan")

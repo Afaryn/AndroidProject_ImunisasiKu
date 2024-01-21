@@ -1,10 +1,20 @@
 package com.afaryn.imunisasiku.utils
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Patterns
+import android.view.Gravity
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.afaryn.imunisasiku.R
 import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
 import java.time.Period
@@ -110,6 +120,41 @@ fun parseStringToDate(dateString: String): String {
         SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(formatted ?: "01 January 1997")
     } catch (e: Exception) {
         e.printStackTrace()
-        ""
+        "Tidak ada jadwal"
+    }
+}
+
+@SuppressLint("InflateParams", "MissingInflatedId")
+fun Activity.setupDeleteDialog(
+    title: String,
+    message: String,
+    onYesClick: () -> Unit
+) {
+    val dialog = Dialog(this, android.R.style.Theme_Dialog)
+    val view = layoutInflater.inflate(R.layout.delete_pasien_dialog, null)
+    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+    dialog.setContentView(view)
+    dialog.window?.setGravity(Gravity.CENTER)
+    dialog.window?.setLayout(
+        WindowManager.LayoutParams.MATCH_PARENT,
+        WindowManager.LayoutParams.WRAP_CONTENT
+    )
+    dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    dialog.show()
+
+    val tvTitle = view.findViewById<TextView>(R.id.tv_dialog_title)
+    val tvMessage = view.findViewById<TextView>(R.id.tv_dialog_message)
+    tvTitle.text = title
+    tvMessage.text = message
+
+    val btnDismiss = view.findViewById<Button>(R.id.btn_dialog_dismiss)
+    val btnYes = view.findViewById<Button>(R.id.btn_dialog_yes)
+
+    btnDismiss.setOnClickListener {
+        dialog.dismiss()
+    }
+    btnYes.setOnClickListener {
+        onYesClick()
+        dialog.dismiss()
     }
 }
