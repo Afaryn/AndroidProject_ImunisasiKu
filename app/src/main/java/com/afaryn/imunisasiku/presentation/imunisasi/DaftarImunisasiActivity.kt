@@ -15,7 +15,7 @@ import com.afaryn.imunisasiku.model.Imunisasi
 import com.afaryn.imunisasiku.model.JenisImunisasi
 import com.afaryn.imunisasiku.model.Pasien
 import com.afaryn.imunisasiku.notification.NotificationWorker
-import com.afaryn.imunisasiku.presentation.imunisasi.viewmodel.ImunisasiViewModel
+import com.afaryn.imunisasiku.presentation.imunisasi.viewmodel.DaftarImunisasiViewModel
 import com.afaryn.imunisasiku.presentation.pasien.PasienActivity
 import com.afaryn.imunisasiku.presentation.pasien.PasienActivity.Companion.PASIEN_PICKED
 import com.afaryn.imunisasiku.utils.Constants.CYCLE_MONTHLY
@@ -40,7 +40,7 @@ class DaftarImunisasiActivity : AppCompatActivity() {
 
     private var _binding: ActivityDaftarImunisasiBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<ImunisasiViewModel>()
+    private val viewModel by viewModels<DaftarImunisasiViewModel>()
     private var listJenisImunisasi: List<JenisImunisasi> = listOf()
     private var selectedImunisasi: JenisImunisasi = JenisImunisasi()
     private var selectedJadwal: String? = null
@@ -89,6 +89,20 @@ class DaftarImunisasiActivity : AppCompatActivity() {
                         return@setOnClickListener
                     }
                     else -> {
+                        if (selectedImunisasi.siklus != CYCLE_MONTHLY) {
+                            val selectedDayOfWeek = getDayOfWeek(selectedJadwal!!)
+                            if (selectedDayOfWeek != -1) {
+                                val currentDate = Calendar.getInstance()
+                                val todayOfWeek = currentDate.get(Calendar.DAY_OF_WEEK)
+
+                                val daysUntilNextOccurrence = (selectedDayOfWeek - todayOfWeek + 9) % 7
+
+                                val nextOccurrence = Calendar.getInstance()
+                                nextOccurrence.add(Calendar.DAY_OF_MONTH, daysUntilNextOccurrence)
+                                selectedJadwal = parseStringToDate(nextOccurrence.time.toString())
+                            }
+                        }
+
                         val imunisasi = Imunisasi(
                             pasien = pasien,
                             namaImunisasi = selectedImunisasi.namaImunisasi,
@@ -196,43 +210,27 @@ class DaftarImunisasiActivity : AppCompatActivity() {
     }
 
     private fun setNotifikasi() {
-        if (selectedImunisasi.siklus == CYCLE_MONTHLY) {
-            val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
-            try {
-                val date = dateFormat.parse(selectedJadwal!!)
-                if (date != null) {
-                    scheduleOneTimeWorker(date.time)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
+        val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+        try {
+            val date = dateFormat.parse(selectedJadwal!!)
+            if (date != null) {
+                scheduleOneTimeWorker(date.time)
             }
-            return
-        }
-
-        val selectedDayOfWeek = getDayOfWeek(selectedJadwal!!)
-        if (selectedDayOfWeek != -1) {
-            val currentDate = Calendar.getInstance()
-            val todayOfWeek = currentDate.get(Calendar.DAY_OF_WEEK)
-
-            val daysUntilNextOccurrence = (selectedDayOfWeek - todayOfWeek + 8) % 7
-
-            val nextOccurrence = Calendar.getInstance()
-            nextOccurrence.add(Calendar.DAY_OF_MONTH, daysUntilNextOccurrence)
-            scheduleOneTimeWorker(nextOccurrence.timeInMillis)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
     private fun scheduleOneTimeWorker(timeInMillis: Long) {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = timeInMillis
+        calendar.add(Calendar.DAY_OF_MONTH, -1)
         calendar.set(Calendar.HOUR_OF_DAY, 8)
         calendar.set(Calendar.MINUTE, 0)
         calendar.set(Calendar.SECOND, 0)
 
         val selectedTimeInMillis = calendar.timeInMillis - System.currentTimeMillis()
-        val notificationMessage =
-            if (selectedImunisasi.siklus == CYCLE_MONTHLY) "Hari Ini Pada Pukul $selectedJam"
-            else "Besok Pada Pukul $selectedJam"
+        val notificationMessage = "Besok Pada Pukul $selectedJam"
 
         val inputData = workDataOf(
             NotificationWorker.NOTIFICATION_TITLE to selectedImunisasi.namaImunisasi,

@@ -1,14 +1,14 @@
-package com.afaryn.imunisasiku.presentation.imunisasi
+package com.afaryn.imunisasiku.presentation.jadwalku
 
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afaryn.imunisasiku.R
-import com.afaryn.imunisasiku.databinding.ActivityImunisasiKuBinding
+import com.afaryn.imunisasiku.databinding.ActivityJadwalkuBinding
 import com.afaryn.imunisasiku.model.Imunisasi
-import com.afaryn.imunisasiku.presentation.imunisasi.adapter.ImunisasiKuAdapter
 import com.afaryn.imunisasiku.presentation.imunisasi.viewmodel.ImunisasiKuViewModel
+import com.afaryn.imunisasiku.presentation.jadwalku.adapter.JadwalKuAdapter
 import com.afaryn.imunisasiku.utils.UiState
 import com.afaryn.imunisasiku.utils.hide
 import com.afaryn.imunisasiku.utils.setupDeleteDialog
@@ -17,21 +17,21 @@ import com.afaryn.imunisasiku.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ImunisasiKuActivity : AppCompatActivity() {
+class JadwalkuActivity : AppCompatActivity() {
 
-    private var _binding: ActivityImunisasiKuBinding? = null
+    private var _binding: ActivityJadwalkuBinding? = null
     private val binding get() = _binding!!
+    private val jadwalKuAdapter by lazy { JadwalKuAdapter() }
     private val viewModel by viewModels<ImunisasiKuViewModel>()
-    private val imunisasiAdapter by lazy { ImunisasiKuAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityImunisasiKuBinding.inflate(layoutInflater)
+        _binding = ActivityJadwalkuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.rvImunisasiku.apply {
-            adapter = imunisasiAdapter
-            layoutManager = LinearLayoutManager(this@ImunisasiKuActivity)
+        binding.rvJadwalku.apply {
+            adapter = jadwalKuAdapter
+            layoutManager = LinearLayoutManager(this@JadwalkuActivity)
         }
         observer()
     }
@@ -71,8 +71,8 @@ class ImunisasiKuActivity : AppCompatActivity() {
     }
 
     private fun setRvData(imunisasi: List<Imunisasi>) {
-        imunisasiAdapter.differ.submitList(imunisasi)
-        imunisasiAdapter.onDeleteClick = {
+        jadwalKuAdapter.differ.submitList(imunisasi)
+        jadwalKuAdapter.onDeleteClick = {
             setupDeleteDialog(
                 title = "Batalkan imunisasi ${it.namaImunisasi}?",
                 message = "Tekan batalkan jika anda ingin membatalkan imunisasi",
@@ -82,6 +82,7 @@ class ImunisasiKuActivity : AppCompatActivity() {
             }
         }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

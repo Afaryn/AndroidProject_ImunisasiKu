@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.afaryn.imunisasiku.R
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.Period
 import java.time.ZoneOffset
@@ -117,7 +118,7 @@ fun parseStringToDate(dateString: String): String {
     val dateParse = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.getDefault())
     return try {
         val formatted = dateParse.parse(dateString)
-        SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(formatted ?: "01 January 1997")
+        SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault()).format(formatted ?: "01 January 1997")
     } catch (e: Exception) {
         e.printStackTrace()
         "Tidak ada jadwal"
@@ -128,6 +129,7 @@ fun parseStringToDate(dateString: String): String {
 fun Activity.setupDeleteDialog(
     title: String,
     message: String,
+    btnActionText: String,
     onYesClick: () -> Unit
 ) {
     val dialog = Dialog(this, android.R.style.Theme_Dialog)
@@ -149,6 +151,7 @@ fun Activity.setupDeleteDialog(
 
     val btnDismiss = view.findViewById<Button>(R.id.btn_dialog_dismiss)
     val btnYes = view.findViewById<Button>(R.id.btn_dialog_yes)
+    btnYes.text = btnActionText
 
     btnDismiss.setOnClickListener {
         dialog.dismiss()
@@ -157,4 +160,11 @@ fun Activity.setupDeleteDialog(
         onYesClick()
         dialog.dismiss()
     }
+}
+
+fun translateDateToIndonesian(inputString: String): String {
+    val inputFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale.US)
+    val outputFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale("id", "ID"))
+
+    return LocalDate.parse(inputString, inputFormatter).format(outputFormatter)
 }

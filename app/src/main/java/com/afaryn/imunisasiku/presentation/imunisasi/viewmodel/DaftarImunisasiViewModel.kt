@@ -16,13 +16,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class ImunisasiViewModel @Inject constructor(
+class DaftarImunisasiViewModel @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val auth: FirebaseAuth
 ): ViewModel() {
     private val _imunisasiListState = MutableStateFlow<UiState<List<JenisImunisasi>>>(UiState.Loading(false))
     val imunisasiListState = _imunisasiListState.asStateFlow().asLiveData()
-
     private val _daftarImunisasiState = MutableStateFlow<UiState<String>>(UiState.Loading(false))
     val daftarImunisasiState = _daftarImunisasiState.asStateFlow().asLiveData()
 
@@ -35,7 +34,7 @@ class ImunisasiViewModel @Inject constructor(
         firestore.collection(JENIS_IMUNISASI).addSnapshotListener { value, error ->
             if (error != null) {
                 _imunisasiListState.value = UiState.Loading(false)
-                _imunisasiListState.value = UiState.Error(error.message ?: "Terjadi Kesalahan")
+                _imunisasiListState.value = UiState.Error(error.localizedMessage ?: "Terjadi Kesalahan")
                 return@addSnapshotListener
             }
 
@@ -58,7 +57,7 @@ class ImunisasiViewModel @Inject constructor(
             _daftarImunisasiState.value = UiState.Success("Berhasil daftar imunisasi ${imunisasi.namaImunisasi}")
         }.addOnFailureListener {
             _daftarImunisasiState.value = UiState.Loading(false)
-            _daftarImunisasiState.value = UiState.Error(it.message ?: "Terjadi Kesalahan")
+            _daftarImunisasiState.value = UiState.Error(it.localizedMessage ?: "Terjadi Kesalahan")
         }
     }
 }

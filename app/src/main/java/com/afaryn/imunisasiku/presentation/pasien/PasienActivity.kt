@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.afaryn.imunisasiku.R
 import com.afaryn.imunisasiku.databinding.ActivityPasienBinding
 import com.afaryn.imunisasiku.presentation.imunisasi.DaftarImunisasiActivity
 import com.afaryn.imunisasiku.presentation.pasien.adapter.PasienAdapter
@@ -74,7 +75,8 @@ class PasienActivity : AppCompatActivity() {
         pasienAdapter.onDeletePasienClick = {
             setupDeleteDialog(
                 title = "Hapus Data Pasien ${it.name}?",
-                message = "Data pasien akan dihapus secara permanen"
+                message = "Data pasien akan dihapus secara permanen",
+                btnActionText = getString(R.string.hapus)
             ) {
                 viewModel.deletePasien(it.id)
             }

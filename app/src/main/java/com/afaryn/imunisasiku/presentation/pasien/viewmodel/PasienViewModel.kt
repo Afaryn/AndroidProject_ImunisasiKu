@@ -35,7 +35,7 @@ class PasienViewModel @Inject constructor(
                 _addPatientState.value = UiState.Success("Berhasil menambah pasien")
         }.addOnFailureListener {
             _addPatientState.value = UiState.Loading(false)
-            _addPatientState.value = UiState.Error(it.message ?: "Terjadi kesalahan")
+            _addPatientState.value = UiState.Error(it.localizedMessage ?: "Terjadi Kesalahan")
         }
     }
 
@@ -45,7 +45,7 @@ class PasienViewModel @Inject constructor(
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     _patientState.value = UiState.Loading(false)
-                    _patientState.value = UiState.Error(error.message ?: "Terjadi Kesalahan")
+                    _patientState.value = UiState.Error(error.localizedMessage ?: "Terjadi Kesalahan")
                     return@addSnapshotListener
                 }
 
@@ -68,7 +68,7 @@ class PasienViewModel @Inject constructor(
             _deletePatientState.value = UiState.Success("Data pasien dihapus")
         }.addOnFailureListener {
             _deletePatientState.value = UiState.Loading(false)
-            _deletePatientState.value = UiState.Error(it.message ?: "Terjadi kesalahan")
+            _deletePatientState.value = UiState.Error(it.localizedMessage ?: "Terjadi Kesalahan")
         }
     }
 }

@@ -57,5 +57,9 @@
     <string name="imunisasiku">ImunisasiKu</string>
     <string name="hapus">Hapus</string>
     <string name="batal">Batal</string>
+    <string name="batalkan">Batalkan</string>
+    <string name="umur_pasien">Umur Pasien</string>
+    <string name="short_imunisasi_date">%1$s\n%2$s</string>
+    <string name="jadwalku_imunisasi">Imunisasi %1$s</string>
 
 </resources>
