@@ -1,11 +1,21 @@
 package com.afaryn.imunisasiku.admin.ui.kelolaAkun.adapter
 
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.afaryn.imunisasiku.R
 import com.afaryn.imunisasiku.admin.ui.kelolaAkun.EditAkunPengguna
 import com.afaryn.imunisasiku.admin.ui.kelolaAkun.EditAkunPengguna.Companion.USER_EMAIL
 import com.afaryn.imunisasiku.admin.ui.kelolaAkun.EditAkunPengguna.Companion.USER_JK
@@ -16,11 +26,12 @@ import com.afaryn.imunisasiku.admin.ui.profile.EditProfile
 import com.afaryn.imunisasiku.databinding.ItemKelolaAkunBinding
 import com.afaryn.imunisasiku.model.JenisImunisasi
 import com.afaryn.imunisasiku.model.User
+import com.afaryn.imunisasiku.utils.Constants.USER_COLLECTION
+import com.google.firebase.firestore.FirebaseFirestore
 
 
+class KelAkunAdpater() : RecyclerView.Adapter<KelAkunAdpater.MyViewHolder>() {
 
-
-class KelAkunAdpater : RecyclerView.Adapter<KelAkunAdpater.MyViewHolder>() {
     inner class MyViewHolder(val binding :ItemKelolaAkunBinding):RecyclerView.ViewHolder(binding.root) {
         fun bind(item: User){
             binding.apply {
@@ -69,7 +80,11 @@ class KelAkunAdpater : RecyclerView.Adapter<KelAkunAdpater.MyViewHolder>() {
             }
         }
         holder.binding.btnDel.setOnClickListener {
-
+            onDeleteClick?.invoke(item)
         }
     }
+
+    var onDeleteClick:((User)-> Unit)? = null
+
+
 }

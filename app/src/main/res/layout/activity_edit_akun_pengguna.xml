@@ -26,6 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:autofillHints=""
+            android:backgroundTint="#32E91E63"
+            android:backgroundTintMode="add"
             android:editable="false"
             android:fontFamily="@font/poppins_medium"
             android:hint="@string/nama_lengkap"
@@ -92,6 +94,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:autofillHints=""
+            android:backgroundTint="#32E91E63"
+            android:backgroundTintMode="add"
             android:fontFamily="@font/poppins_medium"
             android:hint="@string/no_handphone"
             android:inputType="none" />
@@ -118,6 +122,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:autofillHints=""
+            android:backgroundTint="#32E91E63"
+            android:backgroundTintMode="add"
             android:fontFamily="@font/poppins_medium"
             android:hint="@string/email"
             android:inputType="none" />
@@ -145,10 +151,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:autofillHints=""
+            android:backgroundTint="#32E91E63"
+            android:backgroundTintMode="add"
             android:fontFamily="@font/poppins_medium"
             android:hint="Jenis Kelamin"
-            android:inputType="none"
-            />
+            android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
 

@@ -25,36 +25,36 @@ class EditImunisasi : AppCompatActivity() {
         val jam_imunisasi = intent.getStringExtra(JAM_IMUNISASI)
         val splitJam = jam_imunisasi!!.split(" - ")
 
-        binding.apply {
-            tvNamaImunisasi.setText(nama_imunisasi)
-            tvUsiaImunisasi.setText(batas_usia)
-            if(jadwal_imunisasi!=null){
-                for(i in 0..(jadwal_imunisasi.size-1)){
-                    if(jadwal_imunisasi.get(i)=="Senin"){
-                        cbSenin.isChecked = true
-                    }
-                    if(jadwal_imunisasi.get(i)=="Selasa"){
-                        cbSelasa.isChecked = true
-                    }
-                    if(jadwal_imunisasi.get(i)=="Rabu"){
-                        cbRabu.isChecked = true
-                    }
-                    if(jadwal_imunisasi.get(i)=="Kamis"){
-                        cbKamis.isChecked =true
-                    }
-                    if(jadwal_imunisasi.get(i)=="Jum'at"){
-                        cbJumat.isChecked = true
-                    }
-                    if(jadwal_imunisasi.get(i)=="Sabtu"){
-                        cbSabtu.isChecked = true
-                    }
-                }
-            }
-            if (jam_imunisasi!=null){
-                edtJamMulai.setText(splitJam[0])
-                edtJamSelesai.setText(splitJam[1])
-            }
-        }
+//        binding.apply {
+//            tvNamaImunisasi.setText(nama_imunisasi)
+//            tvUsiaImunisasi.setText(batas_usia)
+//            if(jadwal_imunisasi!=null){
+//                for(i in 0..(jadwal_imunisasi.size-1)){
+//                    if(jadwal_imunisasi.get(i)=="Senin"){
+//                        cbSenin.isChecked = true
+//                    }
+//                    if(jadwal_imunisasi.get(i)=="Selasa"){
+//                        cbSelasa.isChecked = true
+//                    }
+//                    if(jadwal_imunisasi.get(i)=="Rabu"){
+//                        cbRabu.isChecked = true
+//                    }
+//                    if(jadwal_imunisasi.get(i)=="Kamis"){
+//                        cbKamis.isChecked =true
+//                    }
+//                    if(jadwal_imunisasi.get(i)=="Jum'at"){
+//                        cbJumat.isChecked = true
+//                    }
+//                    if(jadwal_imunisasi.get(i)=="Sabtu"){
+//                        cbSabtu.isChecked = true
+//                    }
+//                }
+//            }
+//            if (jam_imunisasi!=null){
+//                edtJamMulai.setText(splitJam[0])
+//                edtJamSelesai.setText(splitJam[1])
+//            }
+//        }
     }
 
     @Suppress("DEPRECATION")

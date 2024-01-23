@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.afaryn.imunisasiku.model.JenisImunisasi
 import com.afaryn.imunisasiku.model.User
+import com.afaryn.imunisasiku.utils.Constants
 import com.afaryn.imunisasiku.utils.Constants.USER_COLLECTION
 import com.afaryn.imunisasiku.utils.UiState
 import com.google.firebase.firestore.FirebaseFirestore
@@ -30,6 +31,9 @@ class KelAkunViewModel @Inject constructor(
 
     private val _getDataState = MutableStateFlow<UiState<List<User>>>(UiState.Loading(false))
     val getDataState = _getDataState.asStateFlow().asLiveData()
+
+    private val _delState = MutableStateFlow<UiState<String>>(UiState.Loading(false))
+    val delState = _delState.asStateFlow().asLiveData()
 
 
 
@@ -76,5 +80,33 @@ class KelAkunViewModel @Inject constructor(
                 _getDataState.value = UiState.Loading(false)
                 _getDataState.value = UiState.Error(it.message.toString())
             }
+    }
+
+    fun DelImunisasi(item:String)= CoroutineScope(Dispatchers.IO).launch {
+        _delState.value=UiState.Loading(true)
+        val doc = firestore.collection(USER_COLLECTION)
+            .whereEqualTo("email",item)
+//            .whereEqualTo("siklus",item.siklus)
+//            .whereEqualTo("bataUmur",item.batasUmur)
+            .get()
+            .await()
+        if(doc.documents.isNotEmpty()){
+            for (document in doc){
+                try {
+                    firestore.collection(USER_COLLECTION).document(document.id).delete()
+
+                        .addOnSuccessListener {
+                            _delState.value=UiState.Loading(false)
+                            _delState.value=UiState.Success("Berhasil menghapus akun ${item}!")
+                        }
+
+                }catch (e:Exception){
+                    withContext(Dispatchers.Main){
+                        _delState.value=UiState.Loading(false)
+                        _delState.value = UiState.Error(e.toString())
+                    }
+                }
+            }
+        }
     }
 }

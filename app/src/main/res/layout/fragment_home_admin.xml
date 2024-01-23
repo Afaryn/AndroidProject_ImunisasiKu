@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".admin.ui.home.HomeFragmentAdmin">
 
-
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="40dp"
@@ -26,7 +25,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/poppins_medium"
-        android:text="Selamat Datang $User"
+        android:text="Selamat Datang"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,6 +73,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/barChart">
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_medium"
-                        android:text="10"
+                        android:text="0"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="40sp" />
@@ -152,7 +152,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_medium"
-                        android:text="10"
+                        android:text="0"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="40sp" />
@@ -187,7 +187,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_medium"
-                        android:text="10"
+                        android:text="0"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="40sp" />
@@ -221,12 +221,13 @@
         android:textStyle="bold"/>
 
     <LinearLayout
+        android:id="@+id/linearLayout12"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="start"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="@+id/textView12"
-        app:layout_constraintTop_toBottomOf="@+id/textView12"
-        android:gravity="center">
+        app:layout_constraintTop_toBottomOf="@+id/textView12">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/Cv_Imunisasi"

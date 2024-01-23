@@ -2,9 +2,12 @@ package com.afaryn.imunisasiku.admin.ui.kelolaImunisasi
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.RadioButton
+import android.widget.TimePicker
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
@@ -16,6 +19,7 @@ import com.afaryn.imunisasiku.model.JenisImunisasi
 import com.afaryn.imunisasiku.utils.UiState
 import com.afaryn.imunisasiku.utils.hide
 import com.afaryn.imunisasiku.utils.show
+import com.google.android.material.timepicker.TimeFormat
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -33,6 +37,8 @@ class TambahImunisasi : AppCompatActivity() {
     private var pickedDate: Date? = null
     private val jadwalHari = arrayListOf<String>()
     private var jamImunisasi = arrayListOf<String>()
+    private var siklus:String?=null
+    private var pickedTime:String?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +54,12 @@ class TambahImunisasi : AppCompatActivity() {
 
     private fun setAction(){
         with(binding){
+            etJamMulai.setOnClickListener {
+                getTime()
+            }
+            etJamSelesai.setOnClickListener {
+                getTime()
+            }
             include.btnBack.setOnClickListener{
                 onBackPressed()
             }
@@ -67,12 +79,19 @@ class TambahImunisasi : AppCompatActivity() {
                 }
             }
             button2.setOnClickListener{
+
+                if(!validateFields()){
+                    Toast.makeText(this@TambahImunisasi,"Harap isi semua kolom",Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
                 val nama = etNamaImunisasi.text.toString().trim()
                 val usia = (etUsiaImunisasi.text.toString().trim()).toInt()
 
-                val rb = rgSiklusImunisasi.checkedRadioButtonId
-                when (rb){
+
+
+                when (rgSiklusImunisasi.checkedRadioButtonId){
                     R.id.radio_mingguan -> {
+                        siklus = "minggu"
                         if (cbSenin2.isChecked){
                             jadwalHari.add("Senin")
                         }
@@ -94,12 +113,13 @@ class TambahImunisasi : AppCompatActivity() {
 
                     }
                     R.id.radio_bulanan -> {
+                        siklus="bulan"
                         jadwalHari.add(pickedDate.toString())
                     }
                 }
 
-                val jamMulai = edtJamMulai.text.toString()
-                val jamSelesai = edtJamSelesai.text.toString()
+                val jamMulai = etJamMulai.text.toString()
+                val jamSelesai = etJamSelesai.text.toString()
 
                 val jam = "$jamMulai-$jamSelesai"
                 jamImunisasi.add(jam)
@@ -108,12 +128,9 @@ class TambahImunisasi : AppCompatActivity() {
                     namaImunisasi = nama,
                     batasUmur = usia,
                     jadwalImunisasi = jadwalHari,
-                    jamImunisasi = jamImunisasi
+                    jamImunisasi = jamImunisasi,
+                    siklus = siklus
                 )
-                if(!validateFields()){
-                    Toast.makeText(this@TambahImunisasi,"Harap isi semua kolom",Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
                 viewModel.sendImunisasi(tambahImn)
             }
 
@@ -141,6 +158,35 @@ class TambahImunisasi : AppCompatActivity() {
 
     }
 
+    private fun getTime(){
+
+        val c = Calendar.getInstance()
+        val hour = c.get(Calendar.HOUR_OF_DAY)
+        val min = c.get(Calendar.MINUTE)
+
+        val dpd = TimePickerDialog(this, { _, h, m ->
+            val calendar = Calendar.getInstance()
+            calendar.set(Calendar.HOUR_OF_DAY,h)
+            calendar.set(Calendar.MINUTE,m)
+
+            val timeFormat = SimpleDateFormat("HH:mm",Locale.getDefault()).format(calendar.time)
+
+            pickedTime = timeFormat
+            binding.apply {
+            if (etJamMulai.isFocused){
+                etJamMulai.setText(pickedTime!!)
+            }
+            if (etJamSelesai.isFocused){
+                etJamSelesai.setText(pickedTime!!)
+            }
+            } // Menggunakan timeFormat sebagai parameter
+        }, hour, min, true) // Menggunakan hour dan min sebagai parameter, dan menambahkan parameter is24HourView
+
+        dpd.show()
+    }
+
+
+
     @SuppressLint("SetTextI18n")
     private fun setupDatePicker() {
         val c = Calendar.getInstance()
@@ -153,7 +199,10 @@ class TambahImunisasi : AppCompatActivity() {
             calendar.set(Calendar.YEAR, y)
             calendar.set(Calendar.MONTH, monthOfYear)
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+            calendar.set(Calendar.HOUR_OF_DAY, 0)
+            calendar.set(Calendar.MINUTE, 0)
+            calendar.set(Calendar.SECOND, 0)
+            val dateFormat = SimpleDateFormat("dd MMMM ", Locale.getDefault())
 
             pickedDate = calendar.time
             binding.tvPickupDate.text = dateFormat.format(calendar.time)
@@ -169,7 +218,7 @@ class TambahImunisasi : AppCompatActivity() {
     private fun validateFields(): Boolean {
         with(binding) {
             return etNamaImunisasi.text!!.isNotEmpty() && etUsiaImunisasi.text!!.isNotEmpty()
-                    && jamImunisasi!=null &&jadwalHari!=null
+                    && etJamMulai.text.isNotEmpty() && etJamMulai.text.isNotEmpty()  && rgSiklusImunisasi.checkedRadioButtonId != -1
         }
     }
 
@@ -177,6 +226,7 @@ class TambahImunisasi : AppCompatActivity() {
         super.onDestroy()
         _binding = null
     }
+
 
 
 }

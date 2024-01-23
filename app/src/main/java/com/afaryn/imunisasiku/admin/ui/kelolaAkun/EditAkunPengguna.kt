@@ -111,6 +111,10 @@ class EditAkunPengguna : AppCompatActivity() {
                 }
                 is UiState.Success->{
                     Toast.makeText(this,it.data!!,Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, KelolaAkun::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    }
+                    startActivity(intent)
                     finish()
 //                    val intent = Intent(this,KelolaAkun::class.java)
 //                    startActivity(intent)

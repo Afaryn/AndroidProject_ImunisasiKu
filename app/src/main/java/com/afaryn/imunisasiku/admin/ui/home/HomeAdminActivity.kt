@@ -12,15 +12,19 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import com.afaryn.imunisasiku.R
+import com.afaryn.imunisasiku.admin.ui.jadwal.TambahHariActivity
 import com.afaryn.imunisasiku.admin.ui.jadwal.TambahJadwal
+import com.afaryn.imunisasiku.admin.ui.jadwal.TambahJamActivity
 import com.afaryn.imunisasiku.admin.ui.profile.ProfileFragmentAdmin
+import com.afaryn.imunisasiku.databinding.ActivityEditAkunPenggunaBinding
 import com.afaryn.imunisasiku.databinding.HomeAdminBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 
 class HomeAdminActivity : AppCompatActivity() {
-    private lateinit var binding: HomeAdminBinding
+    private var _binding: HomeAdminBinding? = null
+    private val binding get() = _binding!!
     private lateinit var navController: NavController
 
     private var isExpanded = false
@@ -45,7 +49,7 @@ class HomeAdminActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= HomeAdminBinding.inflate(layoutInflater)
+        _binding= HomeAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         replaceFragment(HomeFragmentAdmin())
@@ -63,10 +67,6 @@ class HomeAdminActivity : AppCompatActivity() {
                 }
                 true
             }
-//            btnAdd.setOnClickListener {
-//                val intent = Intent(this@HomeAdminActivity,TambahJadwal::class.java)
-//                startActivity(intent)
-//            }
             btnAdd.setOnClickListener {
 
                 if (isExpanded) {
@@ -77,10 +77,12 @@ class HomeAdminActivity : AppCompatActivity() {
 
             }
             btnHari.setOnClickListener {
-                Toast.makeText(this@HomeAdminActivity,"btn Hari Clicked",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@HomeAdminActivity,TambahHariActivity::class.java)
+                startActivity(intent)
             }
             btnJam.setOnClickListener {
-                Toast.makeText(this@HomeAdminActivity,"btn Jam Clicked",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@HomeAdminActivity, TambahJamActivity::class.java)
+                startActivity(intent)
             }
         }
     }
@@ -100,6 +102,10 @@ class HomeAdminActivity : AppCompatActivity() {
         binding.btnJam.startAnimation(toBottomFabAnim)
         binding.tvHari.startAnimation(toBottomFabAnim)
         binding.shareTv.startAnimation(toBottomFabAnim)
+        binding.apply {
+            btnHari.isClickable=false
+            btnJam.isClickable=false
+        }
 
 
 
@@ -116,6 +122,11 @@ class HomeAdminActivity : AppCompatActivity() {
         binding.btnJam.startAnimation(fromBottomFabAnim)
         binding.tvHari.startAnimation(fromBottomFabAnim)
         binding.shareTv.startAnimation(fromBottomFabAnim)
+
+        binding.apply {
+            btnHari.isClickable=true
+            btnJam.isClickable=true
+        }
 
 
         isExpanded = !isExpanded
@@ -146,5 +157,9 @@ class HomeAdminActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 
 }
