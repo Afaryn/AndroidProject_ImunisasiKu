@@ -24,13 +24,16 @@ import com.afaryn.imunisasiku.utils.Constants.REQUEST_PICK_PASIEN
 import com.afaryn.imunisasiku.utils.UiState
 import com.afaryn.imunisasiku.utils.getDayOfWeek
 import com.afaryn.imunisasiku.utils.hide
-import com.afaryn.imunisasiku.utils.parseStringToDate
+import com.afaryn.imunisasiku.utils.isSameDay
+import com.afaryn.imunisasiku.utils.parseDateString
 import com.afaryn.imunisasiku.utils.show
+import com.afaryn.imunisasiku.utils.stringToDate
 import com.afaryn.imunisasiku.utils.toToday
 import com.afaryn.imunisasiku.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
@@ -95,12 +98,24 @@ class DaftarImunisasiActivity : AppCompatActivity() {
                                 val currentDate = Calendar.getInstance()
                                 val todayOfWeek = currentDate.get(Calendar.DAY_OF_WEEK)
 
-                                val daysUntilNextOccurrence = (selectedDayOfWeek - todayOfWeek + 9) % 7
+                                val daysUntilNextOccurrence = (selectedDayOfWeek - todayOfWeek + 8) % 7
+                                if (daysUntilNextOccurrence == todayOfWeek) {
+                                    toast("Kacau")
+                                    return@setOnClickListener
+                                }
 
                                 val nextOccurrence = Calendar.getInstance()
                                 nextOccurrence.add(Calendar.DAY_OF_MONTH, daysUntilNextOccurrence)
-                                selectedJadwal = parseStringToDate(nextOccurrence.time.toString())
+                                selectedJadwal = parseDateString(nextOccurrence.time.toString())
                             }
+                        }
+
+                        if (isSameDay(selectedJadwal!!)) {
+                            toast("Tidak dapat daftar imunisasi pada hari yang sama")
+                            return@setOnClickListener
+                        } else if (isImunisasiHasPassed()) {
+                            toast("Jadwal imunisasi sudah lewat")
+                            return@setOnClickListener
                         }
 
                         val imunisasi = Imunisasi(
@@ -114,6 +129,13 @@ class DaftarImunisasiActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun isImunisasiHasPassed(): Boolean {
+        val stringToDate = stringToDate(selectedJadwal!!)
+        val today = Date()
+
+        return stringToDate.time < today
     }
 
     private fun observer() {
@@ -144,8 +166,8 @@ class DaftarImunisasiActivity : AppCompatActivity() {
                     }
                 }
                 is UiState.Success -> {
-                    setNotifikasi()
-                    toast(it.data!!)
+                    setNotifikasi(it.data!!)
+                    toast("Berhasil daftar imunisasi")
                     finish()
                 }
                 is UiState.Error -> {
@@ -183,7 +205,7 @@ class DaftarImunisasiActivity : AppCompatActivity() {
                 } else {
                     selectedImunisasi.jadwalImunisasi?.forEach {
                         val jadwal = if (selectedImunisasi.siklus == CYCLE_MONTHLY) {
-                            parseStringToDate(it)
+                            parseDateString(it)
                         } else it
 
                         jadwalImunisasi.add(jadwal)
@@ -209,19 +231,19 @@ class DaftarImunisasiActivity : AppCompatActivity() {
         }
     }
 
-    private fun setNotifikasi() {
-        val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+    private fun setNotifikasi(imunisasiId: String) {
+        val dateFormat = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault())
         try {
             val date = dateFormat.parse(selectedJadwal!!)
             if (date != null) {
-                scheduleOneTimeWorker(date.time)
+                scheduleOneTimeWorker(date.time, imunisasiId)
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    private fun scheduleOneTimeWorker(timeInMillis: Long) {
+    private fun scheduleOneTimeWorker(timeInMillis: Long, imunisasiId: String) {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = timeInMillis
         calendar.add(Calendar.DAY_OF_MONTH, -1)
@@ -238,7 +260,9 @@ class DaftarImunisasiActivity : AppCompatActivity() {
         )
 
         val notificationManager =
-            OneTimeWorkRequestBuilder<NotificationWorker>().setInputData(inputData)
+            OneTimeWorkRequestBuilder<NotificationWorker>()
+                .addTag(imunisasiId)
+                .setInputData(inputData)
                 .setInitialDelay(selectedTimeInMillis, TimeUnit.MILLISECONDS).build()
 
         WorkManager.getInstance(this).enqueue(notificationManager)

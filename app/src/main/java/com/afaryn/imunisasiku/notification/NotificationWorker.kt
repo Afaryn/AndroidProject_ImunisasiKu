@@ -12,6 +12,11 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.afaryn.imunisasiku.MainActivity
 import com.afaryn.imunisasiku.R
+import com.afaryn.imunisasiku.notification.database.NotificationDatabase
+import com.afaryn.imunisasiku.notification.database.NotificationEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) {
 
@@ -31,29 +36,34 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
     }
 
     override fun doWork(): Result {
-        imunisasiTitle?.let { title ->
-            val pendingIntent = getPendingIntent()
-            val notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            val builder = NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_notification)
-                .setContentTitle("Reminder Imunisasi $title")
-                .setContentText(imunisasiTime ?: "-")
-                .setAutoCancel(true)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
+        CoroutineScope(Dispatchers.IO).launch {
+            imunisasiTitle?.let { title ->
+                val notifikasi = NotificationEntity(title = title, message = imunisasiTime ?: "-")
+                NotificationDatabase.getInstance(applicationContext).notificationDao.insert(notifikasi)
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channel = NotificationChannel(
-                    NOTIFICATION_CHANNEL_ID,
-                    CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_DEFAULT
-                )
-                builder.setChannelId(NOTIFICATION_CHANNEL_ID)
-                notificationManager.createNotificationChannel(channel)
+                val pendingIntent = getPendingIntent()
+                val notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                val builder = NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_notification)
+                    .setContentTitle("Reminder Imunisasi $title")
+                    .setContentText(imunisasiTime ?: "-")
+                    .setAutoCancel(true)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setContentIntent(pendingIntent)
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    val channel = NotificationChannel(
+                        NOTIFICATION_CHANNEL_ID,
+                        CHANNEL_NAME,
+                        NotificationManager.IMPORTANCE_DEFAULT
+                    )
+                    builder.setChannelId(NOTIFICATION_CHANNEL_ID)
+                    notificationManager.createNotificationChannel(channel)
+                }
+
+                val notification = builder.build()
+                notificationManager.notify(1, notification)
             }
-
-            val notification = builder.build()
-            notificationManager.notify(1, notification)
         }
 
         return Result.success()

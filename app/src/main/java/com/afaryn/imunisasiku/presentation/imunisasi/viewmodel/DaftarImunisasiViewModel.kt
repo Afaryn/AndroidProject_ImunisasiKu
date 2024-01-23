@@ -54,7 +54,7 @@ class DaftarImunisasiViewModel @Inject constructor(
                 IMUNISASI_COLLECTION).document(imunisasi.id).set(imunisasi)
         }.addOnSuccessListener {
             _daftarImunisasiState.value = UiState.Loading(false)
-            _daftarImunisasiState.value = UiState.Success("Berhasil daftar imunisasi ${imunisasi.namaImunisasi}")
+            _daftarImunisasiState.value = UiState.Success(imunisasi.id)
         }.addOnFailureListener {
             _daftarImunisasiState.value = UiState.Loading(false)
             _daftarImunisasiState.value = UiState.Error(it.localizedMessage ?: "Terjadi Kesalahan")

@@ -61,5 +61,17 @@
     <string name="umur_pasien">Umur Pasien</string>
     <string name="short_imunisasi_date">%1$s\n%2$s</string>
     <string name="jadwalku_imunisasi">Imunisasi %1$s</string>
+    <string name="hai_user">Hai, %1$s</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="riwayat_imunisasi">Riwayat Imunisasi</string>
+    <string name="syarat_ketentuan"><![CDATA[Syarat & Ketentuan]]></string>
+    <string name="bantuan">Bantuan</string>
+    <string name="keluar_akun">Keluar Akun</string>
+    <string name="hapus_akun">Hapus Akun</string>
+    <string name="sudah_terlewati">Sudah Terlewati</string>
+    <string name="belum_terlewati">Belum Terlewati</string>
+    <string name="notifikasi">Notifikasi</string>
+    <string name="jangan_lupa_untuk_imunisasi">Jangan Lupa Untuk Imunisasi</string>
+    <string name="reminder_imunisasi">Reminder imunisasi %1$s</string>
 
 </resources>

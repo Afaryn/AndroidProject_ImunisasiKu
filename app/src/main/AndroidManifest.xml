@@ -4,6 +4,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
         android:name=".ImunisasiApplication"
@@ -16,6 +23,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ImunisasiKu"
         tools:targetApi="31">
+        <activity
+            android:name=".presentation.notification.NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.profile.RiwayatImunisasiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.profile.UserEditProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".presentation.jadwalku.JadwalkuActivity"
             android:exported="false" />

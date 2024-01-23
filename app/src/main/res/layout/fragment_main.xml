@@ -19,13 +19,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="25dp"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Hai, User"
+            android:text="@string/hai_user"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_back"
+            android:id="@+id/btn_notification"
             style="@style/Widget.MaterialComponents.Button.IconOnly"
             android:layout_width="48dp"
             android:layout_height="48dp"
@@ -41,7 +41,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_top"
             android:layout_width="match_parent"
-            android:layout_height="170dp"
+            android:layout_height="180dp"
             android:layout_marginHorizontal="25dp"
             android:layout_marginTop="20dp"
             app:cardCornerRadius="20dp"
@@ -95,7 +95,7 @@
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/daftar_imunisasi"
-                    android:textSize="12sp"
+                    
                     app:cornerRadius="10dp"
                     app:icon="@drawable/vector_add"
                     app:iconPadding="-3dp"
@@ -140,7 +140,6 @@
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/nama_pasien"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="@id/iv_reminder"
                     app:layout_constraintTop_toBottomOf="@id/iv_reminder" />
 
@@ -151,7 +150,6 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/poppins_medium"
                     android:maxLength="20"
-                    android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="@id/tv_holder_nama"
                     app:layout_constraintTop_toBottomOf="@id/tv_holder_nama"
                     tools:text="Audy Fitri Ariani" />
@@ -164,7 +162,7 @@
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/tanggal_imunisasi"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="12sp"
+                    
                     app:layout_constraintStart_toStartOf="@id/tv_nama_pasien"
                     app:layout_constraintTop_toBottomOf="@id/tv_nama_pasien" />
 
@@ -173,7 +171,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_medium"
-                    android:textSize="12sp"
+                    
                     app:layout_constraintStart_toStartOf="@id/tv_holder_tanggal"
                     app:layout_constraintTop_toBottomOf="@id/tv_holder_tanggal"
                     tools:text="21 Januari 2024" />
@@ -186,7 +184,7 @@
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/jenis_imunisasi"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="12sp"
+                    
                     app:layout_constraintStart_toEndOf="@id/tv_holder_nama"
                     app:layout_constraintTop_toTopOf="@id/tv_holder_nama" />
 
@@ -195,40 +193,47 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_medium"
-                    android:textSize="12sp"
+                    
                     app:layout_constraintStart_toStartOf="@id/tv_holder_jenis"
                     app:layout_constraintTop_toBottomOf="@id/tv_holder_jenis"
                     tools:text="Polio 1" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_end"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintGuide_percent="0.75"
+                    android:orientation="vertical" />
 
                 <View
                     android:id="@+id/view_holder_day_count"
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
                     android:layout_marginVertical="35dp"
-                    android:layout_marginStart="25dp"
                     android:background="@color/black"
-                    app:layout_constraintStart_toEndOf="@id/tv_holder_jenis" />
+                    app:layout_constraintStart_toStartOf="@id/guideline_end"/>
 
                 <TextView
                     android:id="@+id/tv_day_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/poppins_medium"
-                    android:textSize="26sp"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toEndOf="@id/guideline_end"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/view_holder_day_count"
                     app:layout_constraintTop_toTopOf="@id/view_holder_day_count"
                     tools:text="10" />
 
                 <TextView
+                    android:id="@+id/tv_hari_lagi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/hari_lagi"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@id/guideline_end"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/view_holder_day_count"
                     app:layout_constraintTop_toBottomOf="@id/tv_day_count" />
 
 

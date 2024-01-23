@@ -1,9 +1,12 @@
 package com.afaryn.imunisasiku.presentation.jadwalku
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.WorkManager
+import com.afaryn.imunisasiku.MainActivity
 import com.afaryn.imunisasiku.R
 import com.afaryn.imunisasiku.databinding.ActivityJadwalkuBinding
 import com.afaryn.imunisasiku.model.Imunisasi
@@ -62,6 +65,10 @@ class JadwalkuActivity : AppCompatActivity() {
                 }
                 is UiState.Success -> {
                     toast(it.data!!)
+                    val intent = Intent(this, MainActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    }
+                    startActivity(intent)
                 }
                 is UiState.Error -> {
                     toast(it.error ?: "Terjadi Kesalahan")
@@ -79,6 +86,7 @@ class JadwalkuActivity : AppCompatActivity() {
                 btnActionText = getString(R.string.batalkan)
             ) {
                 viewModel.batalkanImunisasi(it.id)
+                WorkManager.getInstance(this).cancelAllWorkByTag(it.id)
             }
         }
     }

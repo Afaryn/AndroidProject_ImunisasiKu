@@ -6,11 +6,13 @@ import com.afaryn.imunisasiku.model.Imunisasi
 import com.afaryn.imunisasiku.utils.Constants.IMUNISASI_COLLECTION
 import com.afaryn.imunisasiku.utils.Constants.USER_COLLECTION
 import com.afaryn.imunisasiku.utils.UiState
+import com.afaryn.imunisasiku.utils.stringToDate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,14 +35,18 @@ class ImunisasiKuViewModel @Inject constructor(
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     _imunisasiKuState.value = UiState.Loading(false)
-                    _cancelImunisasiState.value = UiState.Error(error.localizedMessage ?: "Terjadi Kesalahan")
+                    _imunisasiKuState.value = UiState.Error(error.localizedMessage ?: "Terjadi Kesalahan")
                     return@addSnapshotListener
                 }
 
                 value?.let {
                     _imunisasiKuState.value = UiState.Loading(false)
                     val imunisasi = value.toObjects(Imunisasi::class.java)
-                    _imunisasiKuState.value = UiState.Success(imunisasi)
+                    val imunisasiFiltered = imunisasi.filter {
+                        stringToDate(it.jadwalImunisasi!!).time >= Date()
+                    }
+
+                    _imunisasiKuState.value = UiState.Success(imunisasiFiltered)
                 }
             }
     }
