@@ -70,5 +70,6 @@ class EditImunisasi : AppCompatActivity() {
         const val BATAS_USIA = "batas_usia"
         const val JADWAL_IMUNISASI="jadwal_imunisasi"
         const val JAM_IMUNISASI = "jam_imunisasi"
+        const val SIKLUS = "siklus"
     }
 }

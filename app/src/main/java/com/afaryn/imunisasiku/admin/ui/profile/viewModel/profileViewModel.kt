@@ -1,16 +1,21 @@
 package com.afaryn.imunisasiku.admin.ui.profile.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.afaryn.imunisasiku.model.User
 import com.afaryn.imunisasiku.utils.Constants
+import com.afaryn.imunisasiku.utils.Constants.USER_COLLECTION
 import com.afaryn.imunisasiku.utils.UiState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -21,7 +26,8 @@ import javax.inject.Inject
 @HiltViewModel
 class profileViewModel @Inject constructor(
     private val firestore: FirebaseFirestore,
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val storage: FirebaseStorage
 ):ViewModel() {
 
     private val _getState = MutableStateFlow<UiState<User>>(UiState.Loading(false))
@@ -29,6 +35,12 @@ class profileViewModel @Inject constructor(
 
     private val _sendingState = MutableStateFlow<UiState<String>>(UiState.Loading(false))
     val sendingState = _sendingState.asStateFlow().asLiveData()
+
+    private val _uploadProfileState  = MutableStateFlow<UiState<String>>(UiState.Loading(false))
+    val uploadProfileState = _uploadProfileState.asStateFlow().asLiveData()
+
+    private val _deleteAccountState = MutableStateFlow<UiState<String>>(UiState.Loading(false))
+    val deleteAccountState = _deleteAccountState.asStateFlow().asLiveData()
 
     fun getData(){
         _getState.value = UiState.Loading(true)
@@ -74,18 +86,67 @@ class profileViewModel @Inject constructor(
         }
     }
 
-    fun updateData(){
+    fun gantiFotoProfil(user: User, photo: ByteArray) {
+        var image = ""
+        viewModelScope.launch {
+            try {
+                async {
+                    launch {
+                        val imageStorage = storage.reference.child("user/images/${auth.uid}")
+                        val result = imageStorage.putBytes(photo).await()
+                        val downloadUrl = result.storage.downloadUrl.await().toString()
+                        image = downloadUrl
+                    }
+                }.await()
+            } catch (e: Exception) {
+                Log.e("ProfilViewModel", e.message ?: "Terjadi Kesalahan")
+                _uploadProfileState.value = UiState.Error("Terjadi kesalahan saat upload foto ke server")
+            }
 
+            val userUpdated = user.copy(
+                profile = image
+            )
+            updateUser(userUpdated)
+        }
     }
 
+    private fun updateUser(userUpdated: User) {
+        firestore.collection(USER_COLLECTION).document(auth.uid!!).set(userUpdated)
+            .addOnFailureListener {
+                Log.e("ProfilViewModel", it.message ?: "Terjadi Kesalahan")
+                _uploadProfileState.value = UiState.Error("Terjadi kesalahan saat upload foto ke server")
+            }
+    }
 
+    fun deleteUserData() {
+        _deleteAccountState.value = UiState.Loading(true)
+        firestore.collection(USER_COLLECTION).document(auth.uid!!).delete()
+            .addOnSuccessListener {
+                deleteAccount()
+            }
+            .addOnFailureListener {
+                _deleteAccountState.value = UiState.Loading(false)
 
-    fun delData(){
+                it.printStackTrace()
+                _deleteAccountState.value = UiState.Error("Terjadi kesalahan pada server, silahkan coba lagi nanti")
+            }
+    }
 
+    private fun deleteAccount() {
+        auth.currentUser!!.delete()
+            .addOnSuccessListener {
+                _deleteAccountState.value = UiState.Loading(false)
+                _deleteAccountState.value = UiState.Success("Akun dihapus")
+            }
+            .addOnFailureListener {
+                _deleteAccountState.value = UiState.Loading(false)
+
+                it.printStackTrace()
+                _deleteAccountState.value = UiState.Error("Terjadi kesalahan pada server, silahkan coba lagi nanti")
+            }
     }
 
     fun logout(){
         auth.signOut()
-
     }
 }

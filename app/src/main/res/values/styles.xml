@@ -5,4 +5,12 @@
         <item name="fontFamily">@font/pregular</item>
         <item name="android:textSize">10sp</item>
     </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="queryBackground">@android:color/transparent</item>
+        <item name="iconifiedByDefault">false</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColorHint">#D1D1D1</item>
+        <item name="android:background">@drawable/bg_outline_grey</item>
+    </style>
 </resources>

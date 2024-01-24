@@ -1,6 +1,7 @@
 package com.afaryn.imunisasiku.admin.ui.home
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,13 +21,14 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragmentAdmin : Fragment() {
-    private lateinit var binding: FragmentHomeAdminBinding
+    private var _binding: FragmentHomeAdminBinding? = null
+    private val binding get() = _binding!!
     private val viewModel by viewModels<HomeAdminViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeAdminBinding.inflate(inflater, container, false)
+        _binding = FragmentHomeAdminBinding.inflate(inflater, container, false)
         val view = binding.root
 
         setAction()
@@ -58,7 +60,7 @@ class HomeFragmentAdmin : Fragment() {
                         if (state.isLoading == true) {
                             textView.hide()
                             tvChartName.hide()
-                            barChart.hide()
+                            lineChart.hide()
                             cardView.hide()
                             textView12.hide()
                             linearLayout12.hide()
@@ -67,7 +69,7 @@ class HomeFragmentAdmin : Fragment() {
                         else {
                             textView.show()
                             tvChartName.show()
-                            barChart.show()
+                            lineChart.show()
                             cardView.show()
                             textView12.show()
                             linearLayout12.show()
@@ -91,9 +93,62 @@ class HomeFragmentAdmin : Fragment() {
                     }
                 }
             }
+
+            viewModel.chartData()
+
+            viewModel.chartState.observe(viewLifecycleOwner, Observer { chartDataState ->
+                when (chartDataState) {
+                    is UiState.Loading -> {
+                        // Handle loading state jika diperlukan
+                    }
+                    is UiState.Success -> {
+                        val chartData = chartDataState.data
+                        updateChart(chartData!!)
+                    }
+                    is UiState.Error -> {
+                        // Handle error state jika diperlukan
+                        val errorMessage = chartDataState.error
+                        Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
         }
 
 
+    }
+
+    private fun updateChart(chartData: List<Pair<String, Float>>) {
+        val lineSet = chartData
+
+        // Set up the chart properties
+        binding.lineChart.apply {
+            // Set gradient fill colors
+            gradientFillColors = intArrayOf(
+                Color.parseColor("#1D2089"),
+                Color.TRANSPARENT
+            )
+
+            // Set animation duration
+            animation.duration = 1000L // Gantilah dengan nilai yang sesuai
+
+            // Set data point touch listener
+            onDataPointTouchListener = { index, _, _ ->
+                val selectedData = chartData[index].second.toString()
+                binding.tvChartData.text = selectedData
+            }
+
+            // Animate the chart with the data
+            animate(lineSet)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    companion object{
+        private const val animationDuration = 1000L
     }
 
 }

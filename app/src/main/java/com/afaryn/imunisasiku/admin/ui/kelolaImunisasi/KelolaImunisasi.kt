@@ -41,24 +41,9 @@ class KelolaImunisasi : AppCompatActivity() {
 
         setAction()
         ToolbarName()
-
-//        tampilData()
-            observer()
+        observer()
         setupRv()
     }
-
-//    private fun tampilData(){
-//        val rv = binding.rvImunisasi
-//        rv.layoutManager = LinearLayoutManager(this)
-//        rv.setHasFixedSize(true)
-//
-//        listData = arrayListOf()
-//
-//        adapter = ImunisasiAdapter(listData)
-//
-//        rv.adapter=adapter
-//        getData()
-//    }
 
     private fun setAction(){
         with(binding){

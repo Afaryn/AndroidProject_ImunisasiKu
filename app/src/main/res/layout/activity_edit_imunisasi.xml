@@ -11,11 +11,15 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <include
                 android:id="@+id/include"
                 layout="@layout/toolbar"
@@ -63,10 +67,10 @@
                 android:id="@+id/textView19"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="20dp"
                 android:fontFamily="@font/poppins_medium"
                 android:text="Untuk Usia"
-                android:layout_marginTop="20dp"
-                android:layout_marginHorizontal="25dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -187,8 +191,8 @@
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager2"
-                android:layout_width="391dp"
-                android:layout_height="344dp"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
                 android:layout_marginTop="1dp"
                 app:layout_constraintBottom_toTopOf="@+id/button2"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.afaryn.imunisasiku.model.JenisImunisasi
 import com.afaryn.imunisasiku.model.Pasien
 import com.afaryn.imunisasiku.model.User
+import com.afaryn.imunisasiku.utils.Constants.IMUNISASI_COLLECTION
 import com.afaryn.imunisasiku.utils.Constants.JENIS_IMUNISASI
 import com.afaryn.imunisasiku.utils.Constants.PASIEN_COLLECTION
 import com.afaryn.imunisasiku.utils.Constants.USER_COLLECTION
@@ -19,6 +20,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,6 +36,11 @@ class HomeAdminViewModel @Inject constructor(
 
     private val _getState = MutableStateFlow<UiState<Map<String,String>>>(UiState.Loading(false))
     val getState = _getState.asStateFlow().asLiveData()
+
+    private val _chartState = MutableStateFlow<UiState<List<Pair<String, Float>>>>(UiState.Loading(false))
+    val chartState = _chartState.asStateFlow().asLiveData()
+
+
 
 
 
@@ -80,6 +89,43 @@ class HomeAdminViewModel @Inject constructor(
                 Log.e("HomeAdminViewModel", "Error fetching home page data", e)
                 _getState.value = UiState.Loading(false)
                 _getState.value = UiState.Error("Error fetching home page data")
+            }
+        }
+    }
+
+    private fun getMonthYearFromDateString(dateString: String): String {
+        val inputFormat = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault())
+        val date = inputFormat.parse(dateString)
+
+        val outputFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
+        return outputFormat.format(date ?: Date())
+    }
+
+    fun chartData() {
+        viewModelScope.launch {
+            try {
+                // Mengambil data kunjungan pasien dari Firestore
+                val result = firestore.collection(IMUNISASI_COLLECTION).get().await()
+
+                val dataPoints = mutableMapOf<String, Float>()
+
+                for (document in result) {
+                    val jadwalImunisasi = document.getString("jadwalImunisasi") ?: ""
+                    val bulanTahun = getMonthYearFromDateString(jadwalImunisasi)
+                    val jumlahKunjungan = dataPoints[bulanTahun] ?: 0f
+
+                    // Mengakumulasi jumlah kunjungan per bulan
+                    dataPoints[bulanTahun] = jumlahKunjungan + 1
+                }
+
+                // Mengirimkan data ke UI melalui UiState
+                _chartState.value = UiState.Success(dataPoints.toList())
+                _chartState.value = UiState.Loading(false)
+            } catch (e: Exception) {
+                // Menangani exception
+                Log.e("HomeAdminViewModel",e.message.toString(), e)
+                _chartState.value = UiState.Loading(false)
+                _chartState.value = UiState.Error("Error fetching chart data")
             }
         }
     }

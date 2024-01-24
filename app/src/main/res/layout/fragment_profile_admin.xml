@@ -41,8 +41,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@tools:sample/avatars"
-
                 />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_take_picture"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:baselineAlignBottom="true"
+                android:src="@drawable/ic_take_photo"
+                app:layout_constraintBaseline_toBottomOf="@id/img_item_photo"
+                app:layout_constraintBottom_toBottomOf="@+id/img_item_photo"
+                app:layout_constraintEnd_toEndOf="@+id/img_item_photo" />
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
