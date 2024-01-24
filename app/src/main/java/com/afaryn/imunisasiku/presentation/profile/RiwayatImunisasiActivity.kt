@@ -30,6 +30,7 @@ class RiwayatImunisasiActivity : AppCompatActivity() {
             adapter = riwayatImunisasiAdapter
             layoutManager = LinearLayoutManager(context)
         }
+        binding.btnBack.setOnClickListener { finish() }
         observer()
     }
 

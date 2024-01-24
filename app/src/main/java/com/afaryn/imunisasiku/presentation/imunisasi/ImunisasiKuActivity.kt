@@ -36,6 +36,7 @@ class ImunisasiKuActivity : AppCompatActivity() {
             adapter = imunisasiAdapter
             layoutManager = LinearLayoutManager(this@ImunisasiKuActivity)
         }
+        binding.btnBack.setOnClickListener { finish() }
         observer()
     }
 

@@ -38,6 +38,7 @@ class JadwalkuActivity : AppCompatActivity() {
             adapter = jadwalKuAdapter
             layoutManager = LinearLayoutManager(this@JadwalkuActivity)
         }
+        binding.btnBack.setOnClickListener { finish() }
         observer()
     }
 

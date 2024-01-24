@@ -390,7 +390,7 @@
                 android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cv_imunisasi"
+                    android:id="@+id/cv_ayo_imunisasi"
                     android:layout_width="95dp"
                     android:layout_height="130dp"
                     android:layout_marginHorizontal="5dp"
@@ -416,7 +416,7 @@
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="5dp"
                             android:fontFamily="@font/poppins_medium"
-                            android:text="@string/imunisasi"
+                            android:text="@string/ayo_imunisasi"
                             android:textAlignment="center" />
                     </LinearLayout>
 

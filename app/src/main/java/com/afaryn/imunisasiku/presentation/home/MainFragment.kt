@@ -69,6 +69,22 @@ class MainFragment : Fragment() {
             btnHubungiAdmin.setOnClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/628195534505")))
             }
+            cvAyoImunisasi.setOnClickListener {
+                startActivity(Intent(requireContext(), PosterActivity::class.java).apply {
+                    putExtra(
+                        PosterActivity.POSTER_INTENT,
+                        PosterActivity.AYO_IMUNISASI
+                    )
+                })
+            }
+            cvJadwalImunisasi.setOnClickListener {
+                startActivity(Intent(requireContext(), PosterActivity::class.java).apply {
+                    putExtra(
+                        PosterActivity.POSTER_INTENT,
+                        PosterActivity.JADWAL_IMUNISASI
+                    )
+                })
+            }
         }
     }
 
@@ -90,7 +106,7 @@ class MainFragment : Fragment() {
                 is UiState.Success -> {
                     if (it.data?.jadwalImunisasi != null) {
                         setClosestImunisasi(it.data)
-                    }else {
+                    } else {
                         binding.layoutNoSchedule.show()
                         binding.layoutImunisasiTerdekat.hide()
                     }
@@ -116,7 +132,10 @@ class MainFragment : Fragment() {
 
             // Get remaining days
             val dateString =
-                LocalDate.parse(imunisasi.jadwalImunisasi , DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy"))
+                LocalDate.parse(
+                    imunisasi.jadwalImunisasi,
+                    DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy")
+                )
             val today = LocalDate.now()
             val daysRemaining = today.until(dateString).days
             binding.tvDayCount.text = daysRemaining.toString()

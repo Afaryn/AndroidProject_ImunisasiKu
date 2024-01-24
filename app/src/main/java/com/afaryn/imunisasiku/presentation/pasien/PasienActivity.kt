@@ -84,6 +84,9 @@ class PasienActivity : AppCompatActivity() {
     }
 
     private fun setActions() {
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
         binding.btnTambahPasien.setOnClickListener {
             startActivity(Intent(this, TambahPasienActivity::class.java))
         }
