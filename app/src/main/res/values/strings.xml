@@ -73,5 +73,15 @@
     <string name="notifikasi">Notifikasi</string>
     <string name="jangan_lupa_untuk_imunisasi">Jangan Lupa Untuk Imunisasi</string>
     <string name="reminder_imunisasi">Reminder imunisasi %1$s</string>
+    <string name="onboarding_1">Selamat datang di aplikasi SIPENI</string>
+    <string name="onboarding_2">Temukan Kekuatan dengan Imunisasi</string>
+    <string name="onboarding_3">Atur jadwal imunisasi dengan mudah</string>
+    <string name="onboarding_content_1">Optimalkan pertumbuhan anak anda dengan imunisasi yang tepat waktu</string>
+    <string name="onboarding_content_2">Imunisasi adalah kunci keberhasilan perlindungan kesehatan anak anda</string>
+    <string name="onboarding_content_3">Menentukan jadwal imunisasi yang tepat dan mudah</string>
+    <string name="lanjut">Lanjut</string>
+    <string name="lewati">Lewati</string>
+    <string name="mulai">Mulai</string>
+    <string name="next">Lanjut</string>
 
 </resources>

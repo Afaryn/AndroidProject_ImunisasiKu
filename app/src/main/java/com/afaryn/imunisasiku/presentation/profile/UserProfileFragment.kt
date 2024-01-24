@@ -30,7 +30,7 @@ class UserProfileFragment : Fragment() {
     private var _binding: FragmentUserProfileBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<ProfilViewModel>()
-    private var permissionGiven: Boolean? = null
+    private var permissionGiven: Boolean = false
     private var dataUser: User? = null
 
     private val permission =
@@ -82,10 +82,12 @@ class UserProfileFragment : Fragment() {
                     message = "Apakah anda ingin mengganti foto profil saat ini",
                     btnActionText = "Ya"
                 ) {
-                    permissionGiven?.let {
-                        val chooser = setUpGallery()
-                        launchGallery.launch(chooser)
+                    if (!permissionGiven) {
+                        toast("Tidak dapat membuka galeri, Izin belum diberikan.")
+                        return@setupDeleteDialog
                     }
+                    val chooser = setUpGallery()
+                    launchGallery.launch(chooser)
                 }
             }
 

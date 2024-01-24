@@ -10,10 +10,10 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.afaryn.imunisasiku.MainActivity
 import com.afaryn.imunisasiku.R
 import com.afaryn.imunisasiku.notification.database.NotificationDatabase
 import com.afaryn.imunisasiku.notification.database.NotificationEntity
+import com.afaryn.imunisasiku.presentation.auth.AuthActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,7 +24,7 @@ class NotificationWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, p
     private val imunisasiTime = inputData.getString(WAKTU_IMUNISASI)
 
     private fun getPendingIntent(): PendingIntent? {
-        val intent = Intent(applicationContext, MainActivity::class.java)
+        val intent = Intent(applicationContext, AuthActivity::class.java)
         return TaskStackBuilder.create(applicationContext).run {
             addNextIntentWithParentStack(intent)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

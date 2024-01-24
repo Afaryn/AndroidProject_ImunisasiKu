@@ -13,4 +13,6 @@
     <color name="light_red">#FB3F4A</color>
     <color name="green">#00BA00</color>
     <color name="warning_orange">#ec942c</color>
+    <color name="white50">#80FFFFFF</color>
+    <color name="white80">#CCFFFFFF</color>
 </resources>

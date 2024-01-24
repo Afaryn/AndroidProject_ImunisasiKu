@@ -58,19 +58,19 @@
             android:exported="false" />
         <activity
             android:name=".presentation.onboarding.OnboardingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.imunisasi.DaftarImunisasiActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.auth.AuthActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".presentation.imunisasi.DaftarImunisasiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.auth.AuthActivity"
+            android:exported="false" />
         <activity
             android:name=".admin.ui.kelolaAkun.KelolaAkun"
             android:exported="false" />
