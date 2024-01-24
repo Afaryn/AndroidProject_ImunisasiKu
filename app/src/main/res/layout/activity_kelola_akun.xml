@@ -18,12 +18,14 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/bg_outline_grey"
         android:clickable="true"
+        app:iconifiedByDefault="false"
         app:closeIcon="@drawable/vector_baseline_close"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include"
         app:queryHint="Cari nama imunisasi"
-        app:searchHintIcon="@null" />
+        app:searchHintIcon="@null"
+        android:focusable="true" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_akun"

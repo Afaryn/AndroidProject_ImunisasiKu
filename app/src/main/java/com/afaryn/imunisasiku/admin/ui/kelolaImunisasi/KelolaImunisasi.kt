@@ -4,13 +4,14 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afaryn.imunisasiku.R
 import com.afaryn.imunisasiku.admin.ui.home.HomeAdminActivity
@@ -32,7 +33,7 @@ class KelolaImunisasi : AppCompatActivity() {
 
     private val viewModel by viewModels<TambahImnViewModel>()
     private val myAdapter by lazy { ImunisasiAdapter() }
-    private lateinit var listData :ArrayList<JenisImunisasi>
+    private val listData: MutableList<JenisImunisasi> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityKelolaImunisasiBinding.inflate(layoutInflater)
@@ -87,8 +88,8 @@ class KelolaImunisasi : AppCompatActivity() {
                     else binding.progressBar.hide()
                 }
                 is UiState.Success -> {
-
                     setupRvData(it.data!!)
+                    listData.addAll(it.data)
                 }
                 is UiState.Error -> {
                     binding.progressBar.hide()
@@ -123,8 +124,21 @@ class KelolaImunisasi : AppCompatActivity() {
         myAdapter.differ.submitList(data)
         myAdapter.onDeleteClick = {
             showCustomDialogBox("Apakah ingin menghapus Imunisasi ${it.namaImunisasi}",it.namaImunisasi!!)
-
         }
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val listFiltered = listData.filter { imunisasi ->
+                    imunisasi.namaImunisasi!!.contains(newText.orEmpty(), ignoreCase = true)
+                }
+                myAdapter.differ.submitList(listFiltered)
+                return false
+            }
+        })
     }
 
     private fun showCustomDialogBox(message: String?,item: String) {

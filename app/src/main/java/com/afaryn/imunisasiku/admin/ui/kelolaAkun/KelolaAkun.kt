@@ -6,19 +6,19 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afaryn.imunisasiku.R
 import com.afaryn.imunisasiku.admin.ui.home.HomeAdminActivity
 import com.afaryn.imunisasiku.admin.ui.kelolaAkun.adapter.KelAkunAdpater
 import com.afaryn.imunisasiku.admin.ui.kelolaAkun.viewModel.KelAkunViewModel
-import com.afaryn.imunisasiku.databinding.ActivityEditAkunPenggunaBinding
 import com.afaryn.imunisasiku.databinding.ActivityKelolaAkunBinding
 import com.afaryn.imunisasiku.model.User
 import com.afaryn.imunisasiku.utils.UiState
@@ -33,6 +33,7 @@ class KelolaAkun : AppCompatActivity() {
     private val binding get() = _binding!!
     private val myAdapter by lazy{KelAkunAdpater()}
     private val viewModel by viewModels<KelAkunViewModel>()
+    private val listData: MutableList<User> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding=ActivityKelolaAkunBinding.inflate(layoutInflater)
@@ -57,6 +58,7 @@ class KelolaAkun : AppCompatActivity() {
                 }
                 is UiState.Success->{
                     setRv(it.data!!)
+                    listData.addAll(it.data)
                 }
                 is UiState.Error->{
                     Toast.makeText(this,it.toString(),Toast.LENGTH_SHORT).show()
@@ -90,6 +92,20 @@ class KelolaAkun : AppCompatActivity() {
         myAdapter.onDeleteClick = {
             showCustomDialogBox("Apakah ingin menghapus Akun ${it.email}",it.email!!)
         }
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val listFiltered = listData.filter { imunisasi ->
+                    imunisasi.name!!.contains(newText.orEmpty(), ignoreCase = true)
+                }
+                myAdapter.differ.submitList(listFiltered)
+                return false
+            }
+        })
     }
 
     private fun showCustomDialogBox(message: String?,item: String) {
