@@ -105,6 +105,7 @@ class UserEditProfileActivity : AppCompatActivity() {
 
             tvKeluarAkun.setOnClickListener {
                 viewModel.signOut()
+                deleteSharedPreference()
                 startActivity(
                     Intent(this@UserEditProfileActivity, AuthActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -148,6 +149,11 @@ class UserEditProfileActivity : AppCompatActivity() {
                 viewModel.editProfile(user)
             }
         }
+    }
+
+    private fun deleteSharedPreference() {
+        val sharedPreferences = getSharedPreferences("UserRole", MODE_PRIVATE)
+        sharedPreferences.edit().remove("role").apply()
     }
 
     private fun validateFields(): Boolean {

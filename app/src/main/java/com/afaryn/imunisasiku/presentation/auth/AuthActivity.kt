@@ -1,5 +1,6 @@
 package com.afaryn.imunisasiku.presentation.auth
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -29,11 +30,18 @@ class AuthActivity : AppCompatActivity() {
         super.onStart()
 
         if (viewModel.isUserLoggedIn()) {
-            startActivity(Intent(this, HomeAdminActivity::class.java).also {
+            startActivity(Intent(this, getDestination()).also {
                 it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 finish()
             })
         }
+    }
+
+    private fun getDestination(): Class<*> {
+        val sharedPref = getSharedPreferences("UserRole", Context.MODE_PRIVATE)
+        val role = sharedPref.getString("role", "user")
+        return if (role == "admin") HomeAdminActivity::class.java
+        else MainActivity::class.java
     }
 
     override fun onDestroy() {

@@ -1,18 +1,17 @@
 package com.afaryn.imunisasiku.presentation.auth
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.afaryn.imunisasiku.MainActivity
-import com.afaryn.imunisasiku.R
 import com.afaryn.imunisasiku.admin.ui.home.HomeAdminActivity
 import com.afaryn.imunisasiku.databinding.FragmentAdminLoginBinding
 import com.afaryn.imunisasiku.presentation.auth.viewmodel.AuthViewModel
@@ -37,7 +36,7 @@ class AdminLoginFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentAdminLoginBinding.inflate(inflater)
         return binding.root
     }
@@ -58,7 +57,7 @@ class AdminLoginFragment : Fragment() {
                 val email = etEmail.text.toString().trim()
                 val password = etPassword.text.toString().trim()
 
-                viewModel.login(email,password)
+                viewModel.login(email,password, "admin")
             }
         }
     }
@@ -71,7 +70,7 @@ class AdminLoginFragment : Fragment() {
                     else binding.progressBar.hide()
                 }
                 is UiState.Success -> {
-
+                    setAdminRolePref(it.data!!)
                     startActivity(Intent(requireContext(), HomeAdminActivity::class.java).also { intent ->
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         requireActivity().finish()
@@ -106,6 +105,13 @@ class AdminLoginFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setAdminRolePref(data: String) {
+        val sharedPref = requireActivity().getSharedPreferences("UserRole", Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.putString("role", "admin")
+        editor.apply()
     }
 
     override fun onDestroyView() {

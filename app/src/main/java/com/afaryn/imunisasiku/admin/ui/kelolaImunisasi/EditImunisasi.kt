@@ -1,75 +1,209 @@
 package com.afaryn.imunisasiku.admin.ui.kelolaImunisasi
 
-import androidx.appcompat.app.AppCompatActivity
+import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.afaryn.imunisasiku.R
+import com.afaryn.imunisasiku.admin.ui.kelolaImunisasi.viewModel.TambahImnViewModel
 import com.afaryn.imunisasiku.databinding.ActivityEditImunisasiBinding
+import com.afaryn.imunisasiku.model.JenisImunisasi
+import com.afaryn.imunisasiku.utils.UiState
+import com.afaryn.imunisasiku.utils.hide
+import com.afaryn.imunisasiku.utils.parseDateString
+import com.afaryn.imunisasiku.utils.show
+import com.afaryn.imunisasiku.utils.toast
+import dagger.hilt.android.AndroidEntryPoint
 
+@Suppress("DEPRECATION")
+@AndroidEntryPoint
 class EditImunisasi : AppCompatActivity() {
 
-    private lateinit var binding:ActivityEditImunisasiBinding
+    private lateinit var binding: ActivityEditImunisasiBinding
+    private var jenisImunisasi = JenisImunisasi()
+    private var imunisasiBackup = JenisImunisasi()
+    private val viewModel by viewModels<TambahImnViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityEditImunisasiBinding.inflate(layoutInflater)
+        binding = ActivityEditImunisasiBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        getData()
         setPage()
+        getData()
+        setActions()
+        observer()
     }
 
-    private fun getData(){
-        val nama_imunisasi = intent.getStringExtra(IMUNISASI)
-        val batas_usia = intent.getStringExtra(BATAS_USIA)
-        val jadwal_imunisasi = intent.getStringArrayListExtra(JADWAL_IMUNISASI)
-        val jam_imunisasi = intent.getStringExtra(JAM_IMUNISASI)
-        val splitJam = jam_imunisasi!!.split(" - ")
-
-//        binding.apply {
-//            tvNamaImunisasi.setText(nama_imunisasi)
-//            tvUsiaImunisasi.setText(batas_usia)
-//            if(jadwal_imunisasi!=null){
-//                for(i in 0..(jadwal_imunisasi.size-1)){
-//                    if(jadwal_imunisasi.get(i)=="Senin"){
-//                        cbSenin.isChecked = true
-//                    }
-//                    if(jadwal_imunisasi.get(i)=="Selasa"){
-//                        cbSelasa.isChecked = true
-//                    }
-//                    if(jadwal_imunisasi.get(i)=="Rabu"){
-//                        cbRabu.isChecked = true
-//                    }
-//                    if(jadwal_imunisasi.get(i)=="Kamis"){
-//                        cbKamis.isChecked =true
-//                    }
-//                    if(jadwal_imunisasi.get(i)=="Jum'at"){
-//                        cbJumat.isChecked = true
-//                    }
-//                    if(jadwal_imunisasi.get(i)=="Sabtu"){
-//                        cbSabtu.isChecked = true
-//                    }
-//                }
-//            }
-//            if (jam_imunisasi!=null){
-//                edtJamMulai.setText(splitJam[0])
-//                edtJamSelesai.setText(splitJam[1])
-//            }
-//        }
-    }
-
-    @Suppress("DEPRECATION")
-    private fun setPage(){
-        with(binding){
-            include.tvToolbar.text="Edit Data Imunisasi"
-            include.btnBack.setOnClickListener { onBackPressed() }
+    private fun observer() {
+        viewModel.editState.observe(this) {
+            when (it) {
+                is UiState.Loading -> {
+                    if (it.isLoading == true) binding.progressBar.show()
+                    else binding.progressBar.hide()
+                }
+                is UiState.Success -> {
+                    toast(it.data!!)
+                    finish()
+                }
+                is UiState.Error -> {
+                    toast(it.error ?: "Terjadi Kesalahan")
+                }
+            }
         }
     }
 
-    companion object{
-        const val IMUNISASI = "nama_imunisasi"
-        const val BATAS_USIA = "batas_usia"
-        const val JADWAL_IMUNISASI="jadwal_imunisasi"
-        const val JAM_IMUNISASI = "jam_imunisasi"
-        const val SIKLUS = "siklus"
+    private fun setActions() {
+        binding.button2.setOnClickListener {
+            val nama = binding.tvNamaImunisasi.text.toString().trim()
+            val usia = binding.etUsiaImunisasi.text.toString().trim()
+
+            if (nama.isEmpty() || usia.isEmpty()) {
+                toast("Harap isi nama dan usia imunisasi")
+                return@setOnClickListener
+            }
+
+            jenisImunisasi = jenisImunisasi.copy(
+                namaImunisasi = nama,
+                batasUmur = usia.toInt()
+            )
+
+            viewModel.editImunisasi(imunisasiBackup, jenisImunisasi)
+        }
+    }
+
+    @SuppressLint("InflateParams")
+    private fun getData() {
+        val dataImunisasi = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(EDIT_IMUNISASI, JenisImunisasi::class.java)
+        } else {
+            intent.getParcelableExtra(EDIT_IMUNISASI)
+        }
+        dataImunisasi?.let { imunisasi ->
+            jenisImunisasi = imunisasi
+            imunisasiBackup = imunisasi
+            binding.apply {
+                tvNamaImunisasi.setText(imunisasi.namaImunisasi)
+                etUsiaImunisasi.setText(imunisasi.batasUmur.toString())
+                rgSiklusImunisasi.check(
+                    if (imunisasi.siklus == "bulan") radioBulanan.id
+                    else radioMingguan.id
+                )
+                handleJadwalDanJam(imunisasi)
+
+                var hasBeenPressed = 0
+                radioMingguan.setOnClickListener {
+                    if (jenisImunisasi.siklus == "bulan" && hasBeenPressed == 0) {
+                        jenisImunisasi = jenisImunisasi.copy(
+                            siklus = "minggu",
+                            jamImunisasi = null,
+                            jadwalImunisasi = null
+                        )
+                        hasBeenPressed += 1
+                        ubahSiklus()
+                    } else if (hasBeenPressed != 0) {
+                        hasBeenPressed -= 1
+                        jenisImunisasi = imunisasiBackup
+                        restoreSiklus()
+                    }
+                }
+                radioBulanan.setOnClickListener {
+                    if (imunisasi.siklus == "minggu" && hasBeenPressed == 0) {
+                        jenisImunisasi = jenisImunisasi.copy(
+                            siklus = "bulan",
+                            jamImunisasi = null,
+                            jadwalImunisasi = null
+                        )
+                        hasBeenPressed += 1
+                        ubahSiklus()
+                    } else if (hasBeenPressed != 0) {
+                        hasBeenPressed -= 1
+                        jenisImunisasi = imunisasiBackup
+                        restoreSiklus()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun restoreSiklus() {
+        binding.tvGantiSiklus.hide()
+        binding.tvHolderJadwal.show()
+        binding.tvHolderJam.show()
+        handleJadwalDanJam(jenisImunisasi)
+    }
+
+    private fun ubahSiklus() {
+        binding.tvHolderJadwal.hide()
+        binding.tvHolderJam.hide()
+        binding.tvGantiSiklus.show()
+        binding.jamLayout.removeAllViews()
+        binding.jadwalLayout.removeAllViews()
+    }
+
+    private fun handleJadwalDanJam(it: JenisImunisasi) {
+        binding.apply {
+            it.jadwalImunisasi?.let { list ->
+                for (jadwal in list) {
+                    if (jadwal.isNotEmpty()) {
+                        val inflater = LayoutInflater.from(applicationContext)
+                            .inflate(R.layout.item_imunisasi_edit, null)
+                        jadwalLayout.addView(inflater, jadwalLayout.childCount)
+                    }
+                }
+
+                val count = jadwalLayout.childCount
+                for (c in 0 until count) {
+                    val v = jadwalLayout.getChildAt(c)
+                    val tvContent = v.findViewById<TextView>(R.id.tv_content)
+                    val btnDeleteEdit = v.findViewById<ImageView>(R.id.btn_delete_edit)
+
+                    val currentListItem = list[c]
+                    tvContent.text = if (it.siklus == "bulan") parseDateString(list[c]) else list[c]
+                    btnDeleteEdit.setOnClickListener {
+                        v.hide()
+                        jenisImunisasi.jadwalImunisasi?.remove(currentListItem)
+                    }
+                }
+            }
+
+            it.jamImunisasi?.let { listJam ->
+                for (jam in listJam) {
+                    val inflater = LayoutInflater.from(applicationContext)
+                        .inflate(R.layout.item_imunisasi_edit, null)
+                    jamLayout.addView(inflater, jamLayout.childCount)
+                }
+
+                val count = jamLayout.childCount
+                for (c in 0 until count) {
+                    val v = jamLayout.getChildAt(c)
+                    val tvContent = v.findViewById<TextView>(R.id.tv_content)
+                    val btnDeleteEdit = v.findViewById<ImageView>(R.id.btn_delete_edit)
+
+                    val currentListItem = listJam[c]
+                    tvContent.text = listJam[c]
+                    btnDeleteEdit.setOnClickListener {
+                        v.hide()
+                        jenisImunisasi.jamImunisasi?.remove(currentListItem)
+                    }
+                }
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setPage() {
+        with(binding) {
+            include.tvToolbar.text = "Edit Data Imunisasi"
+            include.btnBack.setOnClickListener { finish() }
+        }
+    }
+
+    companion object {
+        const val EDIT_IMUNISASI = "edit_imunisasi"
     }
 }

@@ -1,18 +1,13 @@
 package com.afaryn.imunisasiku.admin.ui.kelolaImunisasi.viewModel
 
 
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
-import com.afaryn.imunisasiku.model.JenisImunisasi
-
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.afaryn.imunisasiku.model.JenisImunisasi
 import com.afaryn.imunisasiku.utils.Constants
-
 import com.afaryn.imunisasiku.utils.Constants.JENIS_IMUNISASI
-
 import com.afaryn.imunisasiku.utils.UiState
-
-
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,6 +30,9 @@ class TambahImnViewModel @Inject constructor(
 
     private val _delState = MutableStateFlow<UiState<String>>(UiState.Loading(false))
     val delState = _delState.asStateFlow().asLiveData()
+
+    private val _editState = MutableStateFlow<UiState<String>>(UiState.Loading(false))
+    val editState = _editState.asStateFlow().asLiveData()
 
     private val _getDataState = MutableStateFlow<UiState<List<JenisImunisasi>>>(UiState.Loading(false))
     val getDataState = _getDataState.asStateFlow().asLiveData()
@@ -63,23 +61,37 @@ class TambahImnViewModel @Inject constructor(
 
     }
 
-//    fun updateImn(oldData:JenisImunisasi,newData:JenisImunisasi){
-//        _sendingState.value=UiState.Loading(true)
-//        val cekData = firestore.collection(JENIS_IMUNISASI)
-//            .whereEqualTo("namaImunisasi",oldData.namaImunisasi)
-//            .whereEqualTo("batasUmur",oldData.batasUmur)
-//            .
-//        firestore.collection(JENIS_IMUNISASI)
-//
-//            .addOnSuccessListener {
-//                _sendingState.value=UiState.Loading(false)
-//                _sendingState.value=UiState.Success("Berhasil Mengirim")
-//            }
-//            .addOnFailureListener{
-//                _sendingState.value = UiState.Loading(false)
-//                _sendingState.value = UiState.Error(it.message ?: "Terjadi kesalahan")
-//            }
-//    }
+    fun editImunisasi(oldData: JenisImunisasi, jenisImunisasi: JenisImunisasi) {
+        viewModelScope.launch {
+            _editState.value = UiState.Loading(true)
+            val doc = firestore.collection(JENIS_IMUNISASI)
+                .whereEqualTo("namaImunisasi",oldData.namaImunisasi)
+                .get()
+                .await()
+            if(doc.documents.isNotEmpty()){
+                for (document in doc){
+                    try {
+                        firestore.collection(JENIS_IMUNISASI).document(document.id).set(
+                            jenisImunisasi, SetOptions.merge()
+
+                        ).addOnSuccessListener {
+                            _editState.value=UiState.Loading(false)
+                            _editState.value=UiState.Success("Berhasil memperbarui data!")
+                        }
+
+                    }catch (e:Exception){
+                        withContext(Dispatchers.Main){
+                            _editState.value=UiState.Loading(false)
+                            _editState.value = UiState.Error(e.toString())
+                        }
+                    }
+                }
+            }else{
+                _editState.value = UiState.Loading(false)
+                _editState.value = UiState.Error("Jenis Imunisasi tidak ditemukan")
+            }
+        }
+    }
 
     fun getAllData(){
         _getDataState.value = UiState.Loading(true)

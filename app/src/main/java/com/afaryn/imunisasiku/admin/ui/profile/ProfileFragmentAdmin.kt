@@ -191,6 +191,7 @@ class ProfileFragmentAdmin : Fragment() {
 
         btnYes.setOnClickListener {
             viewModel.logout()
+            deleteSharedPreference()
             startActivity(
                 Intent(requireContext(), AuthActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -202,6 +203,11 @@ class ProfileFragmentAdmin : Fragment() {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    private fun deleteSharedPreference() {
+        val sharedPreferences = requireActivity().getSharedPreferences("UserRole", AppCompatActivity.MODE_PRIVATE)
+        sharedPreferences.edit().remove("role").apply()
     }
 
     private fun showCustomDialogBoxHps(message: String?) {

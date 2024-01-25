@@ -1,5 +1,6 @@
 package com.afaryn.imunisasiku.presentation.auth
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -59,7 +60,7 @@ class LoginFragment : Fragment() {
                 val email = etEmail.text.toString().trim()
                 val password = etPassword.text.toString()
 
-                viewModel.login(email, password)
+                viewModel.login(email, password, "user")
             }
         }
     }
@@ -72,6 +73,7 @@ class LoginFragment : Fragment() {
                     else binding.progressBar.hide()
                 }
                 is UiState.Success -> {
+                    setUserRolePref(it.data!!)
                     startActivity(Intent(requireContext(), MainActivity::class.java).also { intent ->
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         requireActivity().finish()
@@ -106,6 +108,13 @@ class LoginFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setUserRolePref(role: String) {
+        val sharedPref = requireActivity().getSharedPreferences("UserRole", Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.putString("role", role)
+        editor.apply()
     }
 
     override fun onDestroyView() {
