@@ -145,5 +145,9 @@ class KelolaAkun : AppCompatActivity() {
         _binding = null
     }
 
+    override fun onPause() {
+        super.onPause()
+        _binding = null
+    }
 
 }

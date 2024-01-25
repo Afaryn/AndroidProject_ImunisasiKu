@@ -3,6 +3,7 @@ package com.afaryn.imunisasiku.admin.ui.home
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -120,6 +121,11 @@ class HomeFragmentAdmin : Fragment() {
     private fun updateChart(chartData: List<Pair<String, Float>>) {
         val lineSet = chartData
 
+        for ((index, data) in chartData.withIndex()) {
+            Log.d("ChartData", "Data at index $index: ${data.first}, ${data.second}")
+        }
+
+
         // Set up the chart properties
         binding.lineChart.apply {
             // Set gradient fill colors
@@ -138,7 +144,7 @@ class HomeFragmentAdmin : Fragment() {
             }
 
             // Animate the chart with the data
-            animate(lineSet)
+            animate(chartData)
         }
     }
 
