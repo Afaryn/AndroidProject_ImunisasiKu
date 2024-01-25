@@ -1,5 +1,6 @@
 package com.afaryn.imunisasiku.presentation.profile
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.RadioButton
@@ -154,6 +155,8 @@ class UserEditProfileActivity : AppCompatActivity() {
     private fun deleteSharedPreference() {
         val sharedPreferences = getSharedPreferences("UserRole", MODE_PRIVATE)
         sharedPreferences.edit().remove("role").apply()
+        val sharedPref = getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
+        sharedPref.edit().remove("Finished").apply()
     }
 
     private fun validateFields(): Boolean {
