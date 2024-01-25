@@ -208,6 +208,8 @@ class ProfileFragmentAdmin : Fragment() {
     private fun deleteSharedPreference() {
         val sharedPreferences = requireActivity().getSharedPreferences("UserRole", AppCompatActivity.MODE_PRIVATE)
         sharedPreferences.edit().remove("role").apply()
+        val sharedPref = requireActivity().getSharedPreferences("onBoarding", Context.MODE_PRIVATE)
+        sharedPref.edit().remove("Finished").apply()
     }
 
     private fun showCustomDialogBoxHps(message: String?) {
