@@ -12,6 +12,7 @@
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -138,6 +139,49 @@
                 </RadioGroup>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_holder_jadwal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jadwal Imunisasi"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/linearLayout11"
+                app:layout_constraintStart_toStartOf="@id/linearLayout11"
+                />
+
+            <LinearLayout
+                android:id="@+id/jadwal_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/tv_holder_jadwal"
+                app:layout_constraintStart_toStartOf="@id/linearLayout11"
+                app:layout_constraintEnd_toEndOf="@id/linearLayout11"/>
+
+            <TextView
+                android:id="@+id/tv_holder_jam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jam Imunisasi"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/jadwal_layout"
+                app:layout_constraintStart_toStartOf="@id/jadwal_layout"
+                />
+
+            <LinearLayout
+                android:id="@+id/jam_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/tv_holder_jam"
+                app:layout_constraintStart_toStartOf="@id/linearLayout11"
+                app:layout_constraintEnd_toEndOf="@id/linearLayout11"/>
 
             <ProgressBar
                 android:id="@+id/progress_bar"
@@ -165,39 +209,8 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewPager2" />
+                app:layout_constraintStart_toStartOf="parent" />
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout11">
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hari Operasional" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Jam Operasional" />
-
-            </com.google.android.material.tabs.TabLayout>
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewPager2"
-                android:layout_width="0dp"
-                android:layout_height="200dp"
-                android:layout_marginTop="1dp"
-                app:layout_constraintBottom_toTopOf="@+id/button2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
