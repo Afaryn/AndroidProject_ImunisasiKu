@@ -158,4 +158,9 @@ class KelolaImunisasi : AppCompatActivity() {
         binding.rvImunisasi.adapter=myAdapter
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAllData()
+    }
+
 }

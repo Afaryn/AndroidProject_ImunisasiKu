@@ -46,6 +46,12 @@
             android:name=".admin.ui.jadwal.TambahJadwal"
             android:exported="false" />
         <activity
+            android:name=".admin.ui.jadwal.TambahHariActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.ui.jadwal.TambahJamActivity"
+            android:exported="false" />
+        <activity
             android:name=".admin.ui.profile.EditProfile"
             android:exported="false" />
         <activity
@@ -89,7 +95,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="false" />
     </application>
 
 </manifest>

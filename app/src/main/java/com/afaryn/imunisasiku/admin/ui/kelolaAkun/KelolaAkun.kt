@@ -145,9 +145,9 @@ class KelolaAkun : AppCompatActivity() {
         _binding = null
     }
 
-    override fun onPause() {
-        super.onPause()
-        _binding = null
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAllData()
     }
 
 }

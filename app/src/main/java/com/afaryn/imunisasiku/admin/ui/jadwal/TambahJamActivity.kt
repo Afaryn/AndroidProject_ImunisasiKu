@@ -123,8 +123,10 @@ class TambahJamActivity : AppCompatActivity(){
                 val mulai = etJamMulai.text.toString()
                 val selesai = etJamSelesai.text.toString()
                 val jamBaru = "$mulai-$selesai"
-                val jadwal = data.jamImunisasi!!.map { it }
-                jadwalBaru.addAll(jadwal)
+                if (data.jamImunisasi!=null){
+                    val jadwal = data.jamImunisasi!!.map { it }
+                    jadwalBaru.addAll(jadwal)
+                }
                 jadwalBaru.add(jamBaru)
                 val dataUnik = jadwalBaru.distinct()
                 viewModel.sendJam(data.namaImunisasi!!,dataUnik)

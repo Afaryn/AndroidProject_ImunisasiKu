@@ -58,8 +58,10 @@ class TambahHariActivity : AppCompatActivity() {
                 setupDatePicker()
             }
             button2.setOnClickListener {
-                val jadwal = data.jadwalImunisasi!!.map { it }
-                jadwalBaru.addAll(jadwal)
+                if (data.jadwalImunisasi!=null){
+                    val jadwal = data.jadwalImunisasi!!.map { it }
+                    jadwalBaru.addAll(jadwal)
+                }
                 if (data.siklus=="bulan"){
                     jadwalBaru.add(pickedDate.toString())
                     val dataUnik = jadwalBaru.distinct()
@@ -67,24 +69,29 @@ class TambahHariActivity : AppCompatActivity() {
                 }
                 if (data.siklus=="minggu"){
                     if (cbSenin2.isChecked){
-                        pickedhari = "senin"
+//                        pickedhari = "Senin"
+                        jadwalBaru.add("Senin")
                     }
                     if(cbSelasa2.isChecked){
-                        pickedhari="selasa"
+//                        pickedhari="Selasa"
+                        jadwalBaru.add("Selasa")
                     }
                     if(cbRabu2.isChecked){
-                        pickedhari="rabu"
+//                        pickedhari="Rabu"
+                        jadwalBaru.add("Rabu")
                     }
                     if(cbKamis2.isChecked){
-                        pickedhari="kamis"
+//                        pickedhari="Kamis"
+                        jadwalBaru.add("Kamis")
                     }
                     if(cbJumat2.isChecked){
-                        pickedhari="jum'at"
+//                        pickedhari="Jum'at"
+                        jadwalBaru.add("Jum'at")
                     }
                     if (cbSabtu2.isChecked){
-                        pickedhari="sabtu"
+//                        pickedhari="Sabtu"
+                        jadwalBaru.add("Sabtu")
                     }
-                    jadwalBaru.add(pickedhari.toString())
                     val dataUnik = jadwalBaru.distinct()
                     viewModel.sendHari(data.namaImunisasi!!,dataUnik)
                 }
