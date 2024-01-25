@@ -2,10 +2,12 @@ package com.afaryn.imunisasiku.presentation.pasien
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.os.Build
 import android.os.Bundle
 import android.widget.RadioButton
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.afaryn.imunisasiku.R
 import com.afaryn.imunisasiku.databinding.ActivityTambahPasienBinding
 import com.afaryn.imunisasiku.model.Pasien
 import com.afaryn.imunisasiku.presentation.pasien.viewmodel.PasienViewModel
@@ -26,14 +28,45 @@ class TambahPasienActivity : AppCompatActivity() {
     private val binding get() = _binding!!
     private val viewModel by viewModels<PasienViewModel>()
     private var pickedDate: Date? = null
+    private var pasienEdit: Pasien? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityTambahPasienBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        isEditPasien()
         setActions()
         observer()
+    }
+
+    @Suppress("DEPRECATION")
+    private fun isEditPasien() {
+        val dataPasien = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(PASIEN_INTENT, Pasien::class.java)
+        } else {
+            intent.getParcelableExtra(PASIEN_INTENT)
+        }
+
+        dataPasien?.let {
+            pasienEdit = it
+            binding.apply {
+                tvTitle.text = getString(R.string.edit_data_pasien)
+                rgJenisKelamin.check(
+                    if (it.jenisKelamin == "Laki - laki") radioLakiLaki.id
+                    else radioPerempuan.id
+                )
+                etNama.setText(it.name)
+                etNik.setText(it.nik)
+                etCatatan.setText(it.catatan)
+                pickedDate = it.tanggalLahir
+                tvBirthDate.text = it.tanggalLahir?.let { tl ->
+                    SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(
+                        tl
+                    )
+                }
+            }
+        }
     }
 
     private fun setActions() {
@@ -54,13 +87,19 @@ class TambahPasienActivity : AppCompatActivity() {
                     val tanggalLahir = pickedDate
                     val nik = etNik.text.toString().trim()
                     val catatan = etCatatan.text.toString().trim()
-                    val pasien = Pasien(
+                    var pasien = Pasien(
                         name = nama,
                         jenisKelamin = jenisKelamin,
                         tanggalLahir = tanggalLahir,
                         nik = nik,
                         catatan = catatan
                     )
+
+                    if (pasienEdit != null) {
+                        pasien = pasien.copy(
+                            id = pasienEdit!!.id
+                        )
+                    }
 
                     viewModel.addPatient(pasien)
                 } else {
@@ -93,7 +132,7 @@ class TambahPasienActivity : AppCompatActivity() {
             val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
 
             pickedDate = calendar.time
-            binding.tvPickupDate.text = dateFormat.format(calendar.time)
+            binding.tvBirthDate.text = dateFormat.format(calendar.time)
         }, year, month, day)
 
         dpd.show()
@@ -107,7 +146,6 @@ class TambahPasienActivity : AppCompatActivity() {
                     else binding.progressBar.hide()
                 }
                 is UiState.Success -> {
-                    toast(it.data!!)
                     finish()
                 }
                 is UiState.Error -> {
@@ -120,5 +158,9 @@ class TambahPasienActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    companion object {
+        const val PASIEN_INTENT = "pasien"
     }
 }

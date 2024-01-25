@@ -1,13 +1,19 @@
 package com.afaryn.imunisasiku
 
+import android.Manifest
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.afaryn.imunisasiku.databinding.ActivityMainBinding
+import com.afaryn.imunisasiku.presentation.imunisasi.DaftarImunisasiActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
@@ -17,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(binding.root)
 
         binding.bottomNavigationView.background = null
@@ -25,7 +32,15 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setupWithNavController(navController)
 
         binding.btnJadwalImunisasi.setOnClickListener {
-            Toast.makeText(this, "IMUNISASI", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, DaftarImunisasiActivity::class.java))
+        }
+
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.POST_NOTIFICATIONS
+                ), 303
+            )
         }
     }
 

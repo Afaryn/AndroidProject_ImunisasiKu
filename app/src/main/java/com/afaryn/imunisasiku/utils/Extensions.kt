@@ -1,28 +1,44 @@
 package com.afaryn.imunisasiku.utils
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Environment
 import android.util.Patterns
+import android.view.Gravity
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.afaryn.imunisasiku.R
+import com.afaryn.imunisasiku.model.Imunisasi
+import com.bumptech.glide.Glide
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.Period
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import kotlin.math.abs
 
 fun validateEmail(email: String): Validation {
     if (email.isEmpty()) {
@@ -81,6 +97,153 @@ fun Date.toToday(): String {
     return "${period.years} Tahun ${period.months} Bulan ${period.days} Hari"
 }
 
+fun getDayOfWeek(day: String): Int {
+    val daysOfWeek = listOf(
+        "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+    )
+
+    // Notifikasi h-1. mengembalikan index di hari sebelumnya
+    return when {
+        day.replaceFirstChar { it.uppercaseChar() }.contains("Senin") -> {
+            daysOfWeek.indexOf("Monday")
+        }
+
+        day.replaceFirstChar { it.uppercaseChar() }.contains("Selasa") -> {
+            daysOfWeek.indexOf("Tuesday")
+        }
+
+        day.replaceFirstChar { it.uppercaseChar() }.contains("Rabu") -> {
+            daysOfWeek.indexOf("Wednesday")
+        }
+
+        day.replaceFirstChar { it.uppercaseChar() }.contains("Kamis") -> {
+            daysOfWeek.indexOf("Thursday")
+        }
+
+        day.replaceFirstChar { it.uppercaseChar() }
+            .contains("Jumat") || day.replaceFirstChar { it.uppercaseChar() }
+            .contains("Jum'at") -> {
+            daysOfWeek.indexOf("Friday")
+        }
+
+        day.replaceFirstChar { it.uppercaseChar() }.contains("Sabtu") -> {
+            daysOfWeek.indexOf("Saturday")
+        }
+
+        day.replaceFirstChar { it.uppercaseChar() }.contains("Minggu") -> {
+            daysOfWeek.indexOf("Sunday")
+        }
+
+        else -> {
+            -1
+        }
+    }
+}
+
+fun parseDateString(dateString: String): String {
+    val dateParse = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.getDefault())
+    return try {
+        val formatted = dateParse.parse(dateString)
+        SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault()).format(
+            formatted ?: "01 January 1997"
+        )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        "Tidak ada jadwal"
+    }
+}
+
+fun stringToDate(dateString: String): Calendar {
+    val formatter = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault())
+    val date = formatter.parse(dateString)
+    val calendar = Calendar.getInstance()
+    if (date != null) {
+        calendar.time = date
+    }
+    return calendar
+}
+
+@SuppressLint("InflateParams", "MissingInflatedId")
+fun Activity.setupDeleteDialog(
+    title: String,
+    message: String,
+    btnActionText: String,
+    onYesClick: () -> Unit
+) {
+    val dialog = Dialog(this, android.R.style.Theme_Dialog)
+    val view = layoutInflater.inflate(R.layout.delete_pasien_dialog, null)
+    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+    dialog.setContentView(view)
+    dialog.window?.setGravity(Gravity.CENTER)
+    dialog.window?.setLayout(
+        WindowManager.LayoutParams.MATCH_PARENT,
+        WindowManager.LayoutParams.WRAP_CONTENT
+    )
+    dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    dialog.show()
+
+    val tvTitle = view.findViewById<TextView>(R.id.tv_dialog_title)
+    val tvMessage = view.findViewById<TextView>(R.id.tv_dialog_message)
+    tvTitle.text = title
+    tvMessage.text = message
+
+    val btnDismiss = view.findViewById<Button>(R.id.btn_dialog_dismiss)
+    val btnYes = view.findViewById<Button>(R.id.btn_dialog_yes)
+    btnYes.text = btnActionText
+
+    btnDismiss.setOnClickListener {
+        dialog.dismiss()
+    }
+    btnYes.setOnClickListener {
+        onYesClick()
+        dialog.dismiss()
+    }
+}
+
+fun translateDateToIndonesian(inputString: String): String {
+    val inputFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale.US)
+    val outputFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale("id", "ID"))
+
+    return LocalDate.parse(inputString, inputFormatter).format(outputFormatter)
+}
+
+fun isSameDay(dateString: String): Boolean {
+    val stringToDate = stringToDate(dateString)
+    val today = Date()
+
+    val cal1 = Calendar.getInstance()
+    val cal2 = Calendar.getInstance()
+
+    cal1.time = stringToDate.time
+    cal2.time = today
+
+    return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+            cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
+            cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)
+}
+
+fun calendarToString(calendar: Calendar): String {
+    return SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault()).format(calendar.time)
+}
+
+fun getClosestDate(dateObjects: List<String>, listImunisasi: List<Imunisasi>): Imunisasi? {
+    val objects = dateObjects.map { stringToDate(it) }
+    val dates = objects.minByOrNull { abs((it.timeInMillis) - Calendar.getInstance().timeInMillis) }
+    if (dates != null) {
+        val dateString = calendarToString(dates)
+        val imunisasiTerdekat = listImunisasi.filter { it.jadwalImunisasi == dateString }
+        imunisasiTerdekat[0].let {
+            return it
+        }
+    } else {
+        return null
+    }
+}
+
+fun ImageView.glide(url: String) {
+    Glide.with(this.context).load(url).into(this)
+}
+
 fun uriToFile(selectedImg: Uri, context: Context): File {
     val contentResolver: ContentResolver = context.contentResolver
     val myFile = createTemporaryFile(context)
@@ -122,4 +285,3 @@ fun reduceFileImage(file: File): File {
     bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
     return file
 }
-

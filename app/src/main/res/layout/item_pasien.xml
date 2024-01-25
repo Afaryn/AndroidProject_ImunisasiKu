@@ -91,7 +91,24 @@
                 android:textSize="16sp"
                 tools:text="-" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_pilih_pasien"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/pilih_pasien"
+                android:textColor="@color/dark_blue"
+                android:visibility="gone"
+                app:backgroundTint="@android:color/transparent"
+                app:cornerRadius="15dp"
+                app:strokeColor="@color/dark_blue"
+                app:strokeWidth="2dp" />
+
             <LinearLayout
+                android:id="@+id/layout_edit_pasien"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"

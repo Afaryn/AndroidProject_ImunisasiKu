@@ -7,13 +7,20 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.afaryn.imunisasiku.databinding.ItemPasienBinding
 import com.afaryn.imunisasiku.model.Pasien
+import com.afaryn.imunisasiku.utils.hide
+import com.afaryn.imunisasiku.utils.show
 import com.afaryn.imunisasiku.utils.toToday
 
-class PasienAdapter: RecyclerView.Adapter<PasienAdapter.PasienViewHolder>() {
+class PasienAdapter(private var pickPasien: Boolean = false): RecyclerView.Adapter<PasienAdapter.PasienViewHolder>() {
 
     inner class PasienViewHolder(val binding: ItemPasienBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(pasien: Pasien) {
             binding.apply {
+                if (pickPasien) {
+                    layoutEditPasien.hide()
+                    btnPilihPasien.show()
+                }
+
                 tvNamaPasien.text = pasien.name
                 tvUsia.text = pasien.tanggalLahir?.toToday() ?: "-"
                 tvCatatan.text = pasien.catatan
@@ -47,5 +54,19 @@ class PasienAdapter: RecyclerView.Adapter<PasienAdapter.PasienViewHolder>() {
     override fun onBindViewHolder(holder: PasienViewHolder, position: Int) {
         val item = differ.currentList[position]
         holder.bind(item)
+
+        holder.binding.btnPilihPasien.setOnClickListener {
+            onPickPasienClick?.invoke(item)
+        }
+        holder.binding.btnEditPasien.setOnClickListener {
+            onEditPasienClick?.invoke(item)
+        }
+        holder.binding.btnHapus.setOnClickListener {
+            onDeletePasienClick?.invoke(item)
+        }
     }
+
+    var onPickPasienClick: ((Pasien) -> Unit)? = null
+    var onEditPasienClick: ((Pasien) -> Unit)? = null
+    var onDeletePasienClick:  ((Pasien) -> Unit)? = null
 }

@@ -24,10 +24,22 @@
         android:theme="@style/Theme.ImunisasiKu"
         tools:targetApi="31">
         <activity
-            android:name=".admin.ui.jadwal.TambahJamActivity"
+            android:name=".presentation.home.PosterActivity"
             android:exported="false" />
         <activity
-            android:name=".admin.ui.jadwal.TambahHariActivity"
+            android:name=".presentation.notification.NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.profile.RiwayatImunisasiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.profile.UserEditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.jadwalku.JadwalkuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.imunisasi.ImunisasiKuActivity"
             android:exported="false" />
         <activity
             android:name=".admin.ui.jadwal.TambahJadwal"
@@ -49,9 +61,6 @@
             android:exported="false" />
         <activity
             android:name=".presentation.onboarding.OnboardingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.auth.AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,6 +68,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".presentation.imunisasi.DaftarImunisasiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.auth.AuthActivity"
+            android:exported="false" />
         <activity
             android:name=".admin.ui.kelolaAkun.KelolaAkun"
             android:exported="false" />

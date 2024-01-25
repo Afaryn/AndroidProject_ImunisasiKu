@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="420dp"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_date"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:cardBackgroundColor="@color/pink"
+                app:cardCornerRadius="5dp">
+
+                <TextView
+                    android:id="@+id/tv_short_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Mei\n15"
+                    android:maxLength="6"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
+
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dotted_line_vertical"
+                android:layerType="software"
+                android:layout_marginStart="35dp"
+                android:layout_alignTop="@id/cv_date"/>
+
+            <TextView
+                android:id="@+id/tv_tanggal_imunisasi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:layout_toEndOf="@id/cv_date"
+                android:layout_alignTop="@id/cv_date"
+                android:layout_alignBottom="@id/cv_date"
+                tools:text="Rabu, 15 Mei 2023" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@id/tv_tanggal_imunisasi"
+                android:layout_below="@id/tv_tanggal_imunisasi"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="15dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <View
+                        android:id="@+id/view_blue_line"
+                        android:layout_width="10dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/dark_blue"/>
+                    
+                    <ImageView
+                        android:id="@+id/iv_person"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_toEndOf="@id/view_blue_line"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/bg_circle_grey"
+                        android:src="@drawable/ic_person"
+                        android:scaleType="fitXY"
+                        android:padding="5dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_holder_nama"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/nama_pasien"
+                        android:layout_alignTop="@id/iv_person"
+                        android:layout_alignBottom="@id/iv_person"
+                        android:layout_toEndOf="@id/iv_person"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textColor="@color/dark_grey"
+                        android:layout_marginStart="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_nama_pasien"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="Audy Fitri"
+                        android:layout_alignStart="@id/tv_holder_nama"
+                        android:layout_below="@id/tv_holder_nama"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_medium"/>
+
+                    <ImageView
+                        android:id="@+id/iv_baby"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_toEndOf="@id/view_blue_line"
+                        android:layout_alignStart="@id/iv_person"
+                        android:layout_below="@id/tv_nama_pasien"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/bg_circle_grey"
+                        android:src="@drawable/iv_baby"
+                        android:scaleType="fitXY"
+                        android:padding="5dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_holder_usia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/umur_pasien"
+                        android:layout_alignTop="@id/iv_baby"
+                        android:layout_alignBottom="@id/iv_baby"
+                        android:layout_toEndOf="@id/iv_baby"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textColor="@color/dark_grey"
+                        android:layout_marginStart="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_umur_pasien"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="3 Minggu"
+                        android:layout_alignStart="@id/tv_holder_nama"
+                        android:layout_below="@id/tv_holder_usia"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_medium"/>
+
+                    <ImageView
+                        android:id="@+id/iv_clock"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_toEndOf="@id/view_blue_line"
+                        android:layout_alignStart="@id/iv_person"
+                        android:layout_below="@id/tv_umur_pasien"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/bg_circle_grey"
+                        android:src="@drawable/ic_time"
+                        android:scaleType="fitXY"
+                        android:padding="5dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_holder_waktu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/jadwal_imunisasi"
+                        android:layout_alignTop="@id/iv_clock"
+                        android:layout_alignBottom="@id/iv_clock"
+                        android:layout_toEndOf="@id/iv_clock"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textColor="@color/dark_grey"
+                        android:layout_marginStart="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_jam_imunisasi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="12:00 - 13:00"
+                        android:layout_alignStart="@id/tv_holder_waktu"
+                        android:layout_below="@id/tv_holder_waktu"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_medium"/>
+
+                    <ImageView
+                        android:id="@+id/iv_imunisasi"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_toEndOf="@id/view_blue_line"
+                        android:layout_alignStart="@id/iv_person"
+                        android:layout_below="@id/tv_jam_imunisasi"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/bg_circle_grey"
+                        android:src="@drawable/ic_shot"
+                        android:scaleType="fitXY"
+                        android:padding="5dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_holder_jenis_imunisasi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/jadwal_imunisasi"
+                        android:layout_alignTop="@id/iv_imunisasi"
+                        android:layout_alignBottom="@id/iv_imunisasi"
+                        android:layout_toEndOf="@id/iv_imunisasi"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:textColor="@color/dark_grey"
+                        android:layout_marginStart="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_jenis_imunisasi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="Imunisasi BCG"
+                        android:layout_alignStart="@id/tv_holder_jenis_imunisasi"
+                        android:layout_below="@id/tv_holder_jenis_imunisasi"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_medium"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_batalkan_imunisasi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="@string/batalkan"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toEndOf="@id/view_blue_line"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:textColor="@color/orange"
+                        app:backgroundTint="@android:color/transparent"
+                        app:cornerRadius="15dp"
+                        app:icon="@drawable/vector_trash"
+                        app:iconGravity="textStart"
+                        app:iconTint="@color/orange"
+                        app:strokeColor="@color/orange"
+                        app:strokeWidth="2dp" />
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

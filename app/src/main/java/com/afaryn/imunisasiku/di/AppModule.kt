@@ -1,6 +1,8 @@
 package com.afaryn.imunisasiku.di
 
-
+import android.content.Context
+import com.afaryn.imunisasiku.notification.database.NotificationDao
+import com.afaryn.imunisasiku.notification.database.NotificationDatabase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -28,4 +30,15 @@ object AppModule {
     @Singleton
     fun provideFirebaseStorage() = Firebase.storage
 
+    @Provides
+    @Singleton
+    fun provideNotificationDatabase(
+        @ApplicationContext context: Context
+    ): NotificationDatabase = NotificationDatabase.getInstance(context)
+
+    @Provides
+    @Singleton
+    fun provideNotificationDao(
+        notificationDatabase: NotificationDatabase
+    ): NotificationDao = notificationDatabase.notificationDao
 }

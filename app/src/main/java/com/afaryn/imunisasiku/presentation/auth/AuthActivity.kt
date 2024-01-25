@@ -6,7 +6,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.afaryn.imunisasiku.MainActivity
-import com.afaryn.imunisasiku.admin.ui.home.HomeAdminActivity
 import com.afaryn.imunisasiku.databinding.ActivityAuthBinding
 import com.afaryn.imunisasiku.presentation.auth.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +28,7 @@ class AuthActivity : AppCompatActivity() {
         super.onStart()
 
         if (viewModel.isUserLoggedIn()) {
-            startActivity(Intent(this, HomeAdminActivity::class.java).also {
+            startActivity(Intent(this, MainActivity::class.java).also {
                 it.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 finish()
             })
