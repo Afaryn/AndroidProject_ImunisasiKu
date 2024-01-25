@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.Period
+import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
@@ -141,12 +142,10 @@ fun getDayOfWeek(day: String): Int {
 }
 
 fun parseDateString(dateString: String): String {
-    val dateParse = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.getDefault())
+    val dateParse = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy")
     return try {
         val formatted = dateParse.parse(dateString)
-        SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault()).format(
-            formatted ?: "01 January 1997"
-        )
+        DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy").format(formatted)
     } catch (e: Exception) {
         e.printStackTrace()
         "Tidak ada jadwal"
@@ -154,12 +153,10 @@ fun parseDateString(dateString: String): String {
 }
 
 fun stringToDate(dateString: String): Calendar {
-    val formatter = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault())
-    val date = formatter.parse(dateString)
+    val formatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy")
+    val date = LocalDate.parse(dateString, formatter)
     val calendar = Calendar.getInstance()
-    if (date != null) {
-        calendar.time = date
-    }
+    calendar.set(date.year, date.monthValue - 1, date.dayOfMonth)
     return calendar
 }
 
@@ -223,7 +220,8 @@ fun isSameDay(dateString: String): Boolean {
 }
 
 fun calendarToString(calendar: Calendar): String {
-    return SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault()).format(calendar.time)
+    val formatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy").withZone(ZoneId.systemDefault())
+    return formatter.format(calendar.toInstant())
 }
 
 fun getClosestDate(dateObjects: List<String>, listImunisasi: List<Imunisasi>): Imunisasi? {
