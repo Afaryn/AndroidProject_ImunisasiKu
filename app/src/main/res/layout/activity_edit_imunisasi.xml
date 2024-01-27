@@ -94,52 +94,6 @@
                     android:inputType="number"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <LinearLayout
-                android:id="@+id/linearLayout11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="25dp"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
-
-                <TextView
-                    android:id="@+id/tv_jenis_kelamin2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="Imunisasi Diadakan Setiap"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <RadioGroup
-                    android:id="@+id/rg_siklus_imunisasi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/radio_mingguan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="Setiap Minggu"
-                        android:textSize="16sp" />
-
-                    <RadioButton
-                        android:id="@+id/radio_bulanan"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="Setiap Bulan"
-                        android:textSize="16sp" />
-                </RadioGroup>
-            </LinearLayout>
-
             <TextView
                 android:id="@+id/tv_holder_jadwal"
                 android:layout_width="wrap_content"
@@ -148,8 +102,8 @@
                 android:fontFamily="@font/poppins_medium"
                 android:text="Jadwal Imunisasi"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="@id/linearLayout11"
-                app:layout_constraintTop_toBottomOf="@id/linearLayout11" />
+                app:layout_constraintStart_toStartOf="@id/textInputLayout2"
+                app:layout_constraintTop_toBottomOf="@id/textInputLayout2" />
 
             <TextView
                 android:id="@+id/tv_ganti_siklus"
@@ -164,7 +118,7 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout11" />
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
 
             <LinearLayout
                 android:id="@+id/jadwal_layout"
@@ -172,8 +126,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="@id/linearLayout11"
-                app:layout_constraintStart_toStartOf="@id/linearLayout11"
+                app:layout_constraintEnd_toEndOf="@id/textInputLayout2"
+                app:layout_constraintStart_toStartOf="@id/textInputLayout2"
                 app:layout_constraintTop_toBottomOf="@id/tv_holder_jadwal" />
 
             <TextView
@@ -193,8 +147,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="@id/linearLayout11"
-                app:layout_constraintStart_toStartOf="@id/linearLayout11"
+                app:layout_constraintEnd_toEndOf="@id/textInputLayout2"
+                app:layout_constraintStart_toStartOf="@id/textInputLayout2"
                 app:layout_constraintTop_toBottomOf="@id/tv_holder_jam" />
 
             <Button

@@ -34,10 +34,8 @@ class TambahImunisasi : AppCompatActivity() {
     private val viewModel by viewModels<TambahImnViewModel>()
     private var _binding: ActivityTambahImunisasiBinding?=null
     private val binding get()=_binding!!
-    private var pickedDate: Date? = null
-    private val jadwalHari = arrayListOf<String>()
+    private var pickedDate = arrayListOf<Date>()
     private var jamImunisasi = arrayListOf<String>()
-    private var siklus:String?=null
     private var pickedTime:String?=null
 
 
@@ -66,18 +64,6 @@ class TambahImunisasi : AppCompatActivity() {
             pickDateInput.setOnClickListener {
                 setupDatePicker()
             }
-            rgSiklusImunisasi.setOnCheckedChangeListener { _, checkedId ->
-                when (checkedId) {
-                    R.id.radio_mingguan -> {
-                        binding.layoutMinggu.isVisible = true
-                        binding.layoutDatePicker.isVisible = false
-                    }
-                    R.id.radio_bulanan -> {
-                        binding.layoutMinggu.isVisible = false
-                        binding.layoutDatePicker.isVisible = true
-                    }
-                }
-            }
             button2.setOnClickListener{
 
                 if(!validateFields()){
@@ -86,37 +72,6 @@ class TambahImunisasi : AppCompatActivity() {
                 }
                 val nama = etNamaImunisasi.text.toString().trim()
                 val usia = (etUsiaImunisasi.text.toString().trim()).toInt()
-
-
-
-                when (rgSiklusImunisasi.checkedRadioButtonId){
-                    R.id.radio_mingguan -> {
-                        siklus = "minggu"
-                        if (cbSenin2.isChecked){
-                            jadwalHari.add("Senin")
-                        }
-                        if(cbSelasa2.isChecked){
-                            jadwalHari.add("Selasa")
-                        }
-                        if(cbRabu2.isChecked){
-                            jadwalHari.add("Rabu")
-                        }
-                        if(cbKamis2.isChecked){
-                            jadwalHari.add("Kamis")
-                        }
-                        if(cbJumat2.isChecked){
-                            jadwalHari.add("Jum'at")
-                        }
-                        if (cbSabtu2.isChecked){
-                            jadwalHari.add("Sabtu")
-                        }
-
-                    }
-                    R.id.radio_bulanan -> {
-                        siklus="bulan"
-                        jadwalHari.add(pickedDate.toString())
-                    }
-                }
 
                 val jamMulai = etJamMulai.text.toString()
                 val jamSelesai = etJamSelesai.text.toString()
@@ -127,9 +82,8 @@ class TambahImunisasi : AppCompatActivity() {
                 val tambahImn = JenisImunisasi(
                     namaImunisasi = nama,
                     batasUmur = usia,
-                    jadwalImunisasi = jadwalHari,
+                    jadwalImunisasi = pickedDate,
                     jamImunisasi = jamImunisasi,
-                    siklus = siklus
                 )
                 viewModel.sendImunisasi(tambahImn)
             }
@@ -204,7 +158,7 @@ class TambahImunisasi : AppCompatActivity() {
             calendar.set(Calendar.SECOND, 0)
             val dateFormat = SimpleDateFormat("dd MMMM ", Locale.getDefault())
 
-            pickedDate = calendar.time
+            pickedDate.add(calendar.time)
             binding.tvPickupDate.text = dateFormat.format(calendar.time)
         }, year, month, day)
 
@@ -218,7 +172,7 @@ class TambahImunisasi : AppCompatActivity() {
     private fun validateFields(): Boolean {
         with(binding) {
             return etNamaImunisasi.text!!.isNotEmpty() && etUsiaImunisasi.text!!.isNotEmpty()
-                    && etJamMulai.text.isNotEmpty() && etJamMulai.text.isNotEmpty()  && rgSiklusImunisasi.checkedRadioButtonId != -1
+                    && etJamMulai.text.isNotEmpty() && etJamMulai.text.isNotEmpty()
         }
     }
 

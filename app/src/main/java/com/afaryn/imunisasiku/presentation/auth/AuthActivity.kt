@@ -39,7 +39,7 @@ class AuthActivity : AppCompatActivity() {
 
     private fun getDestination(): Class<*> {
         val sharedPref = getSharedPreferences("UserRole", Context.MODE_PRIVATE)
-        val role = sharedPref.getString("role", "user")
+        val role = sharedPref.getString("role", "null")
         return if (role == "admin") HomeAdminActivity::class.java
         else MainActivity::class.java
     }

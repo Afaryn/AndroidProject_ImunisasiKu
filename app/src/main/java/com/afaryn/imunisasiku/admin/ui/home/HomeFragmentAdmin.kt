@@ -119,12 +119,7 @@ class HomeFragmentAdmin : Fragment() {
     }
 
     private fun updateChart(chartData: List<Pair<String, Float>>) {
-        val lineSet = chartData
-
-        for ((index, data) in chartData.withIndex()) {
-            Log.d("ChartData", "Data at index $index: ${data.first}, ${data.second}")
-        }
-
+        Log.d("ChartData", chartData.toString())
 
         // Set up the chart properties
         binding.lineChart.apply {

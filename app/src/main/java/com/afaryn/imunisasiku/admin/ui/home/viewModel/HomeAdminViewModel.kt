@@ -1,7 +1,6 @@
 package com.afaryn.imunisasiku.admin.ui.home.viewModel
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -93,12 +92,9 @@ class HomeAdminViewModel @Inject constructor(
         }
     }
 
-    private fun getMonthYearFromDateString(dateString: String): String {
-        val inputFormat = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault())
-        val date = inputFormat.parse(dateString)
-
+    private fun getMonthYearFromDateString(dateString: Date): String {
         val outputFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
-        return outputFormat.format(date ?: Date())
+        return outputFormat.format(dateString)
     }
 
     fun chartData() {
@@ -110,7 +106,7 @@ class HomeAdminViewModel @Inject constructor(
                 val dataPoints = mutableMapOf<String, Float>()
 
                 for (document in result) {
-                    val jadwalImunisasi = document.getString("jadwalImunisasi") ?: ""
+                    val jadwalImunisasi = document.getDate("jadwalImunisasi") ?: Date()
                     val bulanTahun = getMonthYearFromDateString(jadwalImunisasi)
                     val jumlahKunjungan = dataPoints[bulanTahun] ?: 0f
 

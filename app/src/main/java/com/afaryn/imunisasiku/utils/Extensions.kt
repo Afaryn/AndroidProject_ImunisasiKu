@@ -30,12 +30,6 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.Period
-import java.time.ZoneId
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -88,75 +82,31 @@ fun View.hide() {
 }
 
 fun Date.toToday(): String {
-    val formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss O yyyy")
+    val currentDate = Calendar.getInstance().time
+    val diffInMillis = currentDate.time - this.time
 
-    val zoneOffset = ZoneOffset.ofHours(6)
-    val startDate = OffsetDateTime.parse(this.toString(), formatter).withOffsetSameLocal(zoneOffset)
-    val endDate = OffsetDateTime.parse(Date().toString(), formatter).withOffsetSameLocal(zoneOffset)
-    val period = Period.between(startDate.toLocalDate(), endDate.toLocalDate())
+    val calendar = Calendar.getInstance()
+    calendar.timeInMillis = diffInMillis
 
-    return "${period.years} Tahun ${period.months} Bulan ${period.days} Hari"
+    val years = calendar.get(Calendar.YEAR) - 1970
+    val months = calendar.get(Calendar.MONTH)
+    val days = calendar.get(Calendar.DAY_OF_MONTH) - 1
+
+    return "$years Tahun $months Bulan $days Hari"
 }
 
-fun getDayOfWeek(day: String): Int {
-    val daysOfWeek = listOf(
-        "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-    )
-
-    // Notifikasi h-1. mengembalikan index di hari sebelumnya
-    return when {
-        day.replaceFirstChar { it.uppercaseChar() }.contains("Senin") -> {
-            daysOfWeek.indexOf("Monday")
-        }
-
-        day.replaceFirstChar { it.uppercaseChar() }.contains("Selasa") -> {
-            daysOfWeek.indexOf("Tuesday")
-        }
-
-        day.replaceFirstChar { it.uppercaseChar() }.contains("Rabu") -> {
-            daysOfWeek.indexOf("Wednesday")
-        }
-
-        day.replaceFirstChar { it.uppercaseChar() }.contains("Kamis") -> {
-            daysOfWeek.indexOf("Thursday")
-        }
-
-        day.replaceFirstChar { it.uppercaseChar() }
-            .contains("Jumat") || day.replaceFirstChar { it.uppercaseChar() }
-            .contains("Jum'at") -> {
-            daysOfWeek.indexOf("Friday")
-        }
-
-        day.replaceFirstChar { it.uppercaseChar() }.contains("Sabtu") -> {
-            daysOfWeek.indexOf("Saturday")
-        }
-
-        day.replaceFirstChar { it.uppercaseChar() }.contains("Minggu") -> {
-            daysOfWeek.indexOf("Sunday")
-        }
-
-        else -> {
-            -1
-        }
-    }
-}
-
-fun parseDateString(dateString: String): String {
-    val dateParse = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy")
+fun parseDateString(dateString: Date): String {
     return try {
-        val formatted = dateParse.parse(dateString)
-        DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy").format(formatted)
+        SimpleDateFormat("EEEE, dd MMMM yyyy", Locale("id", "ID")).format(dateString)
     } catch (e: Exception) {
         e.printStackTrace()
         "Tidak ada jadwal"
     }
 }
 
-fun stringToDate(dateString: String): Calendar {
-    val formatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy")
-    val date = LocalDate.parse(dateString, formatter)
+fun stringToDate(date: Date): Calendar {
     val calendar = Calendar.getInstance()
-    calendar.set(date.year, date.monthValue - 1, date.dayOfMonth)
+    calendar.time = date
     return calendar
 }
 
@@ -197,21 +147,17 @@ fun Activity.setupDeleteDialog(
     }
 }
 
-fun translateDateToIndonesian(inputString: String): String {
-    val inputFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale.US)
-    val outputFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy", Locale("id", "ID"))
-
-    return LocalDate.parse(inputString, inputFormatter).format(outputFormatter)
+fun translateDateToIndonesian(inputString: Date): String {
+    return SimpleDateFormat("EEEE, dd MMMM yyyy", Locale("id", "ID")).format(inputString)
 }
 
-fun isSameDay(dateString: String): Boolean {
-    val stringToDate = stringToDate(dateString)
+fun isSameDay(date: Date): Boolean {
     val today = Date()
 
     val cal1 = Calendar.getInstance()
     val cal2 = Calendar.getInstance()
 
-    cal1.time = stringToDate.time
+    cal1.time = date
     cal2.time = today
 
     return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
@@ -219,23 +165,23 @@ fun isSameDay(dateString: String): Boolean {
             cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)
 }
 
-fun calendarToString(calendar: Calendar): String {
-    val formatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy").withZone(ZoneId.systemDefault())
-    return formatter.format(calendar.toInstant())
-}
+fun getClosestDate(listImunisasi: List<Imunisasi>): Imunisasi? {
+    val currentDate = Date()
+    var closestImunisasi: Imunisasi? = null
+    var minDifference = Long.MAX_VALUE
 
-fun getClosestDate(dateObjects: List<String>, listImunisasi: List<Imunisasi>): Imunisasi? {
-    val objects = dateObjects.map { stringToDate(it) }
-    val dates = objects.minByOrNull { abs((it.timeInMillis) - Calendar.getInstance().timeInMillis) }
-    if (dates != null) {
-        val dateString = calendarToString(dates)
-        val imunisasiTerdekat = listImunisasi.filter { it.jadwalImunisasi == dateString }
-        imunisasiTerdekat[0].let {
-            return it
+    for (imunisasi in listImunisasi) {
+        imunisasi.jadwalImunisasi?.let {
+            val difference = abs(currentDate.time - imunisasi.jadwalImunisasi.time)
+
+            if (difference < minDifference) {
+                minDifference = difference
+                closestImunisasi = imunisasi
+            }
         }
-    } else {
-        return null
     }
+
+    return closestImunisasi
 }
 
 fun ImageView.glide(url: String) {

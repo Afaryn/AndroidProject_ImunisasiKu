@@ -24,7 +24,8 @@ import com.afaryn.imunisasiku.utils.toast
 import com.afaryn.imunisasiku.utils.translateDateToIndonesian
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
@@ -131,15 +132,16 @@ class MainFragment : Fragment() {
                 else "-"
 
             // Get remaining days
-            val dateString =
-                LocalDate.parse(
-                    imunisasi.jadwalImunisasi,
-                    DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy")
-                )
-            val today = LocalDate.now()
-            val daysRemaining = today.until(dateString).days
-            binding.tvDayCount.text = daysRemaining.toString()
-            binding.layoutImunisasiTerdekat.show()
+            if (imunisasi.jadwalImunisasi != null) {
+                val today = LocalDate.now()
+                val daysRemaining = ChronoUnit.DAYS.between(today, imunisasi.jadwalImunisasi.toInstant().atZone(
+                    ZoneId.systemDefault()).toLocalDate())
+                binding.tvDayCount.text = daysRemaining.toString()
+                binding.layoutImunisasiTerdekat.show()
+            } else {
+                binding.tvDayCount.text = "-"
+                binding.layoutImunisasiTerdekat.show()
+            }
         }
     }
 
