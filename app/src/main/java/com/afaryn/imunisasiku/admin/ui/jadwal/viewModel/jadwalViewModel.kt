@@ -3,21 +3,18 @@ package com.afaryn.imunisasiku.admin.ui.jadwal.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.afaryn.imunisasiku.model.JenisImunisasi
-import com.afaryn.imunisasiku.utils.Constants
 import com.afaryn.imunisasiku.utils.Constants.JENIS_IMUNISASI
 import com.afaryn.imunisasiku.utils.UiState
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.util.Date
 import javax.inject.Inject
 
 
@@ -77,7 +74,7 @@ class jadwalViewModel @Inject constructor(
         }
     }
 
-    fun sendHari (namaImunisasi:String,newHari:List<String>)= CoroutineScope(Dispatchers.IO).launch{
+    fun sendHari (namaImunisasi:String,newHari:List<Date>)= CoroutineScope(Dispatchers.IO).launch{
         _sendState.value = UiState.Loading(true)
 
         val doc = firestore.collection(JENIS_IMUNISASI)

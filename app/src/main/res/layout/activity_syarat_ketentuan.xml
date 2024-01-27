@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".admin.ui.profile.SyaratKetentuanActivity">
+
+    <include
+        android:id="@+id/include2"
+        layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include2">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/pregular"
+            android:paddingBottom="30dp"
+            android:justificationMode="inter_word"
+            android:text="PRIVACY AND POLICY\n\n
+
+    Terima kasih telah menggunakan Aplikasi Pengingat Jadwal Imunisasi kami. Privacy Policy ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi pribadi Anda saat Anda menggunakan aplikasi kami.\n\n
+
+- Informasi yang Kami Kumpulkan\nKetika Anda menggunakan Aplikasi Pengingat Jadwal Imunisasi kami, kami tidak mengumpulkan informasi pribadi apapun tentang Anda secara otomatis. Namun, jika Anda memilih untuk membuat akun atau menyimpan data pribadi seperti nama dan tanggal lahir di dalam aplikasi, informasi tersebut akan disimpan secara lokal pada perangkat Anda dan tidak diunggah atau dibagikan ke pihak lain.\n\n
+
+- Bagaimana Kami Menggunakan Informasi Anda\nInformasi pribadi yang Anda berikan kepada kami dalam aplikasi hanya akan digunakan untuk tujuan yang ditentukan, yaitu untuk menyimpan dan mengelola jadwal imunisasi Anda. Kami tidak akan menggunakan informasi tersebut untuk tujuan lain atau membagikannya kepada pihak ketiga tanpa izin Anda.\n\n
+
+- Penggunaan Layanan Pihak Ketiga\nAplikasi Pengingat Jadwal Imunisasi kami mungkin menggunakan layanan pihak ketiga, seperti penyedia layanan penyimpanan cloud, untuk tujuan penyimpanan data. Penggunaan layanan-layanan ini tunduk pada kebijakan privasi masing-masing penyedia layanan dan kami tidak bertanggung jawab atas praktik privasi atau konten situs web pihak ketiga.\n\n
+
+-Penggunaan Anonim dan Data Agregat\nKami dapat menggunakan data anonim dan data agregat yang dikumpulkan melalui aplikasi kami untuk tujuan analisis dan peningkatan layanan. Data ini tidak akan mengidentifikasi Anda secara pribadi dan hanya digunakan untuk memahami tren penggunaan dan kebutuhan pengguna secara umum.\n\n
+
+- Perubahan pada Kebijakan Privasi\nKami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. Setiap perubahan yang signifikan akan diumumkan di dalam aplikasi atau melalui pemberitahuan kepada Anda. Penggunaan Anda terus menerus dari aplikasi kami setelah perubahan tersebut merupakan persetujuan Anda terhadap kebijakan yang diperbarui.\n\n
+Kontak Kami\n\nJika Anda memiliki pertanyaan atau masalah tentang Kebijakan Privasi kami, silakan hubungi kami di afaryn22@gmail.com.Terima kasih atas kepercayaan Anda menggunakan Aplikasi Pengingat Jadwal Imunisasi kami."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

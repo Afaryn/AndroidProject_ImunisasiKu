@@ -2,13 +2,13 @@ package com.afaryn.imunisasiku.admin.ui.jadwal
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.afaryn.imunisasiku.R
 import com.afaryn.imunisasiku.admin.ui.jadwal.viewModel.jadwalViewModel
@@ -17,12 +17,12 @@ import com.afaryn.imunisasiku.model.JenisImunisasi
 import com.afaryn.imunisasiku.utils.UiState
 import com.afaryn.imunisasiku.utils.hide
 import com.afaryn.imunisasiku.utils.show
+import com.afaryn.imunisasiku.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -35,7 +35,7 @@ class TambahHariActivity : AppCompatActivity() {
     private var data = JenisImunisasi()
     private var pickedDate: Date? = null
     private var pickedhari:String?=null
-    private val jadwalBaru = ArrayList<String>()
+    private val jadwalBaru = ArrayList<Date>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,43 +58,18 @@ class TambahHariActivity : AppCompatActivity() {
                 setupDatePicker()
             }
             button2.setOnClickListener {
-                if (data.jadwalImunisasi!=null){
-                    val jadwal = data.jadwalImunisasi!!.map { it }
-                    jadwalBaru.addAll(jadwal)
+                if (pickedDate == null) {
+                    toast("Harap pilih tanggal")
+                    return@setOnClickListener
                 }
-                if (data.siklus=="bulan"){
-                    jadwalBaru.add(pickedDate.toString())
-                    val dataUnik = jadwalBaru.distinct()
-                    viewModel.sendHari(data.namaImunisasi!!,dataUnik)
+
+                if (!data.jadwalImunisasi.isNullOrEmpty()) {
+                    jadwalBaru.addAll(data.jadwalImunisasi!!)
                 }
-                if (data.siklus=="minggu"){
-                    if (cbSenin2.isChecked){
-//                        pickedhari = "Senin"
-                        jadwalBaru.add("Senin")
-                    }
-                    if(cbSelasa2.isChecked){
-//                        pickedhari="Selasa"
-                        jadwalBaru.add("Selasa")
-                    }
-                    if(cbRabu2.isChecked){
-//                        pickedhari="Rabu"
-                        jadwalBaru.add("Rabu")
-                    }
-                    if(cbKamis2.isChecked){
-//                        pickedhari="Kamis"
-                        jadwalBaru.add("Kamis")
-                    }
-                    if(cbJumat2.isChecked){
-//                        pickedhari="Jum'at"
-                        jadwalBaru.add("Jum'at")
-                    }
-                    if (cbSabtu2.isChecked){
-//                        pickedhari="Sabtu"
-                        jadwalBaru.add("Sabtu")
-                    }
-                    val dataUnik = jadwalBaru.distinct()
-                    viewModel.sendHari(data.namaImunisasi!!,dataUnik)
-                }
+
+                jadwalBaru.add(pickedDate!!)
+                val dataUnik = jadwalBaru.distinct()
+                viewModel.sendHari(data.namaImunisasi!!,dataUnik)
             }
         }
     }
@@ -133,14 +108,8 @@ class TambahHariActivity : AppCompatActivity() {
                 }
                 is UiState.Success->{
                     data = it.data!!
-                    if(it.data.siklus=="bulan"){
-                        binding.linearLayout10.isVisible=true
-                        binding.layoutMinggu.isVisible = false
-                    }
-                    if(it.data.siklus=="minggu"){
-                        binding.linearLayout10.isVisible=false
-                        binding.layoutMinggu.isVisible = true
-                    }
+                    binding.linearLayout10.isVisible=true
+                    binding.layoutMinggu.isVisible = false
                 }
                 is UiState.Error->{
                     Toast.makeText(this,"Terdapat Error",Toast.LENGTH_SHORT).show()

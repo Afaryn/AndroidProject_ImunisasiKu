@@ -61,14 +61,8 @@ class HomeViewModel @Inject constructor(
                     _homeState.value = UiState.Loading(false)
                     val imunisasi = value.toObjects(Imunisasi::class.java)
 
-                    // Get the value of the closest date
-                    val dates = mutableListOf<String>()
-                    imunisasi.forEach {
-                        it.jadwalImunisasi?.let { jadwal -> dates.add(jadwal) }
-                    }
-
                     // Filter to get data matching the closest date
-                    val closestDate = getClosestDate(dates, imunisasi)
+                    val closestDate = getClosestDate(imunisasi)
                     if (closestDate != null) {
                         _homeState.value = UiState.Success(closestDate)
                     }else {

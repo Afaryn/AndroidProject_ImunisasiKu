@@ -1,10 +1,10 @@
 package com.afaryn.imunisasiku.admin.ui.home.viewModel
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.afaryn.imunisasiku.model.Imunisasi
 import com.afaryn.imunisasiku.model.JenisImunisasi
 import com.afaryn.imunisasiku.model.Pasien
 import com.afaryn.imunisasiku.model.User
@@ -13,6 +13,7 @@ import com.afaryn.imunisasiku.utils.Constants.JENIS_IMUNISASI
 import com.afaryn.imunisasiku.utils.Constants.PASIEN_COLLECTION
 import com.afaryn.imunisasiku.utils.Constants.USER_COLLECTION
 import com.afaryn.imunisasiku.utils.UiState
+import com.afaryn.imunisasiku.utils.stringToDate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,10 +60,13 @@ class HomeAdminViewModel @Inject constructor(
                 map["imunisasi"]=imn.size.toString()
             }
             .await()
-        firestore.collection(PASIEN_COLLECTION).get()
+        firestore.collection(IMUNISASI_COLLECTION).get()
             .addOnSuccessListener {
-                val psn = it.toObjects(Pasien::class.java)
-                map["pasien"]=psn.size.toString()
+                val psn = it.toObjects(Imunisasi::class.java)
+                val psnFiltered = psn.filter {
+                    stringToDate(it.jadwalImunisasi!!).time >= Date()
+                }
+                map["pasien"]=psnFiltered.size.toString()
             }
             .await()
         firestore.collection(USER_COLLECTION).document(auth.uid!!).get()
@@ -93,12 +97,9 @@ class HomeAdminViewModel @Inject constructor(
         }
     }
 
-    private fun getMonthYearFromDateString(dateString: String): String {
-        val inputFormat = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault())
-        val date = inputFormat.parse(dateString)
-
+    private fun getMonthYearFromDateString(dateString: Date): String {
         val outputFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
-        return outputFormat.format(date ?: Date())
+        return outputFormat.format(dateString)
     }
 
     fun chartData() {
@@ -110,7 +111,7 @@ class HomeAdminViewModel @Inject constructor(
                 val dataPoints = mutableMapOf<String, Float>()
 
                 for (document in result) {
-                    val jadwalImunisasi = document.getString("jadwalImunisasi") ?: ""
+                    val jadwalImunisasi = document.getDate("jadwalImunisasi") ?: Date()
                     val bulanTahun = getMonthYearFromDateString(jadwalImunisasi)
                     val jumlahKunjungan = dataPoints[bulanTahun] ?: 0f
 

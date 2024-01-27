@@ -110,7 +110,7 @@ class AdminLoginFragment : Fragment() {
     private fun setAdminRolePref(data: String) {
         val sharedPref = requireActivity().getSharedPreferences("UserRole", Context.MODE_PRIVATE)
         val editor = sharedPref.edit()
-        editor.putString("role", "admin")
+        editor.putString("role", data)
         editor.apply()
     }
 

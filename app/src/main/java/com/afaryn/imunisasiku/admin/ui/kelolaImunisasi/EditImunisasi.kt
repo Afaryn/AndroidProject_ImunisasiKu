@@ -89,71 +89,19 @@ class EditImunisasi : AppCompatActivity() {
             binding.apply {
                 tvNamaImunisasi.setText(imunisasi.namaImunisasi)
                 etUsiaImunisasi.setText(imunisasi.batasUmur.toString())
-                rgSiklusImunisasi.check(
-                    if (imunisasi.siklus == "bulan") radioBulanan.id
-                    else radioMingguan.id
-                )
-                handleJadwalDanJam(imunisasi)
 
-                var hasBeenPressed = 0
-                radioMingguan.setOnClickListener {
-                    if (jenisImunisasi.siklus == "bulan" && hasBeenPressed == 0) {
-                        jenisImunisasi = jenisImunisasi.copy(
-                            siklus = "minggu",
-                            jamImunisasi = null,
-                            jadwalImunisasi = null
-                        )
-                        hasBeenPressed += 1
-                        ubahSiklus()
-                    } else if (hasBeenPressed != 0) {
-                        hasBeenPressed -= 1
-                        jenisImunisasi = imunisasiBackup
-                        restoreSiklus()
-                    }
-                }
-                radioBulanan.setOnClickListener {
-                    if (imunisasi.siklus == "minggu" && hasBeenPressed == 0) {
-                        jenisImunisasi = jenisImunisasi.copy(
-                            siklus = "bulan",
-                            jamImunisasi = null,
-                            jadwalImunisasi = null
-                        )
-                        hasBeenPressed += 1
-                        ubahSiklus()
-                    } else if (hasBeenPressed != 0) {
-                        hasBeenPressed -= 1
-                        jenisImunisasi = imunisasiBackup
-                        restoreSiklus()
-                    }
-                }
+                handleJadwalDanJam(imunisasi)
             }
         }
-    }
-
-    private fun restoreSiklus() {
-        binding.tvGantiSiklus.hide()
-        binding.tvHolderJadwal.show()
-        binding.tvHolderJam.show()
-        handleJadwalDanJam(jenisImunisasi)
-    }
-
-    private fun ubahSiklus() {
-        binding.tvHolderJadwal.hide()
-        binding.tvHolderJam.hide()
-        binding.tvGantiSiklus.show()
-        binding.jamLayout.removeAllViews()
-        binding.jadwalLayout.removeAllViews()
     }
 
     private fun handleJadwalDanJam(it: JenisImunisasi) {
         binding.apply {
             it.jadwalImunisasi?.let { list ->
                 for (jadwal in list) {
-                    if (jadwal.isNotEmpty()) {
-                        val inflater = LayoutInflater.from(applicationContext)
-                            .inflate(R.layout.item_imunisasi_edit, null)
-                        jadwalLayout.addView(inflater, jadwalLayout.childCount)
-                    }
+                    val inflater = LayoutInflater.from(applicationContext)
+                        .inflate(R.layout.item_imunisasi_edit, null)
+                    jadwalLayout.addView(inflater, jadwalLayout.childCount)
                 }
 
                 val count = jadwalLayout.childCount
@@ -163,7 +111,7 @@ class EditImunisasi : AppCompatActivity() {
                     val btnDeleteEdit = v.findViewById<ImageView>(R.id.btn_delete_edit)
 
                     val currentListItem = list[c]
-                    tvContent.text = if (it.siklus == "bulan") parseDateString(list[c]) else list[c]
+                    tvContent.text = parseDateString(list[c])
                     btnDeleteEdit.setOnClickListener {
                         v.hide()
                         jenisImunisasi.jadwalImunisasi?.remove(currentListItem)

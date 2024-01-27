@@ -114,6 +114,14 @@ class ProfileFragmentAdmin : Fragment() {
             btnHapusAkun.setOnClickListener {
                 showCustomDialogBoxHps("Apakah yakin ingin menghapus akun anda? ")
             }
+            btnSyaratKetentuan.setOnClickListener {
+                val intent = Intent(context, SyaratKetentuanActivity::class.java)
+                startActivity(intent)
+            }
+            btnBantuan.setOnClickListener {
+                val intent = Intent(context, BantuanActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 

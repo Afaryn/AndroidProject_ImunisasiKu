@@ -25,6 +25,12 @@
         android:theme="@style/Theme.ImunisasiKu"
         tools:targetApi="31">
         <activity
+            android:name=".admin.ui.profile.BantuanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.ui.profile.SyaratKetentuanActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.home.PosterActivity"
             android:exported="false" />
         <activity
