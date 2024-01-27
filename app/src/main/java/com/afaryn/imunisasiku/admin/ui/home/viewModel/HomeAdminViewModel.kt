@@ -85,6 +85,7 @@ class HomeAdminViewModel @Inject constructor(
     fun getData(){
         viewModelScope.launch {
             try {
+                chartData()
                 val data = homePageData()
                 _getState.value = UiState.Success(data)
                 _getState.value = UiState.Loading(false)
@@ -102,7 +103,7 @@ class HomeAdminViewModel @Inject constructor(
         return outputFormat.format(dateString)
     }
 
-    fun chartData() {
+    private fun chartData() {
         viewModelScope.launch {
             try {
                 // Mengambil data kunjungan pasien dari Firestore

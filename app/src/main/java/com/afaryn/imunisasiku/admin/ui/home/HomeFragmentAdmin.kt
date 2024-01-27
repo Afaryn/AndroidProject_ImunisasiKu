@@ -95,24 +95,26 @@ class HomeFragmentAdmin : Fragment() {
                 }
             }
 
-            viewModel.chartData()
 
-            viewModel.chartState.observe(viewLifecycleOwner, Observer { chartDataState ->
+
+            viewModel.chartState.observe(viewLifecycleOwner) { chartDataState ->
                 when (chartDataState) {
                     is UiState.Loading -> {
                         // Handle loading state jika diperlukan
                     }
+
                     is UiState.Success -> {
                         val chartData = chartDataState.data
                         updateChart(chartData!!)
                     }
+
                     is UiState.Error -> {
                         // Handle error state jika diperlukan
                         val errorMessage = chartDataState.error
                         Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
                     }
                 }
-            })
+            }
         }
 
 
@@ -135,7 +137,7 @@ class HomeFragmentAdmin : Fragment() {
             // Set data point touch listener
             onDataPointTouchListener = { index, _, _ ->
                 val selectedData = chartData[index].second.toString()
-                binding.tvChartData.text = selectedData
+                binding.tvChartData.text = "$selectedData Pasien"
             }
 
             // Animate the chart with the data
