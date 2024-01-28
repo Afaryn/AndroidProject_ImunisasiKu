@@ -9,7 +9,6 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,14 +18,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.afaryn.imunisasiku.R
 import com.afaryn.imunisasiku.admin.ui.profile.viewModel.profileViewModel
-import com.afaryn.imunisasiku.databinding.FragmentHomeAdminBinding
 import com.afaryn.imunisasiku.databinding.FragmentProfileAdminBinding
 import com.afaryn.imunisasiku.model.User
-import com.afaryn.imunisasiku.presentation.auth.AuthActivity
+import com.afaryn.imunisasiku.presentation.onboarding.OnboardingActivity
 import com.afaryn.imunisasiku.utils.Constants
 import com.afaryn.imunisasiku.utils.UiState
 import com.afaryn.imunisasiku.utils.hide
@@ -35,7 +33,6 @@ import com.afaryn.imunisasiku.utils.show
 import com.afaryn.imunisasiku.utils.toast
 import com.afaryn.imunisasiku.utils.uriToFile
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -201,7 +198,7 @@ class ProfileFragmentAdmin : Fragment() {
             viewModel.logout()
             deleteSharedPreference()
             startActivity(
-                Intent(requireContext(), AuthActivity::class.java).apply {
+                Intent(requireContext(), OnboardingActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 }
             )
@@ -292,8 +289,9 @@ class ProfileFragmentAdmin : Fragment() {
                 }
                 is UiState.Success -> {
                     toast(it.data!!)
+                    deleteSharedPreference()
                     startActivity(
-                        Intent(requireContext(), AuthActivity::class.java).apply {
+                        Intent(requireContext(), OnboardingActivity::class.java).apply {
                             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         }
                     )

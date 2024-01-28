@@ -2,9 +2,13 @@ package com.afaryn.imunisasiku.admin.ui.jadwal.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import com.afaryn.imunisasiku.model.Imunisasi
 import com.afaryn.imunisasiku.model.JenisImunisasi
+import com.afaryn.imunisasiku.utils.Constants
+import com.afaryn.imunisasiku.utils.Constants.IMUNISASI_COLLECTION
 import com.afaryn.imunisasiku.utils.Constants.JENIS_IMUNISASI
 import com.afaryn.imunisasiku.utils.UiState
+import com.afaryn.imunisasiku.utils.stringToDate
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -31,6 +35,49 @@ class jadwalViewModel @Inject constructor(
 
     private val _sendState = MutableStateFlow<UiState<String>>(UiState.Loading(false))
     val sendState = _sendState.asStateFlow().asLiveData()
+
+    private val _getImnState = MutableStateFlow<UiState<List<Imunisasi>>>(UiState.Loading(false))
+    val getImnState = _getImnState.asStateFlow().asLiveData()
+
+    private val _cancelImunisasiState = MutableStateFlow<UiState<String>>(UiState.Loading(false))
+    val cancelImunisasiState = _cancelImunisasiState.asStateFlow().asLiveData()
+
+    fun getJadwal() {
+        _getImnState.value = UiState.Loading(true)
+        firestore.collection(IMUNISASI_COLLECTION).addSnapshotListener { value, error ->
+            if (error != null) {
+                error.printStackTrace()
+                _getImnState.value = UiState.Loading(false)
+                _getImnState.value = UiState.Error("Terjadi kesalahan saat mengambil data")
+            }
+
+            val data = value?.toObjects(Imunisasi::class.java)
+            data?.let {
+                val imunisasiFiltered = it.filter { imunisasi ->
+                    stringToDate(imunisasi.jadwalImunisasi!!).time >= Date() &&
+                            imunisasi.statusImunisasi != "Dibatalkan"
+                }
+                _getImnState.value = UiState.Loading(false)
+                _getImnState.value = UiState.Success(imunisasiFiltered)
+            }
+        }
+    }
+
+    fun cancelImunisasi(imunisasi: Imunisasi) {
+        _cancelImunisasiState.value = UiState.Loading(true)
+        firestore.runBatch {
+            firestore.collection(IMUNISASI_COLLECTION).document(imunisasi.id).set(imunisasi)
+            firestore.collection(Constants.USER_COLLECTION).document(imunisasi.userId).collection(IMUNISASI_COLLECTION)
+                .document(imunisasi.id).set(imunisasi)
+        }.addOnSuccessListener {
+            _cancelImunisasiState.value = UiState.Loading(false)
+            _cancelImunisasiState.value = UiState.Success("Imunisasi dibatalkan")
+        }.addOnFailureListener {
+            _cancelImunisasiState.value = UiState.Loading(false)
+            _cancelImunisasiState.value = UiState.Error(it.localizedMessage ?: "Terjadi Kesalahan")
+        }
+    }
+
     fun getImn(){
         _getState.value = UiState.Loading(true)
         firestore.collection(JENIS_IMUNISASI)

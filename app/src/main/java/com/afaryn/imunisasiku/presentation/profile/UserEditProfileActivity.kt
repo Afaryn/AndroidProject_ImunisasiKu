@@ -8,7 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.afaryn.imunisasiku.databinding.ActivityUserEditProfileBinding
 import com.afaryn.imunisasiku.model.User
-import com.afaryn.imunisasiku.presentation.auth.AuthActivity
+import com.afaryn.imunisasiku.presentation.onboarding.OnboardingActivity
 import com.afaryn.imunisasiku.presentation.profile.viewmodel.EditProfileViewModel
 import com.afaryn.imunisasiku.utils.UiState
 import com.afaryn.imunisasiku.utils.hide
@@ -40,9 +40,11 @@ class UserEditProfileActivity : AppCompatActivity() {
                 is UiState.Success -> {
                     it.data?.let { user -> setUpEditPage(user) }
                 }
+
                 is UiState.Error -> {
                     toast(it.error!!)
                 }
+
                 else -> {}
             }
         }
@@ -53,10 +55,12 @@ class UserEditProfileActivity : AppCompatActivity() {
                     if (it.isLoading == true) binding.progressBar.show()
                     else binding.progressBar.hide()
                 }
+
                 is UiState.Success -> {
                     toast(it.data!!)
                     finish()
                 }
+
                 is UiState.Error -> {
                     toast(it.error!!)
                 }
@@ -69,14 +73,17 @@ class UserEditProfileActivity : AppCompatActivity() {
                     if (it.isLoading == true) binding.progressBar.show()
                     else binding.progressBar.hide()
                 }
+
                 is UiState.Success -> {
                     toast(it.data!!)
+                    deleteSharedPreference()
                     startActivity(
-                        Intent(this, AuthActivity::class.java).apply {
+                        Intent(this, OnboardingActivity::class.java).apply {
                             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         }
                     )
                 }
+
                 is UiState.Error -> {
                     toast(it.error!!)
                 }
@@ -108,7 +115,7 @@ class UserEditProfileActivity : AppCompatActivity() {
                 viewModel.signOut()
                 deleteSharedPreference()
                 startActivity(
-                    Intent(this@UserEditProfileActivity, AuthActivity::class.java).apply {
+                    Intent(this@UserEditProfileActivity, OnboardingActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     }
                 )

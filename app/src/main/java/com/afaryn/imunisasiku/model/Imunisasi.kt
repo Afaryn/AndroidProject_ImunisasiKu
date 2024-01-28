@@ -16,5 +16,7 @@ data class Imunisasi(
     val pasien: Pasien? = null,
     val namaImunisasi: String? = null,
     val jadwalImunisasi: Date? = null,
-    val jamImunisasi: String? = null
+    val jamImunisasi: String? = null,
+    val statusImunisasi: String = "Belum Terlewati",
+    val userId: String = ""
 ): Parcelable

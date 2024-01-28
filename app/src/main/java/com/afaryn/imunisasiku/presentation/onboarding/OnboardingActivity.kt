@@ -47,16 +47,16 @@ class OnboardingActivity : AppCompatActivity() {
             if (binding.viewPager2.currentItem + 1 < onboardingAdapter.itemCount) {
                 binding.viewPager2.currentItem = binding.viewPager2.currentItem + 1
             } else {
+                onBoardingFinished()
                 val intent = Intent(this, AuthActivity::class.java)
                 startActivity(intent)
-                onBoardingFinished()
                 finish()
             }
         }
         binding.btnSkip.setOnClickListener {
+            onBoardingFinished()
             val intent = Intent(this, AuthActivity::class.java)
             startActivity(intent)
-            onBoardingFinished()
             finish()
         }
     }

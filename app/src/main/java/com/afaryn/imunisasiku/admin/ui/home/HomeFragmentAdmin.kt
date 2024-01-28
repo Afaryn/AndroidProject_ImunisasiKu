@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.afaryn.imunisasiku.admin.ui.home.viewModel.HomeAdminViewModel
+import com.afaryn.imunisasiku.admin.ui.jadwal.JadwalImunisasiAdminActivity
 import com.afaryn.imunisasiku.admin.ui.kelolaAkun.KelolaAkun
 import com.afaryn.imunisasiku.admin.ui.kelolaImunisasi.KelolaImunisasi
 import com.afaryn.imunisasiku.databinding.FragmentHomeAdminBinding
@@ -46,6 +47,11 @@ class HomeFragmentAdmin : Fragment() {
             }
             CvAkun.setOnClickListener{val intent = Intent(requireActivity(), KelolaAkun::class.java)
                 requireActivity().startActivity(intent)
+            }
+            CvJadwal.setOnClickListener {
+                requireContext().startActivity(
+                    Intent(requireContext(), JadwalImunisasiAdminActivity::class.java)
+                )
             }
         }
     }

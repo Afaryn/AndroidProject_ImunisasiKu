@@ -49,6 +49,12 @@ class RiwayatImunisasiAdapter: RecyclerView.Adapter<RiwayatImunisasiAdapter.Riwa
                             layoutTerlewati.hide()
                         }
                     }
+
+                    if (imunisasi.statusImunisasi == "Dibatalkan") {
+                        layoutDibatalkan.show()
+                        layoutBelumTerlewati.hide()
+                        layoutTerlewati.hide()
+                    }
                 }
             }
         }

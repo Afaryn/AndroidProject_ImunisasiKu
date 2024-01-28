@@ -48,10 +48,11 @@ class DaftarImunisasiViewModel @Inject constructor(
 
     fun daftarImunisasi(imunisasi: Imunisasi) {
         _daftarImunisasiState.value = UiState.Loading(true)
+        val imunisasiWithUID = imunisasi.copy(userId = auth.uid!!)
         firestore.runBatch {
-            firestore.collection(IMUNISASI_COLLECTION).document(imunisasi.id).set(imunisasi)
+            firestore.collection(IMUNISASI_COLLECTION).document(imunisasi.id).set(imunisasiWithUID)
             firestore.collection(USER_COLLECTION).document(auth.uid!!).collection(
-                IMUNISASI_COLLECTION).document(imunisasi.id).set(imunisasi)
+                IMUNISASI_COLLECTION).document(imunisasi.id).set(imunisasiWithUID)
         }.addOnSuccessListener {
             _daftarImunisasiState.value = UiState.Loading(false)
             _daftarImunisasiState.value = UiState.Success(imunisasi.id)

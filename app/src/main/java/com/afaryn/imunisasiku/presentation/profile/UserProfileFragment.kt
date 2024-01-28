@@ -12,6 +12,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.afaryn.imunisasiku.admin.ui.profile.BantuanActivity
+import com.afaryn.imunisasiku.admin.ui.profile.SyaratKetentuanActivity
 import com.afaryn.imunisasiku.databinding.FragmentUserProfileBinding
 import com.afaryn.imunisasiku.model.User
 import com.afaryn.imunisasiku.presentation.profile.viewmodel.ProfilViewModel
@@ -76,7 +78,7 @@ class UserProfileFragment : Fragment() {
 
     private fun setActions() {
         binding.apply {
-            binding.ivTakePicture.setOnClickListener {
+            ivTakePicture.setOnClickListener {
                 requireActivity().setupDeleteDialog(
                     title = "Ganti foto profil?",
                     message = "Apakah anda ingin mengganti foto profil saat ini",
@@ -91,12 +93,20 @@ class UserProfileFragment : Fragment() {
                 }
             }
 
-            binding.layoutEditProfil.setOnClickListener {
+            layoutEditProfil.setOnClickListener {
                 startActivity(Intent(context, UserEditProfileActivity::class.java))
             }
 
-            binding.layoutRiwayatImunisasi.setOnClickListener {
+            layoutRiwayatImunisasi.setOnClickListener {
                 startActivity(Intent(context, RiwayatImunisasiActivity::class.java))
+            }
+
+            layoutSyaratKetentuan.setOnClickListener {
+                startActivity(Intent(context, SyaratKetentuanActivity::class.java))
+            }
+
+            layoutBantuan.setOnClickListener {
+                startActivity(Intent(context, BantuanActivity::class.java))
             }
         }
     }

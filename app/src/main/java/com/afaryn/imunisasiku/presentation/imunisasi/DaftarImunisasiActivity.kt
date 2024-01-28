@@ -110,8 +110,13 @@ class DaftarImunisasiActivity : AppCompatActivity() {
 
     private fun isImunisasiHasPassed(): Boolean {
         val today = Date()
+        val cal1 = Calendar.getInstance()
+        val cal2 = Calendar.getInstance()
 
-        return selectedJadwal!! < today
+        cal1.time = today
+        cal2.time = selectedJadwal!!
+
+        return cal2.time < cal1.time
     }
 
     private fun observer() {

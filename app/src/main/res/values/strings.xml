@@ -86,5 +86,6 @@
     <string name="title">Title</string>
     <string name="ayo_imunisasi">Ayo Imunisasi</string>
     <string name="alert_ganti_siklus">Dengan mengganti siklus, semua jadwal akan dihapus. silahkan tambah jadwal pada halaman tambah jadwal setelah menyimpan perubahan</string>
+    <string name="dibatalkan">Dibatalkan</string>
 
 </resources>

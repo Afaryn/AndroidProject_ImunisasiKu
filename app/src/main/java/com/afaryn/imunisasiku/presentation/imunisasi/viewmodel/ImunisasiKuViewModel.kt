@@ -43,7 +43,8 @@ class ImunisasiKuViewModel @Inject constructor(
                     _imunisasiKuState.value = UiState.Loading(false)
                     val imunisasi = value.toObjects(Imunisasi::class.java)
                     val imunisasiFiltered = imunisasi.filter {
-                        stringToDate(it.jadwalImunisasi!!).time >= Date()
+                        stringToDate(it.jadwalImunisasi!!).time >= Date() &&
+                                it.statusImunisasi != "Dibatalkan"
                     }
 
                     _imunisasiKuState.value = UiState.Success(imunisasiFiltered)
@@ -51,12 +52,12 @@ class ImunisasiKuViewModel @Inject constructor(
             }
     }
 
-    fun batalkanImunisasi(imunisasiId: String) {
+    fun batalkanImunisasi(imunisasi: Imunisasi) {
         _cancelImunisasiState.value = UiState.Loading(true)
         firestore.runBatch {
-            firestore.collection(IMUNISASI_COLLECTION).document(imunisasiId).delete()
+            firestore.collection(IMUNISASI_COLLECTION).document(imunisasi.id).set(imunisasi)
             firestore.collection(USER_COLLECTION).document(auth.uid!!).collection(IMUNISASI_COLLECTION)
-                .document(imunisasiId).delete()
+                .document(imunisasi.id).set(imunisasi)
         }.addOnSuccessListener {
             _cancelImunisasiState.value = UiState.Loading(false)
             _cancelImunisasiState.value = UiState.Success("Imunisasi dibatalkan")

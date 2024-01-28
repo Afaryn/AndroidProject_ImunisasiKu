@@ -25,6 +25,9 @@
         android:theme="@style/Theme.ImunisasiKu"
         tools:targetApi="31">
         <activity
+            android:name=".admin.ui.jadwal.JadwalImunisasiAdminActivity"
+            android:exported="false" />
+        <activity
             android:name=".admin.ui.profile.BantuanActivity"
             android:exported="false" />
         <activity

@@ -160,9 +160,7 @@ fun isSameDay(date: Date): Boolean {
     cal1.time = date
     cal2.time = today
 
-    return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-            cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
-            cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)
+    return cal1.time == cal2.time
 }
 
 fun getClosestDate(listImunisasi: List<Imunisasi>): Imunisasi? {

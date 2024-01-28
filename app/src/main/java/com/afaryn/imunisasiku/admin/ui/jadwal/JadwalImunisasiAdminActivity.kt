@@ -1,17 +1,14 @@
-package com.afaryn.imunisasiku.presentation.jadwalku
+package com.afaryn.imunisasiku.admin.ui.jadwal
 
-import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.WorkManager
-import com.afaryn.imunisasiku.MainActivity
 import com.afaryn.imunisasiku.R
-import com.afaryn.imunisasiku.databinding.ActivityJadwalkuBinding
+import com.afaryn.imunisasiku.admin.ui.jadwal.viewModel.jadwalViewModel
+import com.afaryn.imunisasiku.databinding.ActivityJadwalImunisasiAdminBinding
 import com.afaryn.imunisasiku.model.Imunisasi
-import com.afaryn.imunisasiku.presentation.imunisasi.viewmodel.ImunisasiKuViewModel
 import com.afaryn.imunisasiku.presentation.jadwalku.adapter.JadwalKuAdapter
 import com.afaryn.imunisasiku.utils.UiState
 import com.afaryn.imunisasiku.utils.hide
@@ -21,82 +18,73 @@ import com.afaryn.imunisasiku.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class JadwalkuActivity : AppCompatActivity() {
+class JadwalImunisasiAdminActivity : AppCompatActivity() {
 
-    private var _binding: ActivityJadwalkuBinding? = null
+    private var _binding: ActivityJadwalImunisasiAdminBinding? = null
     private val binding get() = _binding!!
-    private val jadwalKuAdapter by lazy { JadwalKuAdapter() }
-    private val viewModel by viewModels<ImunisasiKuViewModel>()
+    private val jadwalAdapter by lazy { JadwalKuAdapter() }
+    private val viewModel by viewModels<jadwalViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityJadwalkuBinding.inflate(layoutInflater)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        _binding = ActivityJadwalImunisasiAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        viewModel.getJadwal()
 
-        binding.rvJadwalku.apply {
-            adapter = jadwalKuAdapter
-            layoutManager = LinearLayoutManager(this@JadwalkuActivity)
-        }
         binding.btnBack.setOnClickListener { finish() }
+        binding.rvJadwalku.apply {
+            adapter = jadwalAdapter
+            layoutManager = LinearLayoutManager(this@JadwalImunisasiAdminActivity)
+        }
         observer()
     }
 
     private fun observer() {
-        viewModel.imunisasiKuState.observe(this) {
+        viewModel.getImnState.observe(this) {
             when (it) {
                 is UiState.Loading -> {
                     if (it.isLoading == true) binding.progressBar.show()
                     else binding.progressBar.hide()
                 }
                 is UiState.Success -> {
-                    it.data?.let { imunisasi ->
-                        setRvData(imunisasi)
-                    }
+                    it.data?.let { imunisasiList -> setUpRv(imunisasiList) }
                 }
                 is UiState.Error -> {
-                    toast(it.error ?: "Terjadi Kesalahan")
+                    toast(it.error!!)
                 }
             }
         }
 
         viewModel.cancelImunisasiState.observe(this) {
             when (it) {
-                is UiState.Loading -> {
-                    if (it.isLoading == true) binding.progressBar.show()
-                    else binding.progressBar.hide()
-                }
                 is UiState.Success -> {
+                    viewModel.getJadwal()
                     toast(it.data!!)
-                    val intent = Intent(this, MainActivity::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    }
-                    startActivity(intent)
                 }
                 is UiState.Error -> {
-                    toast(it.error ?: "Terjadi Kesalahan")
+                    toast(it.error!!)
                 }
+                else -> {}
             }
         }
     }
 
-    private fun setRvData(imunisasi: List<Imunisasi>) {
-        jadwalKuAdapter.differ.submitList(imunisasi)
-        jadwalKuAdapter.onDeleteClick = {
+    private fun setUpRv(imunisasiList: List<Imunisasi>) {
+        jadwalAdapter.differ.submitList(imunisasiList)
+        jadwalAdapter.onDeleteClick = {
             setupDeleteDialog(
                 title = "Batalkan imunisasi ${it.namaImunisasi}?",
                 message = "Tekan batalkan jika anda ingin membatalkan imunisasi",
                 btnActionText = getString(R.string.batalkan)
             ) {
                 val imunisasiCancelled = it.copy(
-                    statusImunisasi = getString(R.string.dibatalkan)
+                    statusImunisasi = "Dibatalkan Admin"
                 )
-                viewModel.batalkanImunisasi(imunisasiCancelled)
+                viewModel.cancelImunisasi(imunisasiCancelled)
                 WorkManager.getInstance(this).cancelAllWorkByTag(it.id)
             }
         }
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

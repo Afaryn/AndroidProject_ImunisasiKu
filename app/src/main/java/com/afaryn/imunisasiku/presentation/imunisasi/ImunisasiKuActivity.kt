@@ -86,7 +86,10 @@ class ImunisasiKuActivity : AppCompatActivity() {
                 message = "Tekan batalkan jika anda ingin membatalkan imunisasi",
                 btnActionText = getString(R.string.batalkan)
             ) {
-                viewModel.batalkanImunisasi(it.id)
+                val imunisasiCancelled = it.copy(
+                    statusImunisasi = getString(R.string.dibatalkan)
+                )
+                viewModel.batalkanImunisasi(imunisasiCancelled)
                 WorkManager.getInstance(this).cancelAllWorkByTag(it.id)
             }
         }
