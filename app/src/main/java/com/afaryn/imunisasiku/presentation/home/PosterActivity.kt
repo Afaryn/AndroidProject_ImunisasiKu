@@ -1,9 +1,12 @@
 package com.afaryn.imunisasiku.presentation.home
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.afaryn.imunisasiku.R
 import com.afaryn.imunisasiku.databinding.ActivityPosterBinding
+import com.afaryn.imunisasiku.utils.hide
+import com.afaryn.imunisasiku.utils.show
 
 class PosterActivity : AppCompatActivity() {
 
@@ -16,6 +19,9 @@ class PosterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnBack.setOnClickListener { finish() }
+        binding.layoutPentingnyaImunisasi.setOnClickListener {
+            startActivity(Intent(this, VideoActivity::class.java))
+        }
         setUpPage()
     }
 
@@ -24,10 +30,20 @@ class PosterActivity : AppCompatActivity() {
             AYO_IMUNISASI -> {
                 binding.tvTitle.text = getString(R.string.ayo_imunisasi)
                 binding.ivPoster.setImageResource(R.drawable.iv_ayo_imunisasi)
+                binding.layoutPentingnyaImunisasi.show()
+                binding.layoutBidanKami.hide()
             }
             JADWAL_IMUNISASI -> {
                 binding.tvTitle.text = getString(R.string.jadwal_imunisasi)
                 binding.ivPoster.setImageResource(R.drawable.iv_jadwal_imunisasi)
+                binding.layoutPentingnyaImunisasi.hide()
+                binding.layoutBidanKami.hide()
+            }
+            BIDAN_KAMI -> {
+                binding.tvTitle.text = getString(R.string.bidan_kami)
+                binding.layoutPentingnyaImunisasi.hide()
+                binding.ivPoster.hide()
+                binding.layoutBidanKami.show()
             }
         }
     }
@@ -41,5 +57,6 @@ class PosterActivity : AppCompatActivity() {
         const val POSTER_INTENT = "poster_intent"
         const val AYO_IMUNISASI = "ayo_imunisasi"
         const val JADWAL_IMUNISASI = "jadwal_imunisasi"
+        const val BIDAN_KAMI = "bidan_kami"
     }
 }

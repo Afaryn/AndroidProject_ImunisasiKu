@@ -86,6 +86,14 @@ class MainFragment : Fragment() {
                     )
                 })
             }
+            cvBidanKami.setOnClickListener {
+                startActivity(Intent(requireContext(), PosterActivity::class.java).apply {
+                    putExtra(
+                        PosterActivity.POSTER_INTENT,
+                        PosterActivity.BIDAN_KAMI
+                    )
+                })
+            }
         }
     }
 

@@ -87,5 +87,9 @@
     <string name="ayo_imunisasi">Ayo Imunisasi</string>
     <string name="alert_ganti_siklus">Dengan mengganti siklus, semua jadwal akan dihapus. silahkan tambah jadwal pada halaman tambah jadwal setelah menyimpan perubahan</string>
     <string name="dibatalkan">Dibatalkan</string>
+    <string name="pentingnya_imunisasi">Pentingnya Imunisasi</string>
+    <string name="nama_bidan">PMB Nola Octavia, S.ST, BDN</string>
+    <string name="jadwal_praktek">Praktek Setiap Hari\nPukul 07.00 – 20.00\nUntuk Persalinan 24 Jam</string>
+    <string name="alamat_praktek">Alamat\nKp. Cibogo II Udiklat PLN RT 03 RW 06\nCipayung kec. Megamendung Bogor</string>
 
 </resources>
