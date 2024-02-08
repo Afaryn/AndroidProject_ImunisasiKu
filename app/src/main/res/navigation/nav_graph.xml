@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.afaryn.imunisasiku.admin.ui.home.HomeFragmentAdmin"
+        android:name="com.afaryn.sipeni.admin.ui.home.HomeFragmentAdmin"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home_admin">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.afaryn.imunisasiku.admin.ui.profile.ProfileFragmentAdmin"
+        android:name="com.afaryn.sipeni.admin.ui.profile.ProfileFragmentAdmin"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile_admin" >
         <action

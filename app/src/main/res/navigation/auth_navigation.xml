@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.afaryn.imunisasiku.presentation.auth.LoginFragment"
+        android:name="com.afaryn.sipeni.presentation.auth.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.afaryn.imunisasiku.presentation.auth.RegisterFragment"
+        android:name="com.afaryn.sipeni.presentation.auth.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/adminLoginFragment"
-        android:name="com.afaryn.imunisasiku.presentation.auth.AdminLoginFragment"
+        android:name="com.afaryn.sipeni.presentation.auth.AdminLoginFragment"
         android:label="fragment_admin_login"
         tools:layout="@layout/fragment_admin_login" >
         <action

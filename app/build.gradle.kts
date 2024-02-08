@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.afaryn.imunisasiku"
+    namespace = "com.afaryn.sipeni"
     compileSdk = 34
 
     defaultConfig {
