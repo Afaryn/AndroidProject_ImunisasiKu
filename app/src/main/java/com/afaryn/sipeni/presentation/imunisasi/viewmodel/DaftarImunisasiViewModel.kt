@@ -8,11 +8,13 @@ import com.afaryn.sipeni.utils.Constants.IMUNISASI_COLLECTION
 import com.afaryn.sipeni.utils.Constants.JENIS_IMUNISASI
 import com.afaryn.sipeni.utils.Constants.USER_COLLECTION
 import com.afaryn.sipeni.utils.UiState
+import com.afaryn.sipeni.utils.sumOfMonths
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,11 +27,7 @@ class DaftarImunisasiViewModel @Inject constructor(
     private val _daftarImunisasiState = MutableStateFlow<UiState<String>>(UiState.Loading(false))
     val daftarImunisasiState = _daftarImunisasiState.asStateFlow().asLiveData()
 
-    init {
-        getJenisImunisasi()
-    }
-
-    private fun getJenisImunisasi() {
+    fun getJenisImunisasi(tanggalLahir: Date) {
         _imunisasiListState.value = UiState.Loading(true)
         firestore.collection(JENIS_IMUNISASI).addSnapshotListener { value, error ->
             if (error != null) {
@@ -40,7 +38,10 @@ class DaftarImunisasiViewModel @Inject constructor(
 
             value?.let {
                 _imunisasiListState.value = UiState.Loading(false)
-                val jenisImunisasi = value.toObjects(JenisImunisasi::class.java)
+                val jenisImunisasi = value.toObjects(JenisImunisasi::class.java).filter {
+                    it.batasUmur!! <= tanggalLahir.sumOfMonths()
+                }
+
                 _imunisasiListState.value = UiState.Success(jenisImunisasi)
             }
         }

@@ -12,7 +12,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.afaryn.imunisasiku"
+        applicationId = "com.afaryn.sipeni"
         minSdk = 21
         targetSdk = 33
         versionCode = 1

@@ -254,6 +254,7 @@ class DaftarImunisasiActivity : AppCompatActivity() {
 
             dataPasien?.let {
                 pasien = it
+                it.tanggalLahir?.let { tl -> viewModel.getJenisImunisasi(tl) }
                 binding.apply {
                     layoutPickPasien.hide()
                     tvNamaPasien.text = it.name

@@ -30,6 +30,9 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -93,6 +96,12 @@ fun Date.toToday(): String {
     val days = calendar.get(Calendar.DAY_OF_MONTH) - 1
 
     return "$years Tahun $months Bulan $days Hari"
+}
+
+fun Date.sumOfMonths(): Long {
+    val date = this.toInstant().atZone(ZoneId.of("Asia/Jakarta")).toLocalDate()
+    val today = LocalDate.now()
+    return ChronoUnit.MONTHS.between(date, today)
 }
 
 fun parseDateString(dateString: Date): String {
