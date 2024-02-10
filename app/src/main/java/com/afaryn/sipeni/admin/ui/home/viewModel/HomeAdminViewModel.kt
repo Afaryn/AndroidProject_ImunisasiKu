@@ -62,6 +62,7 @@ class HomeAdminViewModel @Inject constructor(
             .addOnSuccessListener {
                 val psn = it.toObjects(Imunisasi::class.java)
                 val psnFiltered = psn.filter {
+                    it.statusImunisasi=="Belum Terlewati"&&
                     stringToDate(it.jadwalImunisasi!!).time >= Date()
                 }
                 map["pasien"]=psnFiltered.size.toString()
